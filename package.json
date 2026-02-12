@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "storybook": "ng run package-plan:storybook",
+    "build-storybook": "ng run package-plan:build-storybook"
   },
   "prettier": {
     "printWidth": 100,
@@ -43,6 +45,15 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "storybook": "^10.2.8",
+    "@storybook/angular": "^10.2.8",
+    "@storybook/addon-a11y": "^10.2.8",
+    "@storybook/addon-docs": "^10.2.8",
+    "@angular-devkit/build-angular": "^20.2.0",
+    "@angular-devkit/architect": "^0.2002.0",
+    "@angular-devkit/core": "^20.2.0",
+    "@angular/platform-browser-dynamic": "^20.2.0",
+    "@compodoc/compodoc": "^1.2.1"
   }
 }
