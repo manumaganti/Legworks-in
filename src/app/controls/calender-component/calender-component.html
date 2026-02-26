@@ -1,0 +1,111 @@
+<div class="calendar-wrapper">
+
+  <label class="dob-label"
+    [ngClass]="{
+      'floating-label': isLabelFloating,
+      'invalid-label': touched && isRequired && !selectedDate
+    }">
+
+    {{ label }}
+    <span *ngIf="isRequired" class="required">*</span>
+
+  </label>
+
+  <div class="input-container">
+
+    <input
+      type="text"
+      class="dob-input"
+      [value]="formattedDate"
+      placeholder="dd-mm-yyyy"
+      readonly
+      (click)="openDatePicker($event)"
+      [ngClass]="{ 'error-border': touched && isRequired && !selectedDate }"
+    />
+
+  </div>
+
+  <div class="error-message" *ngIf="touched && isRequired && !selectedDate">
+    Date is required
+  </div>
+
+  <div class="calendar-overlay" *ngIf="showCalendar" (click)="closeCalendar()">
+
+    <div class="calendar-container" (click)="$event.stopPropagation()">
+
+      <div class="calendar-header">
+
+        <div class="month-year-selectors">
+          <div class="dropdown">
+            <div class="dropdown-display" (click)="toggleMonthDropdown()">
+              {{ months[currentMonth] }}
+            </div>
+
+            <ul class="dropdown-list" *ngIf="showMonthDropdown">
+              <li
+                *ngFor="let month of months; let i = index"
+                [class.selected]="i === currentMonth"
+                (click)="selectMonth(i)">
+                {{ month }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="dropdown">
+            <div class="dropdown-display" (click)="toggleYearDropdown()">
+              {{ currentYear }}
+            </div>
+
+            <ul class="dropdown-list" *ngIf="showYearDropdown">
+              <li
+                *ngFor="let year of years"
+                [class.selected]="year === currentYear"
+                (click)="selectYear(year)">
+                {{ year }}
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="nav-btns">
+          <button class="nav-btn" (click)="previousMonth()">◀</button>
+          <button class="nav-btn" (click)="nextMonth()">▶</button>
+        </div>
+
+      </div>
+
+      <div class="calendar-body">
+
+        <div class="calendar-weekdays">
+          <div class="weekday" *ngFor="let weekday of weekdays">
+            {{ weekday }}
+          </div>
+        </div>
+
+        <div class="calendar-grid">
+          <div
+            class="calendar-day"
+            *ngFor="let day of calendarDays"
+            [class.current-month]="day.isCurrentMonth"
+            [class.other-month]="!day.isCurrentMonth"
+            [class.today]="day.isToday"
+            [class.selected]="day.isSelected"
+            (click)="selectDate(day)">
+            {{ day.day }}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="calendar-footer">
+        <button class="footer-btn today-btn" (click)="goToToday()">Today</button>
+        <button class="footer-btn clear-btn" (click)="clearSelection()">Clear</button>
+        <button class="footer-btn close-btn" (click)="closeCalendar()">Close</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

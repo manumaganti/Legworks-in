@@ -1,15 +1,180 @@
 {
     "pipes": [],
-    "interfaces": [],
-    "injectables": [],
+    "interfaces": [
+        {
+            "name": "DropDown",
+            "id": "interface-DropDown-1768e3fb80029ce6a755ea98bf14e75eff94ce8305b89679e4c40c4598dcf8361cc17be33a6d8bafec670b63cbd9aa723fd58a1025805465a6bac9b5690b793e",
+            "file": "src/app/controls/drop-down-component/drop-down-component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  Component,\r\n  ElementRef,\r\n  EventEmitter,\r\n  HostListener,\r\n  Input,\r\n  Output,\r\n  Renderer2,\r\n  AfterViewInit,\r\n  OnDestroy,\r\n} from '@angular/core';\r\n\r\nimport {\r\n  ControlValueAccessor,\r\n  NG_VALUE_ACCESSOR,\r\n  FormsModule,\r\n  ReactiveFormsModule,\r\n  FormGroup,\r\n} from '@angular/forms';\r\n\r\nimport { DropdownOption } from '../../../stories/assets/value-configs/drop-down-view-model';\r\n\r\nexport interface DropDown {\r\n  name: string;\r\n  value: any;\r\n}\r\n\r\n@Component({\r\n  selector: 'app-drop-down-component',\r\n  templateUrl: './drop-down-component.html',\r\n  styleUrl: './drop-down-component.scss',\r\n  imports: [CommonModule, FormsModule, ReactiveFormsModule],\r\n  providers: [\r\n    {\r\n      provide: NG_VALUE_ACCESSOR,\r\n      useExisting: DropDownComponent,\r\n      multi: true,\r\n    },\r\n  ],\r\n})\r\nexport class DropDownComponent\r\n  implements AfterViewInit, OnDestroy, ControlValueAccessor\r\n{\r\n  @Input() label?: string = 'Gender';\r\n  @Input() placeHolder?: string = ' ';\r\n  @Input() isRequired?: boolean = false;\r\n  @Input() options: DropdownOption[] | null = null;\r\n\r\n  @Input() parentFormGroup!: FormGroup;\r\n  @Input() id!: string;\r\n\r\n  @Input() dropDownModel: string = '';\r\n\r\n  @Output() selectedChange = new EventEmitter<any>();\r\n  @Output() blurEvent = new EventEmitter<void>();\r\n\r\n  draggable: boolean = false;\r\n\r\n  uniqueId: string = '';\r\n\r\n  // Stores actual value (for form submission)\r\n  selectedValue: any = null;\r\n\r\n  // Stores display name (for UI)\r\n  selectedLabel: string = '';\r\n\r\n  isOpenUp: boolean = false;\r\n  isOpen: boolean = false;\r\n  isActive: boolean = false;\r\n\r\n  private disabled = false;\r\n\r\n  private startY = 0;\r\n  private startHeight = 0;\r\n  private resizing = false;\r\n\r\n  private mouseMoveListener?: (event: MouseEvent) => void;\r\n  private mouseUpListener?: (event: MouseEvent) => void;\r\n\r\n  constructor(private eRef: ElementRef, private renderer: Renderer2) {\r\n    this.mouseMoveListener = this.handleMouseMove.bind(this);\r\n    this.mouseUpListener = this.handleMouseUp.bind(this);\r\n  }\r\n\r\n  ngOnInit() {\r\n    const randomStr = Math.random().toString(36).substring(2, 9);\r\n    this.uniqueId = `dropdown_${this.id}_${randomStr}`;\r\n  }\r\n\r\n  // ======= FORM CONTROL =======\r\n  get control() {\r\n    return this.parentFormGroup?.get(this.id);\r\n  }\r\n\r\n  get isInvalid() {\r\n    return this.control?.invalid && (this.control?.dirty || this.control?.touched);\r\n  }\r\n\r\n  get optionLength(): number {\r\n    return this.options?.length ?? 0;\r\n  }\r\n\r\n  // ======= CONTROL VALUE ACCESSOR =======\r\n  private onChange = (_: any) => {};\r\n  private onTouched = () => {};\r\n\r\n  writeValue(obj: any): void {\r\n    this.selectedValue = obj;\r\n\r\n    // Find matching label\r\n    const found = this.options?.find((o) => o.value === obj);\r\n    this.selectedLabel = found ? found.name : '';\r\n\r\n    this.isActive = !!obj;\r\n  }\r\n\r\n  registerOnChange(fn: any): void {\r\n    this.onChange = fn;\r\n  }\r\n\r\n  registerOnTouched(fn: any): void {\r\n    this.onTouched = fn;\r\n  }\r\n\r\n  setDisabledState?(isDisabled: boolean): void {\r\n    this.disabled = isDisabled;\r\n  }\r\n\r\n  // ======= TOGGLE DROPDOWN =======\r\n  toggleDropdown() {\r\n    if (this.disabled) return;\r\n\r\n    this.isOpen = !this.isOpen;\r\n    this.isActive = true;\r\n\r\n    if (this.isOpen) {\r\n      setTimeout(() => {\r\n        this.decideDropdownDirection();\r\n        this.setInitialHeight();\r\n      }, 0);\r\n    }\r\n  }\r\n\r\n  // ======= SELECT OPTION =======\r\nselectOption(option: DropDown) {\r\n  this.selectedValue = option.value;\r\n  this.selectedLabel = option.name;\r\n\r\n  this.isActive = true;\r\n\r\n  this.onChange(this.selectedValue);\r\n\r\n  this.control?.setValue(option.value);\r\n  this.control?.markAsTouched();\r\n  this.control?.markAsDirty();\r\n\r\n  this.selectedChange.emit(this.selectedValue);\r\n\r\n  this.closeDropdown();   // ✅ close ONLY here\r\n}\r\n\r\n\r\n  // ======= BLUR EVENT =======\r\nonBlur() {\r\n  this.control?.markAsTouched();\r\n  this.onTouched();\r\n  this.blurEvent.emit();\r\n\r\n  // only handle floating label reset\r\n  setTimeout(() => {\r\n    if (!this.selectedValue) {\r\n      this.isActive = false;\r\n    }\r\n  }, 100);\r\n}\r\n\r\n\r\n  // ======= CLOSE DROPDOWN =======\r\n  private closeDropdown() {\r\n    this.isOpen = false;\r\n  }\r\n\r\n  // ======= CLOSE WHEN CLICK OUTSIDE =======\r\n@HostListener('document:click', ['$event'])\r\nhandleClickOutside(event: MouseEvent) {\r\n  if (!this.eRef.nativeElement.contains(event.target)) {\r\n    this.closeDropdown();\r\n\r\n    if (!this.selectedValue) {\r\n      this.isActive = false;\r\n    }\r\n  }\r\n}\r\n\r\n\r\n  // ======= DROPDOWN DIRECTION DECISION =======\r\n  private decideDropdownDirection() {\r\n    const dropdown = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown'\r\n    ) as HTMLElement;\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (!dropdown || !list) return;\r\n\r\n    list.style.visibility = 'hidden';\r\n    list.style.display = 'block';\r\n\r\n    const listHeight = list.offsetHeight || 150;\r\n\r\n    list.style.display = '';\r\n    list.style.visibility = '';\r\n\r\n    const rect = dropdown.getBoundingClientRect();\r\n    const spaceBelow = window.innerHeight - rect.bottom;\r\n    const spaceAbove = rect.top;\r\n\r\n    this.isOpenUp = spaceBelow < listHeight && spaceAbove > spaceBelow;\r\n  }\r\n\r\n  // ======= INITIAL HEIGHT SETUP =======\r\n  private setInitialHeight() {\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (list) {\r\n      const optionHeight = 38;\r\n      const buffer = 36;\r\n\r\n      const totalHeight = this.optionLength * optionHeight + buffer;\r\n      const initialHeight = Math.min(244, totalHeight);\r\n\r\n      this.renderer.setStyle(list, 'height', `${initialHeight}px`);\r\n      this.renderer.setStyle(list, 'max-height', `${totalHeight}px`);\r\n      this.renderer.setStyle(list, 'overflow-y', 'auto');\r\n      this.renderer.setStyle(list, 'resize', 'none');\r\n      this.renderer.setStyle(list, 'transform-origin', 'top');\r\n    }\r\n  }\r\n\r\n  // ======= DRAG RESIZE SUPPORT =======\r\n  ngAfterViewInit() {\r\n    if (!this.draggable) return;\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    const handle = this.eRef.nativeElement.querySelector(\r\n      '.resize-hr'\r\n    ) as HTMLElement;\r\n\r\n    if (!list || !handle) return;\r\n\r\n    handle.addEventListener('mousedown', (event: MouseEvent) => {\r\n      this.startY = event.clientY;\r\n      this.startHeight = list.offsetHeight;\r\n      this.resizing = true;\r\n\r\n      handle.classList.add('dragging');\r\n      document.body.style.cursor = 'ns-resize';\r\n      document.body.style.userSelect = 'none';\r\n\r\n      event.preventDefault();\r\n      event.stopPropagation();\r\n    });\r\n\r\n    document.addEventListener('mousemove', this.mouseMoveListener!, {\r\n      passive: false,\r\n    });\r\n\r\n    document.addEventListener('mouseup', this.mouseUpListener!, {\r\n      passive: false,\r\n    });\r\n\r\n    document.addEventListener('contextmenu', this.preventContextMenu, {\r\n      passive: false,\r\n    });\r\n  }\r\n\r\n  private handleMouseMove(event: MouseEvent) {\r\n    if (!this.resizing) return;\r\n\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (!list) return;\r\n\r\n    const diff = event.clientY - this.startY;\r\n    let newHeight = this.startHeight + diff;\r\n\r\n    const totalHeight = this.optionLength * 38;\r\n    const minHeight = 80;\r\n\r\n    newHeight = Math.min(newHeight, totalHeight);\r\n    newHeight = Math.max(newHeight, minHeight);\r\n\r\n    list.style.height = `${newHeight}px`;\r\n    list.style.minHeight = `${newHeight}px`;\r\n    list.style.maxHeight = `${Math.max(newHeight, totalHeight)}px`;\r\n\r\n    if (newHeight >= totalHeight) {\r\n      this.renderer.setStyle(list, 'overflow-y', 'hidden');\r\n    } else {\r\n      this.renderer.setStyle(list, 'overflow-y', 'auto');\r\n    }\r\n\r\n    this.adjustDropdownPosition(list);\r\n  }\r\n\r\n  private handleMouseUp(event: MouseEvent) {\r\n    if (!this.resizing) return;\r\n\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    this.resizing = false;\r\n    document.body.style.cursor = 'default';\r\n    document.body.style.userSelect = '';\r\n    document.body.style.webkitUserSelect = '';\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (list) {\r\n      const currentHeight = list.offsetHeight;\r\n      list.style.height = `${currentHeight}px`;\r\n      list.style.transition = 'none';\r\n      list.style.cursor = 'default';\r\n    }\r\n\r\n    document.removeEventListener('mousemove', this.mouseMoveListener!);\r\n    document.removeEventListener('mouseup', this.mouseUpListener!);\r\n    document.removeEventListener('contextmenu', this.preventContextMenu);\r\n  }\r\n\r\n  private adjustDropdownPosition(list: HTMLElement) {\r\n    const dropdown = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown'\r\n    ) as HTMLElement;\r\n\r\n    if (!dropdown || !list) return;\r\n\r\n    const rect = dropdown.getBoundingClientRect();\r\n    const listRect = list.getBoundingClientRect();\r\n\r\n    const spaceBelow = window.innerHeight - rect.bottom;\r\n    const spaceAbove = rect.top;\r\n\r\n    if (spaceBelow < listRect.height && spaceAbove > spaceBelow) {\r\n      this.isOpenUp = true;\r\n    } else {\r\n      this.isOpenUp = false;\r\n    }\r\n  }\r\n\r\n  private preventContextMenu = (event: Event) => {\r\n    event.preventDefault();\r\n  };\r\n\r\n  // ======= DESTROY CLEANUP =======\r\n  ngOnDestroy() {\r\n    if (this.mouseMoveListener) {\r\n      document.removeEventListener('mousemove', this.mouseMoveListener);\r\n    }\r\n    if (this.mouseUpListener) {\r\n      document.removeEventListener('mouseup', this.mouseUpListener);\r\n    }\r\n    document.removeEventListener('contextmenu', this.preventContextMenu);\r\n  }\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
+                },
+                {
+                    "name": "value",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "DropdownOption",
+            "id": "interface-DropdownOption-5bd366d20a4fae205b80ab9d4c07ccc1d947e57bb2f45402b3f0f02a52e7362cbb70cbe045d7ec58d31428fa66eb8693cdc7b4c0fd9cdca76169daaf3d130782",
+            "file": "src/stories/assets/value-configs/drop-down-view-model.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface DropdownOption {\r\n  value: number;\r\n  name: string;\r\n}",
+            "properties": [
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                },
+                {
+                    "name": "value",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        }
+    ],
+    "injectables": [
+        {
+            "name": "DropdownService",
+            "id": "injectable-DropdownService-85105fefffb2d5ffa48dc1200b46e6d16de4783294c077018d491545a906fe21b183e28b34835c9e3ee6983eaa8808151645a7da3d28d7165aa1f5102d285311",
+            "file": "src/app/services/dropdown.service.ts",
+            "properties": [
+                {
+                    "name": "openServices$",
+                    "defaultValue": "this.openServicesSource.asObservable()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "openServicesSource",
+                    "defaultValue": "new Subject<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "openServices",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { Subject } from 'rxjs';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class DropdownService {\r\n\r\n  private openServicesSource = new Subject<void>();\r\n  openServices$ = this.openServicesSource.asObservable();\r\n\r\n  openServices() {\r\n    this.openServicesSource.next();\r\n  }\r\n}\r\n",
+            "extends": [],
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [],
     "directives": [],
     "components": [
         {
+            "name": "AppComponent",
+            "id": "component-AppComponent-d214785d182a86ec1a57a93d190658349741d7460ef0b98950b18753a7be987f6c3689e57cc6e744749a19c45e6d705b073c99e4dc033e6cd8d52386cd206edb",
+            "file": "src/app/controls/app.component/app.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-root",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./app.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "RouterOutlet"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { RouterOutlet } from \"@angular/router\";\r\n\r\n@Component({\r\n  selector: 'app-root',\r\n  imports: [RouterOutlet],\r\n  templateUrl: './app.component.html',\r\n  styleUrl: './app.component.scss',\r\n})\r\nexport class AppComponent {\r\n\r\n}\r\n",
+            "styleUrl": "./app.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<router-outlet></router-outlet>\r\n"
+        },
+        {
             "name": "BodyComponent",
-            "id": "component-BodyComponent-5da8f50e91a83ebb979c7cc15f25f9c4b5d0c81b8d802f1e3a2045721b3f4ce92cee3798cb5e8e00b81b202d1879261aae2e70d32b316db55a57cf4f1e6f9f31",
+            "id": "component-BodyComponent-9ebd4dfbe31ebf94357eefeae1e79a45ad76a3c9b96f1510e3630a9688afdcafd877b783368451768c04464afc2086dab1b7bfb9929e26350257099c45cd303f",
             "file": "src/app/controls/body-component/body-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -27,7 +192,18 @@
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "goToForm",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 13,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -37,17 +213,1611 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-body-component',\r\n  imports: [],\r\n  templateUrl: './body-component.html',\r\n  styleUrl: './body-component.scss',\r\n})\r\nexport class BodyComponent {\r\n\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\n\r\n@Component({\r\n  selector: 'app-body-component',\r\n  imports: [],\r\n  templateUrl: './body-component.html',\r\n  styleUrl: './body-component.scss',\r\n})\r\nexport class BodyComponent {\r\nconstructor(private dropdownService: DropdownService) {}\r\n\r\ngoToForm() {\r\n  console.log(\"Button clicked\");\r\n  this.dropdownService.openServices();\r\n}\r\n}\r\n",
             "styleUrl": "./body-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "dropdownService",
+                        "type": "DropdownService",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 10,
+                "jsdoctags": [
+                    {
+                        "name": "dropdownService",
+                        "type": "DropdownService",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
             "extends": [],
-            "templateData": "<div class=\"large\">\r\n    <p class=\"text-1\">Where Authenticity Meets Quality</p>\r\n    <p class=\"text-2\">NOW DISTANCE <br>DOESN'T MATTER</p>\r\n    <div class=\"large-1\">\r\n        <p class=\"text-3\">LEGWORKS AT YOUR DOORSTEP</p>\r\n    </div>\r\n    <div class=\"large-2\">\r\n        <button class=\"explore\">Explore Services</button>\r\n    </div>\r\n</div>\r\n"
+            "templateData": "<div class=\"large\">\r\n    <img src=\"leg.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    <p class=\"text-2\">NOW DISTANCE <br>DOESN'T MATTER</p>\r\n    <div class=\"large-1\">\r\n        <p class=\"text-3\">LEGWORKS AT YOUR DOORSTEP</p>\r\n    </div>\r\n    <div class=\"large-2\">\r\n        <button class=\"explore\" (click)=\"goToForm()\" >Explore Services</button>\r\n    </div>\r\n</div>\r\n"
+        },
+        {
+            "name": "CalenderComponent",
+            "id": "component-CalenderComponent-6522245e8768b21fbe749a7aef4a1035abc63f9f121db183f55bc57936d5ef63e86e170cb276405333da7c1fea40e8b1b46d1db057ed3bd3ef1f7aa111f93766",
+            "file": "src/app/controls/calender-component/calender-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [
+                {
+                    "name": ")"
+                }
+            ],
+            "selector": "app-calender-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./calender-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "isRequired",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 34,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "\"Date of Packaging\"",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 33,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "dateSelected",
+                    "defaultValue": "new EventEmitter<Date | null>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 36,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "calendarDays",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 50
+                },
+                {
+                    "name": "currentMonth",
+                    "defaultValue": "new Date().getMonth()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 48
+                },
+                {
+                    "name": "currentYear",
+                    "defaultValue": "new Date().getFullYear()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 49
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 59
+                },
+                {
+                    "name": "isLabelFloating",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39
+                },
+                {
+                    "name": "months",
+                    "defaultValue": "[\r\n    'January', 'February', 'March', 'April', 'May', 'June',\r\n    'July', 'August', 'September', 'October', 'November', 'December'\r\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 43
+                },
+                {
+                    "name": "onChange",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 61,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "onTouched",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 62,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "selectedDate",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Date | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 56
+                },
+                {
+                    "name": "showCalendar",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 38
+                },
+                {
+                    "name": "showMonthDropdown",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 53
+                },
+                {
+                    "name": "showYearDropdown",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 54
+                },
+                {
+                    "name": "touched",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 58
+                },
+                {
+                    "name": "weekdays",
+                    "defaultValue": "['S', 'M', 'T', 'W', 'T', 'F', 'S']",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 41
+                },
+                {
+                    "name": "years",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 51
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "clearSelection",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 150,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "closeCalendar",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 126,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "generateCalendar",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 167,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "generateYears",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 160,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "goToToday",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 246,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "handleOutsideClick",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 258,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'document:click'"
+                        }
+                    ],
+                    "modifierKind": [
+                        171
+                    ]
+                },
+                {
+                    "name": "isSelected",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 198,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isToday",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 193,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "markAsTouched",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 108,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "nextMonth",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 214,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 70,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "openDatePicker",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 115,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "previousMonth",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 204,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "registerOnChange",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 96,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "registerOnTouched",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 100,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "selectDate",
+                    "args": [
+                        {
+                            "name": "day",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 136,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "day",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "selectMonth",
+                    "args": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 234,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "selectYear",
+                    "args": [
+                        {
+                            "name": "year",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 240,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "year",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setDisabledState",
+                    "args": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 104,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleMonthDropdown",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 224,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "toggleYearDropdown",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 229,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "writeValue",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 75,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [
+                {
+                    "name": "document:click",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 258
+                }
+            ],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "FormsModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ReactiveFormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  Component,\r\n  forwardRef,\r\n  Input,\r\n  Output,\r\n  EventEmitter,\r\n  HostListener\r\n} from '@angular/core';\r\nimport {\r\n  ControlValueAccessor,\r\n  FormsModule,\r\n  NG_VALUE_ACCESSOR,\r\n  ReactiveFormsModule\r\n} from '@angular/forms';\r\n\r\n@Component({\r\n  selector: 'app-calender-component',\r\n  standalone: true,\r\n  imports: [CommonModule, FormsModule, ReactiveFormsModule],\r\n  templateUrl: './calender-component.html',\r\n  styleUrl: './calender-component.scss',\r\n  providers: [\r\n    {\r\n      provide: NG_VALUE_ACCESSOR,\r\n      useExisting: forwardRef(() => CalenderComponent),\r\n      multi: true\r\n    }\r\n  ]\r\n})\r\nexport class CalenderComponent implements ControlValueAccessor {\r\n\r\n  @Input() label: string = \"Date of Packaging\";\r\n  @Input() isRequired: boolean = true;\r\n\r\n  @Output() dateSelected = new EventEmitter<Date | null>();\r\n\r\n  showCalendar = false;\r\n  isLabelFloating = false;\r\n\r\n  weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];\r\n\r\n  months = [\r\n    'January', 'February', 'March', 'April', 'May', 'June',\r\n    'July', 'August', 'September', 'October', 'November', 'December'\r\n  ];\r\n\r\n  currentMonth = new Date().getMonth();\r\n  currentYear = new Date().getFullYear();\r\n  calendarDays: any[] = [];\r\n  years: number[] = [];\r\n\r\n  showMonthDropdown = false;\r\n  showYearDropdown = false;\r\n\r\n  selectedDate: Date | null = null;\r\n\r\n  touched = false;\r\n  disabled = false;\r\n\r\n  private onChange = (value: any) => {};\r\n  private onTouched = () => {};\r\n\r\n  get formattedDate(): string {\r\n    return this.selectedDate\r\n      ? this.selectedDate.toLocaleDateString('en-GB').replace(/\\//g, '-')\r\n      : '';\r\n  }\r\n\r\n  ngOnInit() {\r\n    this.generateYears();\r\n    this.generateCalendar();\r\n  }\r\n\r\n  writeValue(value: any): void {\r\n    if (value instanceof Date) {\r\n      this.selectedDate = value;\r\n    } else if (typeof value === 'string' && value) {\r\n      const parts = value.split('-');\r\n      if (parts.length === 3) {\r\n        this.selectedDate = new Date(+parts[2], +parts[1] - 1, +parts[0]);\r\n      }\r\n    } else {\r\n      this.selectedDate = null;\r\n    }\r\n\r\n    if (this.selectedDate) {\r\n      this.currentMonth = this.selectedDate.getMonth();\r\n      this.currentYear = this.selectedDate.getFullYear();\r\n      this.isLabelFloating = true;\r\n    }\r\n\r\n    this.generateCalendar();\r\n  }\r\n\r\n  registerOnChange(fn: any): void {\r\n    this.onChange = fn;\r\n  }\r\n\r\n  registerOnTouched(fn: any): void {\r\n    this.onTouched = fn;\r\n  }\r\n\r\n  setDisabledState(isDisabled: boolean): void {\r\n    this.disabled = isDisabled;\r\n  }\r\n\r\n  markAsTouched() {\r\n    if (!this.touched) {\r\n      this.touched = true;\r\n      this.onTouched();\r\n    }\r\n  }\r\n\r\n  openDatePicker(event: Event) {\r\n    event.stopPropagation();\r\n\r\n    if (this.disabled) return;\r\n\r\n    this.showCalendar = !this.showCalendar;\r\n    this.isLabelFloating = true;\r\n\r\n    this.markAsTouched();\r\n  }\r\n\r\n  closeCalendar() {\r\n    this.showCalendar = false;\r\n    this.showMonthDropdown = false;\r\n    this.showYearDropdown = false;\r\n\r\n    if (!this.selectedDate) {\r\n      this.isLabelFloating = false;\r\n    }\r\n  }\r\n\r\n  selectDate(day: any) {\r\n    this.selectedDate = new Date(day.date);\r\n    this.currentMonth = this.selectedDate.getMonth();\r\n    this.currentYear = this.selectedDate.getFullYear();\r\n\r\n    this.generateCalendar();\r\n    this.isLabelFloating = true;\r\n\r\n    this.onChange(this.selectedDate);\r\n    this.dateSelected.emit(this.selectedDate);\r\n\r\n    this.closeCalendar();\r\n  }\r\n\r\n  clearSelection() {\r\n    this.selectedDate = null;\r\n    this.onChange(null);\r\n    this.dateSelected.emit(null);\r\n    this.generateCalendar();\r\n\r\n    this.isLabelFloating = false;\r\n    this.closeCalendar();\r\n  }\r\n\r\n  generateYears() {\r\n    this.years = [];\r\n    for (let i = 1950; i <= 2050; i++) {\r\n      this.years.push(i);\r\n    }\r\n  }\r\n\r\n  generateCalendar() {\r\n    const firstDay = new Date(this.currentYear, this.currentMonth, 1);\r\n    const startDate = new Date(firstDay);\r\n    startDate.setDate(startDate.getDate() - firstDay.getDay());\r\n\r\n    this.calendarDays = [];\r\n    const totalDays = 42;\r\n\r\n    for (let i = 0; i < totalDays; i++) {\r\n      const date = new Date(startDate);\r\n      date.setDate(startDate.getDate() + i);\r\n\r\n      const isCurrentMonth = date.getMonth() === this.currentMonth;\r\n      const isSelected = this.isSelected(date);\r\n      const isToday = this.isToday(date) && !isSelected;\r\n\r\n      this.calendarDays.push({\r\n        date,\r\n        day: date.getDate(),\r\n        isCurrentMonth,\r\n        isToday,\r\n        isSelected\r\n      });\r\n    }\r\n  }\r\n\r\n  isToday(date: Date): boolean {\r\n    const today = new Date();\r\n    return date.toDateString() === today.toDateString();\r\n  }\r\n\r\n  isSelected(date: Date): boolean {\r\n    return this.selectedDate\r\n      ? date.toDateString() === this.selectedDate.toDateString()\r\n      : false;\r\n  }\r\n\r\n  previousMonth() {\r\n    if (this.currentMonth === 0) {\r\n      this.currentMonth = 11;\r\n      this.currentYear--;\r\n    } else {\r\n      this.currentMonth--;\r\n    }\r\n    this.generateCalendar();\r\n  }\r\n\r\n  nextMonth() {\r\n    if (this.currentMonth === 11) {\r\n      this.currentMonth = 0;\r\n      this.currentYear++;\r\n    } else {\r\n      this.currentMonth++;\r\n    }\r\n    this.generateCalendar();\r\n  }\r\n\r\n  toggleMonthDropdown() {\r\n    this.showMonthDropdown = !this.showMonthDropdown;\r\n    this.showYearDropdown = false;\r\n  }\r\n\r\n  toggleYearDropdown() {\r\n    this.showYearDropdown = !this.showYearDropdown;\r\n    this.showMonthDropdown = false;\r\n  }\r\n\r\n  selectMonth(index: number) {\r\n    this.currentMonth = index;\r\n    this.showMonthDropdown = false;\r\n    this.generateCalendar();\r\n  }\r\n\r\n  selectYear(year: number) {\r\n    this.currentYear = year;\r\n    this.showYearDropdown = false;\r\n    this.generateCalendar();\r\n  }\r\n\r\n  goToToday() {\r\n    const today = new Date();\r\n    this.currentMonth = today.getMonth();\r\n    this.currentYear = today.getFullYear();\r\n    this.selectedDate = today;\r\n\r\n    this.onChange(today);\r\n    this.generateCalendar();\r\n    this.closeCalendar();\r\n  }\r\n\r\n  @HostListener('document:click')\r\n  handleOutsideClick() {\r\n    this.closeCalendar();\r\n  }\r\n\r\n}\r\n\r\n",
+            "styleUrl": "./calender-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "implements": [
+                "ControlValueAccessor"
+            ],
+            "accessors": {
+                "formattedDate": {
+                    "name": "formattedDate",
+                    "getSignature": {
+                        "name": "formattedDate",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 64
+                    }
+                }
+            },
+            "templateData": "<div class=\"calendar-wrapper\">\r\n\r\n  <label class=\"dob-label\"\r\n    [ngClass]=\"{\r\n      'floating-label': isLabelFloating,\r\n      'invalid-label': touched && isRequired && !selectedDate\r\n    }\">\r\n\r\n    {{ label }}\r\n    <span *ngIf=\"isRequired\" class=\"required\">*</span>\r\n\r\n  </label>\r\n\r\n  <div class=\"input-container\">\r\n\r\n    <input\r\n      type=\"text\"\r\n      class=\"dob-input\"\r\n      [value]=\"formattedDate\"\r\n      placeholder=\"dd-mm-yyyy\"\r\n      readonly\r\n      (click)=\"openDatePicker($event)\"\r\n      [ngClass]=\"{ 'error-border': touched && isRequired && !selectedDate }\"\r\n    />\r\n\r\n  </div>\r\n\r\n  <div class=\"error-message\" *ngIf=\"touched && isRequired && !selectedDate\">\r\n    Date is required\r\n  </div>\r\n\r\n  <div class=\"calendar-overlay\" *ngIf=\"showCalendar\" (click)=\"closeCalendar()\">\r\n\r\n    <div class=\"calendar-container\" (click)=\"$event.stopPropagation()\">\r\n\r\n      <div class=\"calendar-header\">\r\n\r\n        <div class=\"month-year-selectors\">\r\n          <div class=\"dropdown\">\r\n            <div class=\"dropdown-display\" (click)=\"toggleMonthDropdown()\">\r\n              {{ months[currentMonth] }}\r\n            </div>\r\n\r\n            <ul class=\"dropdown-list\" *ngIf=\"showMonthDropdown\">\r\n              <li\r\n                *ngFor=\"let month of months; let i = index\"\r\n                [class.selected]=\"i === currentMonth\"\r\n                (click)=\"selectMonth(i)\">\r\n                {{ month }}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"dropdown\">\r\n            <div class=\"dropdown-display\" (click)=\"toggleYearDropdown()\">\r\n              {{ currentYear }}\r\n            </div>\r\n\r\n            <ul class=\"dropdown-list\" *ngIf=\"showYearDropdown\">\r\n              <li\r\n                *ngFor=\"let year of years\"\r\n                [class.selected]=\"year === currentYear\"\r\n                (click)=\"selectYear(year)\">\r\n                {{ year }}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"nav-btns\">\r\n          <button class=\"nav-btn\" (click)=\"previousMonth()\">◀</button>\r\n          <button class=\"nav-btn\" (click)=\"nextMonth()\">▶</button>\r\n        </div>\r\n\r\n      </div>\r\n\r\n      <div class=\"calendar-body\">\r\n\r\n        <div class=\"calendar-weekdays\">\r\n          <div class=\"weekday\" *ngFor=\"let weekday of weekdays\">\r\n            {{ weekday }}\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"calendar-grid\">\r\n          <div\r\n            class=\"calendar-day\"\r\n            *ngFor=\"let day of calendarDays\"\r\n            [class.current-month]=\"day.isCurrentMonth\"\r\n            [class.other-month]=\"!day.isCurrentMonth\"\r\n            [class.today]=\"day.isToday\"\r\n            [class.selected]=\"day.isSelected\"\r\n            (click)=\"selectDate(day)\">\r\n            {{ day.day }}\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n\r\n      <div class=\"calendar-footer\">\r\n        <button class=\"footer-btn today-btn\" (click)=\"goToToday()\">Today</button>\r\n        <button class=\"footer-btn clear-btn\" (click)=\"clearSelection()\">Clear</button>\r\n        <button class=\"footer-btn close-btn\" (click)=\"closeCalendar()\">Close</button>\r\n      </div>\r\n\r\n    </div>\r\n\r\n  </div>\r\n\r\n</div>\r\n"
+        },
+        {
+            "name": "DropDownComponent",
+            "id": "component-DropDownComponent-1768e3fb80029ce6a755ea98bf14e75eff94ce8305b89679e4c40c4598dcf8361cc17be33a6d8bafec670b63cbd9aa723fd58a1025805465a6bac9b5690b793e",
+            "file": "src/app/controls/drop-down-component/drop-down-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [
+                {
+                    "name": "DropDownComponent",
+                    "type": "component"
+                }
+            ],
+            "selector": "app-drop-down-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./drop-down-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "dropDownModel",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 53,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 51,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "isRequired",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 47,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'Gender'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 45,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "options",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 48,
+                    "type": "DropdownOption[] | null",
+                    "decorators": []
+                },
+                {
+                    "name": "parentFormGroup",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 50,
+                    "type": "FormGroup",
+                    "decorators": []
+                },
+                {
+                    "name": "placeHolder",
+                    "defaultValue": "' '",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 46,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "blurEvent",
+                    "defaultValue": "new EventEmitter<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 56,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "selectedChange",
+                    "defaultValue": "new EventEmitter<any>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 55,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 72,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "draggable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 58
+                },
+                {
+                    "name": "isActive",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 70
+                },
+                {
+                    "name": "isOpen",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 69
+                },
+                {
+                    "name": "isOpenUp",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 68
+                },
+                {
+                    "name": "mouseMoveListener",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 78,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "mouseUpListener",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 79,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "onChange",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 105,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "onTouched",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 106,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "preventContextMenu",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 366,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "resizing",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 76,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "selectedLabel",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 66
+                },
+                {
+                    "name": "selectedValue",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 63
+                },
+                {
+                    "name": "startHeight",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 75,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "startY",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 74,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "uniqueId",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 60
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "adjustDropdownPosition",
+                    "args": [
+                        {
+                            "name": "list",
+                            "type": "HTMLElement",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 346,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "list",
+                            "type": "HTMLElement",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "closeDropdown",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 180,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "decideDropdownDirection",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 198,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "handleClickOutside",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 186,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'document:click', ['$event']"
+                        }
+                    ],
+                    "modifierKind": [
+                        171
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "handleMouseMove",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 285,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "handleMouseUp",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 319,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 246,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 371,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 86,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onBlur",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 165,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "registerOnChange",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 118,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "registerOnTouched",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 122,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "selectOption",
+                    "args": [
+                        {
+                            "name": "option",
+                            "type": "DropDown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 146,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "option",
+                            "type": "DropDown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setDisabledState",
+                    "args": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": true,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 126,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setInitialHeight",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 225,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "toggleDropdown",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 131,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "writeValue",
+                    "args": [
+                        {
+                            "name": "obj",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 108,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "obj",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [
+                {
+                    "name": "document:click",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [
+                        "$event"
+                    ],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 186
+                }
+            ],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "FormsModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ReactiveFormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  Component,\r\n  ElementRef,\r\n  EventEmitter,\r\n  HostListener,\r\n  Input,\r\n  Output,\r\n  Renderer2,\r\n  AfterViewInit,\r\n  OnDestroy,\r\n} from '@angular/core';\r\n\r\nimport {\r\n  ControlValueAccessor,\r\n  NG_VALUE_ACCESSOR,\r\n  FormsModule,\r\n  ReactiveFormsModule,\r\n  FormGroup,\r\n} from '@angular/forms';\r\n\r\nimport { DropdownOption } from '../../../stories/assets/value-configs/drop-down-view-model';\r\n\r\nexport interface DropDown {\r\n  name: string;\r\n  value: any;\r\n}\r\n\r\n@Component({\r\n  selector: 'app-drop-down-component',\r\n  templateUrl: './drop-down-component.html',\r\n  styleUrl: './drop-down-component.scss',\r\n  imports: [CommonModule, FormsModule, ReactiveFormsModule],\r\n  providers: [\r\n    {\r\n      provide: NG_VALUE_ACCESSOR,\r\n      useExisting: DropDownComponent,\r\n      multi: true,\r\n    },\r\n  ],\r\n})\r\nexport class DropDownComponent\r\n  implements AfterViewInit, OnDestroy, ControlValueAccessor\r\n{\r\n  @Input() label?: string = 'Gender';\r\n  @Input() placeHolder?: string = ' ';\r\n  @Input() isRequired?: boolean = false;\r\n  @Input() options: DropdownOption[] | null = null;\r\n\r\n  @Input() parentFormGroup!: FormGroup;\r\n  @Input() id!: string;\r\n\r\n  @Input() dropDownModel: string = '';\r\n\r\n  @Output() selectedChange = new EventEmitter<any>();\r\n  @Output() blurEvent = new EventEmitter<void>();\r\n\r\n  draggable: boolean = false;\r\n\r\n  uniqueId: string = '';\r\n\r\n  // Stores actual value (for form submission)\r\n  selectedValue: any = null;\r\n\r\n  // Stores display name (for UI)\r\n  selectedLabel: string = '';\r\n\r\n  isOpenUp: boolean = false;\r\n  isOpen: boolean = false;\r\n  isActive: boolean = false;\r\n\r\n  private disabled = false;\r\n\r\n  private startY = 0;\r\n  private startHeight = 0;\r\n  private resizing = false;\r\n\r\n  private mouseMoveListener?: (event: MouseEvent) => void;\r\n  private mouseUpListener?: (event: MouseEvent) => void;\r\n\r\n  constructor(private eRef: ElementRef, private renderer: Renderer2) {\r\n    this.mouseMoveListener = this.handleMouseMove.bind(this);\r\n    this.mouseUpListener = this.handleMouseUp.bind(this);\r\n  }\r\n\r\n  ngOnInit() {\r\n    const randomStr = Math.random().toString(36).substring(2, 9);\r\n    this.uniqueId = `dropdown_${this.id}_${randomStr}`;\r\n  }\r\n\r\n  // ======= FORM CONTROL =======\r\n  get control() {\r\n    return this.parentFormGroup?.get(this.id);\r\n  }\r\n\r\n  get isInvalid() {\r\n    return this.control?.invalid && (this.control?.dirty || this.control?.touched);\r\n  }\r\n\r\n  get optionLength(): number {\r\n    return this.options?.length ?? 0;\r\n  }\r\n\r\n  // ======= CONTROL VALUE ACCESSOR =======\r\n  private onChange = (_: any) => {};\r\n  private onTouched = () => {};\r\n\r\n  writeValue(obj: any): void {\r\n    this.selectedValue = obj;\r\n\r\n    // Find matching label\r\n    const found = this.options?.find((o) => o.value === obj);\r\n    this.selectedLabel = found ? found.name : '';\r\n\r\n    this.isActive = !!obj;\r\n  }\r\n\r\n  registerOnChange(fn: any): void {\r\n    this.onChange = fn;\r\n  }\r\n\r\n  registerOnTouched(fn: any): void {\r\n    this.onTouched = fn;\r\n  }\r\n\r\n  setDisabledState?(isDisabled: boolean): void {\r\n    this.disabled = isDisabled;\r\n  }\r\n\r\n  // ======= TOGGLE DROPDOWN =======\r\n  toggleDropdown() {\r\n    if (this.disabled) return;\r\n\r\n    this.isOpen = !this.isOpen;\r\n    this.isActive = true;\r\n\r\n    if (this.isOpen) {\r\n      setTimeout(() => {\r\n        this.decideDropdownDirection();\r\n        this.setInitialHeight();\r\n      }, 0);\r\n    }\r\n  }\r\n\r\n  // ======= SELECT OPTION =======\r\nselectOption(option: DropDown) {\r\n  this.selectedValue = option.value;\r\n  this.selectedLabel = option.name;\r\n\r\n  this.isActive = true;\r\n\r\n  this.onChange(this.selectedValue);\r\n\r\n  this.control?.setValue(option.value);\r\n  this.control?.markAsTouched();\r\n  this.control?.markAsDirty();\r\n\r\n  this.selectedChange.emit(this.selectedValue);\r\n\r\n  this.closeDropdown();   // ✅ close ONLY here\r\n}\r\n\r\n\r\n  // ======= BLUR EVENT =======\r\nonBlur() {\r\n  this.control?.markAsTouched();\r\n  this.onTouched();\r\n  this.blurEvent.emit();\r\n\r\n  // only handle floating label reset\r\n  setTimeout(() => {\r\n    if (!this.selectedValue) {\r\n      this.isActive = false;\r\n    }\r\n  }, 100);\r\n}\r\n\r\n\r\n  // ======= CLOSE DROPDOWN =======\r\n  private closeDropdown() {\r\n    this.isOpen = false;\r\n  }\r\n\r\n  // ======= CLOSE WHEN CLICK OUTSIDE =======\r\n@HostListener('document:click', ['$event'])\r\nhandleClickOutside(event: MouseEvent) {\r\n  if (!this.eRef.nativeElement.contains(event.target)) {\r\n    this.closeDropdown();\r\n\r\n    if (!this.selectedValue) {\r\n      this.isActive = false;\r\n    }\r\n  }\r\n}\r\n\r\n\r\n  // ======= DROPDOWN DIRECTION DECISION =======\r\n  private decideDropdownDirection() {\r\n    const dropdown = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown'\r\n    ) as HTMLElement;\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (!dropdown || !list) return;\r\n\r\n    list.style.visibility = 'hidden';\r\n    list.style.display = 'block';\r\n\r\n    const listHeight = list.offsetHeight || 150;\r\n\r\n    list.style.display = '';\r\n    list.style.visibility = '';\r\n\r\n    const rect = dropdown.getBoundingClientRect();\r\n    const spaceBelow = window.innerHeight - rect.bottom;\r\n    const spaceAbove = rect.top;\r\n\r\n    this.isOpenUp = spaceBelow < listHeight && spaceAbove > spaceBelow;\r\n  }\r\n\r\n  // ======= INITIAL HEIGHT SETUP =======\r\n  private setInitialHeight() {\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (list) {\r\n      const optionHeight = 38;\r\n      const buffer = 36;\r\n\r\n      const totalHeight = this.optionLength * optionHeight + buffer;\r\n      const initialHeight = Math.min(244, totalHeight);\r\n\r\n      this.renderer.setStyle(list, 'height', `${initialHeight}px`);\r\n      this.renderer.setStyle(list, 'max-height', `${totalHeight}px`);\r\n      this.renderer.setStyle(list, 'overflow-y', 'auto');\r\n      this.renderer.setStyle(list, 'resize', 'none');\r\n      this.renderer.setStyle(list, 'transform-origin', 'top');\r\n    }\r\n  }\r\n\r\n  // ======= DRAG RESIZE SUPPORT =======\r\n  ngAfterViewInit() {\r\n    if (!this.draggable) return;\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    const handle = this.eRef.nativeElement.querySelector(\r\n      '.resize-hr'\r\n    ) as HTMLElement;\r\n\r\n    if (!list || !handle) return;\r\n\r\n    handle.addEventListener('mousedown', (event: MouseEvent) => {\r\n      this.startY = event.clientY;\r\n      this.startHeight = list.offsetHeight;\r\n      this.resizing = true;\r\n\r\n      handle.classList.add('dragging');\r\n      document.body.style.cursor = 'ns-resize';\r\n      document.body.style.userSelect = 'none';\r\n\r\n      event.preventDefault();\r\n      event.stopPropagation();\r\n    });\r\n\r\n    document.addEventListener('mousemove', this.mouseMoveListener!, {\r\n      passive: false,\r\n    });\r\n\r\n    document.addEventListener('mouseup', this.mouseUpListener!, {\r\n      passive: false,\r\n    });\r\n\r\n    document.addEventListener('contextmenu', this.preventContextMenu, {\r\n      passive: false,\r\n    });\r\n  }\r\n\r\n  private handleMouseMove(event: MouseEvent) {\r\n    if (!this.resizing) return;\r\n\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (!list) return;\r\n\r\n    const diff = event.clientY - this.startY;\r\n    let newHeight = this.startHeight + diff;\r\n\r\n    const totalHeight = this.optionLength * 38;\r\n    const minHeight = 80;\r\n\r\n    newHeight = Math.min(newHeight, totalHeight);\r\n    newHeight = Math.max(newHeight, minHeight);\r\n\r\n    list.style.height = `${newHeight}px`;\r\n    list.style.minHeight = `${newHeight}px`;\r\n    list.style.maxHeight = `${Math.max(newHeight, totalHeight)}px`;\r\n\r\n    if (newHeight >= totalHeight) {\r\n      this.renderer.setStyle(list, 'overflow-y', 'hidden');\r\n    } else {\r\n      this.renderer.setStyle(list, 'overflow-y', 'auto');\r\n    }\r\n\r\n    this.adjustDropdownPosition(list);\r\n  }\r\n\r\n  private handleMouseUp(event: MouseEvent) {\r\n    if (!this.resizing) return;\r\n\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    this.resizing = false;\r\n    document.body.style.cursor = 'default';\r\n    document.body.style.userSelect = '';\r\n    document.body.style.webkitUserSelect = '';\r\n\r\n    const list = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown-list'\r\n    ) as HTMLElement;\r\n\r\n    if (list) {\r\n      const currentHeight = list.offsetHeight;\r\n      list.style.height = `${currentHeight}px`;\r\n      list.style.transition = 'none';\r\n      list.style.cursor = 'default';\r\n    }\r\n\r\n    document.removeEventListener('mousemove', this.mouseMoveListener!);\r\n    document.removeEventListener('mouseup', this.mouseUpListener!);\r\n    document.removeEventListener('contextmenu', this.preventContextMenu);\r\n  }\r\n\r\n  private adjustDropdownPosition(list: HTMLElement) {\r\n    const dropdown = this.eRef.nativeElement.querySelector(\r\n      '.custom-dropdown'\r\n    ) as HTMLElement;\r\n\r\n    if (!dropdown || !list) return;\r\n\r\n    const rect = dropdown.getBoundingClientRect();\r\n    const listRect = list.getBoundingClientRect();\r\n\r\n    const spaceBelow = window.innerHeight - rect.bottom;\r\n    const spaceAbove = rect.top;\r\n\r\n    if (spaceBelow < listRect.height && spaceAbove > spaceBelow) {\r\n      this.isOpenUp = true;\r\n    } else {\r\n      this.isOpenUp = false;\r\n    }\r\n  }\r\n\r\n  private preventContextMenu = (event: Event) => {\r\n    event.preventDefault();\r\n  };\r\n\r\n  // ======= DESTROY CLEANUP =======\r\n  ngOnDestroy() {\r\n    if (this.mouseMoveListener) {\r\n      document.removeEventListener('mousemove', this.mouseMoveListener);\r\n    }\r\n    if (this.mouseUpListener) {\r\n      document.removeEventListener('mouseup', this.mouseUpListener);\r\n    }\r\n    document.removeEventListener('contextmenu', this.preventContextMenu);\r\n  }\r\n}\r\n",
+            "styleUrl": "./drop-down-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "eRef",
+                        "type": "ElementRef",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 79,
+                "jsdoctags": [
+                    {
+                        "name": "eRef",
+                        "type": "ElementRef",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "implements": [
+                "AfterViewInit",
+                "OnDestroy",
+                "ControlValueAccessor"
+            ],
+            "accessors": {
+                "control": {
+                    "name": "control",
+                    "getSignature": {
+                        "name": "control",
+                        "type": "",
+                        "returnType": "",
+                        "line": 92
+                    }
+                },
+                "isInvalid": {
+                    "name": "isInvalid",
+                    "getSignature": {
+                        "name": "isInvalid",
+                        "type": "",
+                        "returnType": "",
+                        "line": 96
+                    }
+                },
+                "optionLength": {
+                    "name": "optionLength",
+                    "getSignature": {
+                        "name": "optionLength",
+                        "type": "number",
+                        "returnType": "number",
+                        "line": 100
+                    }
+                }
+            },
+            "templateData": "<div class=\"custom-dropdown\"\r\n     [class.error]=\"isInvalid\"\r\n     [class.active]=\"isOpen\"\r\n     [class.has-value]=\"selectedValue\">\r\n\r\n  <span class=\"dropdown-label\"\r\n        [ngClass]=\"{\r\n          'label-default': !isActive && !selectedValue,\r\n          'label-floating': isActive || selectedValue,\r\n          'label-error': isInvalid\r\n        }\">\r\n    {{ label }}\r\n    @if (isRequired) {\r\n      <span class=\"required\">*</span>\r\n    }\r\n  </span>\r\n\r\n  <div class=\"custom-dropdown-selected\"\r\n       tabindex=\"0\"\r\n       (click)=\"toggleDropdown()\"\r\n       (focus)=\"isActive = true\"\r\n       (blur)=\"onBlur()\"\r\n       [class.placeholder-mode]=\"!selectedLabel\">\r\n    \r\n    <span class=\"selected-text\">{{ selectedLabel ? selectedLabel : 'Choose a service' }}</span>\r\n    \r\n    <svg class=\"dropdown-arrow\" [class.rotated]=\"isOpen\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\r\n      <path d=\"M4 6L8 10L12 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\r\n    </svg>\r\n  </div>\r\n\r\n  @if(isOpen) {\r\n    <ul class=\"custom-dropdown-list\" [class.open-up]=\"isOpenUp\">\r\n      @for (option of options; track option.value) {\r\n        <li (click)=\"selectOption(option)\"\r\n            [class.selected]=\"selectedValue === option.value\">\r\n          {{ option.name }}\r\n        </li>\r\n      }\r\n\r\n      @if(draggable) {\r\n        <hr class=\"resize-hr\" />\r\n      }\r\n    </ul>\r\n  }\r\n</div>"
         },
         {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-9e060d673446cde23061554d8e37e5c8a6e2ead1febcec1d3eea0d2793dbfc445d15b2187752bff655360cef629b9156d8706cd23072b278e436c2ff748a3b83",
+            "id": "component-HeaderComponent-0b460d950401dfeb4692456f51ab3fc26d15e4af1a74db8dee79cc065d36b40b082fe89a5114d9f954b1a8b944a0c61a1a4646a087fc89d9a731225559f1d219",
             "file": "src/app/controls/header-component/header-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -64,8 +1834,51 @@
             "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "isServicesOpen",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "hello",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 23,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "toggleServices",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 26,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -75,13 +1888,383 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-header-component',\r\n  imports: [],\r\n  templateUrl: './header-component.html',\r\n  styleUrl: './header-component.scss',\r\n})\r\nexport class HeaderComponent {\r\n\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-header-component',\r\n  imports: [],\r\n  templateUrl: './header-component.html',\r\n  styleUrl: './header-component.scss',\r\n})\r\nexport class HeaderComponent {\r\n\r\n  isServicesOpen = false;\r\n\r\n  constructor(private dropdownService: DropdownService,private router: Router) {}\r\n\r\n  ngOnInit() {\r\n    this.dropdownService.openServices$.subscribe(() => {\r\n      console.log(\"Signal received in header\");\r\n      this.isServicesOpen = true;\r\n    });\r\n  }\r\n hello() {\r\nthis.router.navigate(['/infoform']);\r\n}\r\n  toggleServices() {\r\n    this.isServicesOpen = !this.isServicesOpen;\r\n  }\r\n}\r\n",
             "styleUrl": "./header-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "dropdownService",
+                        "type": "DropdownService",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 13,
+                "jsdoctags": [
+                    {
+                        "name": "dropdownService",
+                        "type": "DropdownService",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
             "extends": [],
-            "templateData": "<div class=\"body\">\r\n    <div class=\"text-left\">\r\n        <p class=\"text-1\">LEG WORKS</p>\r\n    </div>\r\n    <div class=\"text-right\">\r\n        <p class=\"text-2\">Home</p>\r\n        <p class=\"text-2\">Services</p>\r\n        <p class=\"text-2\">Contact</p>\r\n    </div>\r\n</div>\r\n"
+            "templateData": "<div class=\"body\">\r\n  <div class=\"text-left\">\r\n    <p class=\"text-2\">Home</p>\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2 dropbtn\" (click)=\"toggleServices()\">Services</p>\r\n\r\n      @if (isServicesOpen) {\r\n        <div class=\"dropdown-content\">\r\n          <p class=\"drop-item\" (click)=\"hello()\">Home Needs & Special Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Events & Gatherings</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Financial/Investment Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Online Health Care Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Property Management Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Tours & Travel Support</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Legal/Taxation</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Documentation Procurement</p>\r\n        </div>\r\n      }\r\n    </div>\r\n   \r\n    <div class=\"dropdown-1\">\r\n      <p class=\"text-2\">Contact</p>\r\n      <div class=\"dropdown-content-1\">\r\n        <p class=\"drop-item-1\">\r\n          Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032\r\n        </p>\r\n        <p class=\"drop-item-1\">Phone: 076600 01221</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"text-right\">\r\n    <img src=\"leg.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n  </div>\r\n</div>"
+        },
+        {
+            "name": "InfoFormComponent",
+            "id": "component-InfoFormComponent-144945a81317070e59146ed9149b1a44f399981a9af9d220ce3f4562cbb2f35436a60d354031e35a94dda65185b9501c13ddcb2d6e51b37c50a9c9913a522008",
+            "file": "src/app/controls/info-form-component/info-form-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-info-form-component",
+            "styleUrls": [
+                "./info-form-component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./info-form-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "address",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29
+                },
+                {
+                    "name": "date",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                },
+                {
+                    "name": "details",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 31
+                },
+                {
+                    "name": "email",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27
+                },
+                {
+                    "name": "fullName",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                },
+                {
+                    "name": "phone",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28
+                },
+                {
+                    "name": "service",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30
+                },
+                {
+                    "name": "showPopup",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "blurEvent",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 178,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "closePopup",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 217,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "dateSelected",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "Date | null",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 163,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "Date | null",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Hi",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 221,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "selectedChange",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 106,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ThankYou",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 182,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "valueChange",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 36,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "TextBoxComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "TextAreaComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "CalenderComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "DropDownComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "NumberBoxComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { Router } from '@angular/router';\r\nimport { TextBoxComponent } from \"../text-box-component/text-box-component\";\r\nimport { TextAreaComponent } from \"../text-area-component/text-area-component\";\r\nimport { CalenderComponent } from \"../calender-component/calender-component\";\r\nimport { DropDownComponent } from \"../drop-down-component/drop-down-component\";\r\nimport { NumberBoxComponent } from \"../number-box-component/number-box-component\";\r\n\r\n@Component({\r\n  selector: 'app-info-form-component',\r\n  standalone: true,\r\n  imports: [\r\n    TextBoxComponent,\r\n    TextAreaComponent,\r\n    CalenderComponent,\r\n    DropDownComponent,\r\n    NumberBoxComponent\r\n  ],\r\n  templateUrl: './info-form-component.html',\r\n  styleUrls: ['./info-form-component.scss']\r\n})\r\nexport class InfoFormComponent {\r\n\r\n\r\n  showPopup: boolean = false;\r\n  fullName: string = '';\r\n  email: string = '';\r\n  phone: string = '';\r\n  address: string = '';\r\n  service: string = '';\r\n  details: string = '';\r\n  date: string = '';\r\n\r\n  constructor(private router: Router) {}\r\n\r\nvalueChange(value: any) {\r\n  console.log('===== VALUE CHANGE =====');\r\n  console.log('Raw event:', value);\r\n  console.log('Event type:', typeof value);\r\n  if (typeof value === 'object') {\r\n    console.log('Object keys:', Object.keys(value));\r\n    console.log('Stringified:', JSON.stringify(value));\r\n  }\r\n  if (typeof value === 'string') {\r\n    console.log('String value received:', value);\r\n    if (!this.fullName) {\r\n      this.fullName = value;\r\n      console.log('Set fullName to:', this.fullName);\r\n    } else if (!this.email) {\r\n      this.email = value;\r\n      console.log('Set email to:', this.email);\r\n    } else if (!this.phone) {\r\n      this.phone = value;\r\n      console.log('Set phone to:', this.phone);\r\n    }\r\n    return;\r\n  }\r\n  if (typeof value === 'object' && value !== null) {\r\n    if (value.text !== undefined) {\r\n      console.log('Text property:', value.text);\r\n      if (value.label === 'Full Name' || value.placeholder?.includes('Name')) {\r\n        this.fullName = value.text;\r\n      } else if (value.label === 'Email Address' || value.placeholder?.includes('Email')) {\r\n        this.email = value.text;\r\n      } else if (value.label === 'Phone Number' || value.placeholder?.includes('+91')) {\r\n        this.phone = value.text;\r\n      } else if (value.label === 'Address') {\r\n        this.address = value.text;\r\n      } else if (value.label === 'Additional Details/Description') {\r\n        this.details = value.text;\r\n      }\r\n    }\r\n    if (value.value !== undefined) {\r\n      console.log('Value property:', value.value);\r\n      if (value.label === 'Full Name') {\r\n        this.fullName = value.value;\r\n      } else if (value.label === 'Email Address') {\r\n        this.email = value.value;\r\n      } else if (value.label === 'Phone Number' || value.type === 'number') {\r\n        this.phone = value.value;\r\n      } else if (value.label === 'Address') {\r\n        this.address = value.value;\r\n      } else if (value.label === 'Additional Details/Description') {\r\n        this.details = value.value;\r\n      }\r\n    }\r\n    if (value.input !== undefined) {\r\n      console.log('Input property:', value.input);\r\n      if (!this.fullName) this.fullName = value.input;\r\n      else if (!this.email) this.email = value.input;\r\n      else if (!this.phone) this.phone = value.input;\r\n    }\r\n  }\r\n  \r\n  console.log('Current state:', {\r\n    fullName: this.fullName,\r\n    email: this.email,\r\n    phone: this.phone,\r\n    address: this.address,\r\n    service: this.service,\r\n    details: this.details\r\n  });\r\n  console.log('===== END =====');\r\n}\r\n\r\nselectedChange(value: any) {\r\n  console.log('Dropdown selected:', value);\r\n  if (value?.name) {\r\n    this.service = value.name;\r\n    console.log('Service set by name:', this.service);\r\n  }\r\n  else if (value?.value) {\r\n    const options = [\r\n      {value: 1, name: 'Home Needs & Special Services'},\r\n      {value: 2, name: 'Events & Gatherings'},\r\n      {value: 3, name: 'Financial/Investment Services'},\r\n      {value: 4, name: 'Online Health Care Services'},\r\n      {value: 5, name: 'Property Management Services'},\r\n      {value: 6, name: 'Tours And Travels Services'},\r\n      {value: 7, name: 'Taxation/Legal'},\r\n      {value: 8, name: 'Documents Procurement'}\r\n    ];\r\n    \r\n    const selectedOption = options.find(opt => opt.value === value.value);\r\n    if (selectedOption) {\r\n      this.service = selectedOption.name;\r\n      console.log('Service set by value:', this.service);\r\n    }\r\n  }\r\n  else if (typeof value === 'object' && value !== null) {\r\n    const firstKey = Object.keys(value)[0];\r\n    if (firstKey) {\r\n      this.service = value[firstKey];\r\n      console.log('Service set from object property:', this.service);\r\n    }\r\n  }\r\n  else if (typeof value === 'string') {\r\n    this.service = value;\r\n    console.log('Service set as string:', this.service);\r\n  }\r\n  else if (typeof value === 'number') {\r\n    const options = [\r\n      {value: 1, name: 'Home Needs & Special Services'},\r\n      {value: 2, name: 'Events & Gatherings'},\r\n      {value: 3, name: 'Financial/Investment Services'},\r\n      {value: 4, name: 'Online Health Care Services'},\r\n      {value: 5, name: 'Property Management Services'},\r\n      {value: 6, name: 'Tours And Travels Services'},\r\n      {value: 7, name: 'Taxation/Legal'},\r\n      {value: 8, name: 'Documents Procurement'}\r\n    ];\r\n    \r\n    const selectedOption = options.find(opt => opt.value === value);\r\n    if (selectedOption) {\r\n      this.service = selectedOption.name;\r\n      console.log('Service set by number value:', this.service);\r\n    }\r\n  }\r\n  \r\n  console.log('Current service value:', this.service);\r\n}\r\n\r\n  dateSelected(value: Date | null) {\r\n    console.log('=== DATE SELECTED ===');\r\n    console.log('Date event:', value);\r\n    \r\n    if (value) {\r\n      if (typeof value === 'string') {\r\n        this.date = value;\r\n      } else if (value instanceof Date) {\r\n        this.date = value.toDateString();\r\n      }\r\n      console.log('Set date to:', this.date);\r\n    }\r\n    console.log('=== END DATE ===');\r\n  }\r\n\r\n  blurEvent() {\r\n    console.log('Blur event triggered');\r\n  }\r\n\r\nThankYou() {\r\n  console.log('=== FINAL FORM VALUES ===');\r\n  console.log('Full Name:', this.fullName);\r\n  console.log('Email:', this.email);\r\n  console.log('Phone:', this.phone);\r\n  console.log('Address:', this.address);  \r\n  console.log('Service:', this.service);\r\n  console.log('Details:', this.details);\r\n  console.log('Date:', this.date);\r\n  console.log('=== END FINAL VALUES ===');\r\n\r\n  const phoneNumber = \"917569227605\"; \r\n\r\n  const message = \r\n`*New Service Request*\r\n\r\nName: ${this.fullName || 'Not provided'}\r\nEmail: ${this.email || 'Not provided'}\r\nPhone: ${this.phone || 'Not provided'}\r\nAddress: ${this.address || 'Not provided'}\r\nService: ${this.service || 'Not provided'}\r\nPreferred Date: ${this.date || 'Not provided'}\r\n\r\nDetails:\r\n${this.details || 'No details provided'}`;\r\n  console.log('Message to send:', message);\r\n\r\n  const encodedMessage = encodeURIComponent(message);\r\n  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;\r\n\r\n  window.open(whatsappURL, '_blank');\r\n\r\n  this.showPopup = true;\r\n}\r\n\r\n  closePopup() {\r\n    this.showPopup = false;\r\n    this.router.navigate(['/module']);\r\n  }\r\n Hi() {\r\nthis.router.navigate(['/module']);\r\n}\r\n}",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".container {\r\n  width: 100%;\r\n  max-width: 1150px;\r\n  margin: 0 auto;\r\n  border-radius: 24px;\r\n  overflow: hidden;\r\n  background: white;\r\n  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);\r\n}\r\n.header {\r\n  background: linear-gradient(to bottom right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  padding: 50px 45px;\r\n  border-top-left-radius: 24px;\r\n  border-top-right-radius: 24px;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n.header::before {\r\n  content: \"\";\r\n  position: absolute;\r\n  top: -50px;\r\n  right: -50px;\r\n  width: 220px;\r\n  height: 220px;\r\n  background: rgba(255, 255, 255, 0.12);\r\n  border-radius: 50%;\r\n}\r\n\r\n.header::after {\r\n  content: \"\";\r\n  position: absolute;\r\n  bottom: -80px;\r\n  left: -80px;\r\n  width: 260px;\r\n  height: 260px;\r\n  background: rgba(255, 255, 255, 0.08);\r\n  border-radius: 50%;\r\n}\r\n\r\n.title {\r\n  font-size: 44px;\r\n  font-weight: 800;\r\n  margin-bottom: 14px;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n\r\n.subtitle {\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n  opacity: 0.9;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n\r\n@media (max-width: 640px) {\r\n  .header {\r\n    padding: 35px 25px;\r\n  }\r\n\r\n  .title {\r\n    font-size: 34px;\r\n  }\r\n\r\n  .subtitle {\r\n    font-size: 16px;\r\n  }\r\n}\r\n\r\n.body {\r\n  padding: 28px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 18px; \r\n}\r\n\r\n@media (min-width: 640px) {\r\n  .body {\r\n    padding: 32px;\r\n    gap: 22px;\r\n  }\r\n}\r\n\r\n.body > * {\r\n  width: 100%;\r\n  display: block;\r\n}\r\n\r\n.buttons {\r\n  padding: 25px 45px 45px 45px;\r\n  display: flex;\r\n  gap: 16px;\r\n  justify-content: space-between;\r\n}\r\n\r\n@media (max-width: 640px) {\r\n  .buttons {\r\n    flex-direction: column;\r\n    padding: 20px 25px 35px 25px;\r\n  }\r\n}\r\n\r\n.button-1 {\r\n  flex: 1;\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  padding: 16px 22px;\r\n  border-radius: 14px;\r\n  font-weight: 700;\r\n  font-size: 16px;\r\n  border: none;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n  box-shadow: 0px 10px 25px rgba(29, 78, 216, 0.25);\r\n}\r\n\r\n.button-1:hover {\r\n  transform: translateY(-2px);\r\n  box-shadow: 0px 14px 30px rgba(13, 148, 136, 0.35);\r\n}\r\n\r\n.button-1:active {\r\n  transform: scale(0.98);\r\n}\r\n\r\n.button-2 {\r\n  min-width: 160px;\r\n  padding: 16px 22px;\r\n  border-radius: 14px;\r\n  font-weight: 700;\r\n  font-size: 16px;\r\n  border: 2px solid #cbd5e1;\r\n  background: white;\r\n  color: #1f2937;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.button-2:hover {\r\n  border-color: #1d4ed8;\r\n  color: #1d4ed8;\r\n  background: rgba(29, 78, 216, 0.05);\r\n}\r\n\r\n.button-2:active {\r\n  transform: scale(0.98);\r\n}\r\n.popup-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(15, 23, 42, 0.65);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  z-index: 9999;\r\n}\r\n\r\n.popup-box {\r\n  background: white;\r\n  padding: 100px 35px;\r\n  border-radius: 24px;\r\n  width: 90%;\r\n  max-width: 420px;\r\n  text-align: center;\r\n  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.25);\r\n  animation: scaleIn 0.3s ease-in-out;\r\n}\r\n.popup-box h2 {\r\n  font-size: 36px;\r\n  margin-bottom: 15px;\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  -webkit-background-clip: text;\r\n  -webkit-text-fill-color: transparent;\r\n}\r\n.popup-box p {\r\n  font-size: 16px;\r\n  margin-bottom: 25px;\r\n  color: #334155;\r\n  line-height: 1.6;\r\n}\r\n.popup-box button {\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  border: none;\r\n  padding: 12px 28px;\r\n  border-radius: 12px;\r\n  font-weight: 600;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.popup-box button:hover {\r\n  transform: translateY(-2px);\r\n  box-shadow: 0px 10px 25px rgba(29, 78, 216, 0.35);\r\n}\r\n\r\n@keyframes scaleIn {\r\n  from {\r\n    transform: scale(0.8);\r\n    opacity: 0;\r\n  }\r\n  to {\r\n    transform: scale(1);\r\n    opacity: 1;\r\n  }\r\n}\r\n",
+                    "styleUrl": "./info-form-component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 32,
+                "jsdoctags": [
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": [],
+            "templateData": "<div class=\"container\">\r\n<div class=\"container\">\r\n    <div class=\"header\" style=\"display: flex; justify-content: space-between; align-items: center;\">\r\n        <div>\r\n            <h1 class=\"title\">Request a Service</h1>\r\n            <p class=\"subtitle\">Fill out the form below and we will connect you on whatsapp</p>\r\n        </div>\r\n        <img src=\"leg.png\" alt=\"Leg Works Logo\" class=\"logo\" style=\"height: 70px; width: auto; position: relative; z-index: 10;\" />\r\n    </div>\r\n</div>\r\n    <div class=\"body\">\r\n        <app-text-box-component \r\n            [label]=\"'Full Name'\" \r\n            [value]=\"fullName\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-text-box-component>\r\n        <app-text-box-component \r\n            [label]=\"'Email Address'\" \r\n            [value]=\"email\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-text-box-component>\r\n        <app-number-box-component \r\n            [label]=\"'Phone Number'\"\r\n            [placeHolder]=\"'+91 98765 56784'\"\r\n            [value]=\"phone\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-number-box-component>\r\n        <app-text-area-component \r\n            [label]=\"'Address'\"\r\n            [placeHolder]=\"'Please tell your Address'\"\r\n            [value]=\"address\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-drop-down-component \r\n            [label]=\"'Select Your Service'\"\r\n            [options]=\"[{value: 1, name: 'Home Needs & Special Services'}, {value: 2, name: 'Events & Gatherings'}, {value: 3, name: 'Financial/Investment Services'}, {value: 4, name: 'Online Health Care Services'}, {value: 5, name: 'Property Management Services'}, {value: 6, name: 'Tours And Travels Services'}, {value: 7, name: 'Taxation/Legal'}, {value: 8, name: 'Documents Procurement'}]\"\r\n            [dropDownModel]=\"service\"\r\n            (selectedChange)=\"selectedChange($event)\"\r\n            (blurEvent)=\"blurEvent()\">\r\n        </app-drop-down-component>\r\n        <app-text-area-component \r\n            [label]=\"'Additional Details/Description'\"\r\n            [placeHolder]=\"'Tell us more about your requirements'\"\r\n            [value]=\"details\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-calender-component \r\n            [label]=\"'Legwork’s to Reach you by'\"\r\n            (dateSelected)=\"dateSelected($event)\">\r\n        </app-calender-component>\r\n    </div>\r\n    <div class=\"buttons\">\r\n        <button class=\"button-1\" (click)=\"ThankYou()\">Send via Whatsapp</button>\r\n        <button class=\"button-2\" (click)=\"Hi()\">Cancel</button>\r\n    </div>\r\n    @if (showPopup) {\r\n    <div class=\"popup-overlay\">\r\n        <div class=\"popup-box\">\r\n            <h2>Thank You!</h2>\r\n            <p>\r\n                Thanks for Trusting and Reaching Legwork's,<br>\r\n                we will be at your Doorstep Soon.\r\n            </p>\r\n            <button (click)=\"closePopup()\">Close</button>\r\n        </div>\r\n    </div>\r\n    }\r\n</div>"
         },
         {
             "name": "ModuleComponent",
@@ -131,19 +2314,19 @@
             "templateData": "<div>\r\n    <app-header-component></app-header-component>\r\n    <app-body-component></app-body-component>\r\n</div>\r\n"
         },
         {
-            "name": "TextBoxComponent",
-            "id": "component-TextBoxComponent-c0f2d2a05ce8e502b5b241720d023325ef885c10c87954e60d33b8ba7dbb16091c4229e88bbef87fb2b28275827a35f0ec595cea9d165ebf871b92fd037b05c6",
-            "file": "src/app/controls/text-box-component/text-box-component.ts",
+            "name": "NumberBoxComponent",
+            "id": "component-NumberBoxComponent-bf824f3a5ce89bc6647f0a84053e67f4f0441e07be18f75043b77800e637c15e2635fb32eeaa0365a0a5e5db74a1f1933cebcb46bacdd210ffa843078be0f4f0",
+            "file": "src/app/controls/number-box-component/number-box-component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-text-box-component",
+            "selector": "app-number-box-component",
             "styleUrls": [],
             "styles": [],
             "templateUrl": [
-                "./text-box-component.html"
+                "./number-box-component.html"
             ],
             "viewProviders": [],
             "hostDirectives": [],
@@ -153,17 +2336,8 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 24,
                     "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "isAllowSpecialChars",
-                    "defaultValue": "true",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 34,
-                    "type": "boolean",
                     "decorators": []
                 },
                 {
@@ -171,7 +2345,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 33,
+                    "line": 25,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -180,43 +2354,25 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 25,
+                    "line": 22,
                     "type": "boolean",
                     "decorators": []
                 },
                 {
                     "name": "label",
-                    "defaultValue": "'Text Box'",
+                    "defaultValue": "'Phone Number'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 23,
+                    "line": 20,
                     "type": "string",
                     "decorators": []
                 },
                 {
-                    "name": "maxLength",
-                    "defaultValue": "50",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 29,
-                    "type": "number",
-                    "decorators": []
-                },
-                {
-                    "name": "minLength",
-                    "defaultValue": "0",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 28,
-                    "type": "number",
-                    "decorators": []
-                },
-                {
                     "name": "placeHolder",
-                    "defaultValue": "'Enter here...'",
+                    "defaultValue": "'Enter phone number'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 24,
+                    "line": 21,
                     "type": "string",
                     "decorators": []
                 },
@@ -225,16 +2381,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 27,
-                    "type": "boolean",
-                    "decorators": []
-                },
-                {
-                    "name": "showCharCount",
-                    "defaultValue": "true",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 30,
+                    "line": 28,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -242,7 +2389,7 @@
                     "name": "tabindex",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 35,
+                    "line": 26,
                     "type": "number",
                     "decorators": []
                 },
@@ -251,7 +2398,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 37,
+                    "line": 30,
                     "type": "string",
                     "decorators": []
                 }
@@ -259,25 +2406,14 @@
             "outputsClass": [
                 {
                     "name": "valueChange",
-                    "defaultValue": "new EventEmitter<string>()",
+                    "defaultValue": "new EventEmitter<any>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 39,
+                    "line": 33,
                     "type": "EventEmitter"
                 }
             ],
             "propertiesClass": [
-                {
-                    "name": "currentCharCount",
-                    "defaultValue": "0",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 43
-                },
                 {
                     "name": "currentValue",
                     "defaultValue": "''",
@@ -287,7 +2423,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 42
+                    "line": 35
                 },
                 {
                     "name": "isFocused",
@@ -298,10 +2434,10 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 45
+                    "line": 36
                 },
                 {
-                    "name": "shouldShowCount",
+                    "name": "showError",
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -309,7 +2445,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 41
+                    "line": 37
                 }
             ],
             "methodsClass": [
@@ -319,7 +2455,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -338,7 +2474,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -361,7 +2497,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -380,7 +2516,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 102,
+                    "line": 83,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -403,7 +2539,538 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 79,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onNumberInput",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 61,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "FormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  Component,\r\n  Input,\r\n  Output,\r\n  OnInit,\r\n  OnChanges,\r\n  EventEmitter,\r\n  SimpleChanges\r\n} from '@angular/core';\r\nimport { FormsModule } from '@angular/forms';\r\n\r\n@Component({\r\n  selector: 'app-number-box-component',\r\n  imports: [CommonModule, FormsModule],\r\n  templateUrl: './number-box-component.html',\r\n  styleUrl: './number-box-component.scss',\r\n})\r\nexport class NumberBoxComponent implements OnInit, OnChanges {\r\n  @Input() label: string = 'Phone Number';\r\n  @Input() placeHolder: string = 'Enter phone number';\r\n  @Input() isRequired: boolean = true;\r\n\r\n  @Input() id: string = '';\r\n  @Input() isReadOnly: boolean = false;\r\n  @Input() tabindex?: number;\r\n\r\n  @Input() showBorder: boolean = true;\r\n\r\n  @Input() value: string = '';\r\n\r\n  // Change this to 'any' to emit an object\r\n  @Output() valueChange = new EventEmitter<any>();\r\n\r\n  currentValue: string = '';\r\n  isFocused: boolean = false;\r\n  showError: boolean = false;\r\n\r\n  ngOnInit(): void {\r\n    this.currentValue = this.value ?? '';\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes['value'] && !changes['value'].firstChange) {\r\n      this.currentValue = this.value ?? '';\r\n    }\r\n  }\r\n\r\n  getInputStyle() {\r\n    const baseStyle: any = {\r\n      'background-color': 'white'\r\n    };\r\n\r\n    if (!this.showBorder) {\r\n      return { ...baseStyle, border: 'none' };\r\n    }\r\n\r\n    return baseStyle;\r\n  }\r\n\r\n  onNumberInput(event: Event) {\r\n    let inputValue = (event.target as HTMLInputElement).value;\r\n\r\n    inputValue = inputValue.replace(/[^0-9]/g, '');\r\n    if (inputValue.length > 10) {\r\n      inputValue = inputValue.substring(0, 10);\r\n    }\r\n\r\n    this.currentValue = inputValue;\r\n    this.value = inputValue;\r\n    this.valueChange.emit({\r\n      label: this.label,\r\n      value: inputValue,\r\n      type: 'number'\r\n    });\r\n    this.showError = !(this.currentValue.length === 0 || /^[6-9]\\d{9}$/.test(this.currentValue));\r\n  }\r\n\r\n  onFocus() {\r\n    this.isFocused = true;\r\n  }\r\n\r\n  onBlur(event: FocusEvent) {\r\n    this.isFocused = false;\r\n    if (this.isRequired) {\r\n      this.showError = !/^[6-9]\\d{9}$/.test(this.currentValue);\r\n    }\r\n  }\r\n\r\n}",
+            "styleUrl": "./number-box-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "implements": [
+                "OnInit",
+                "OnChanges"
+            ],
+            "templateData": "<div class=\"textBoxContainer\">\r\n\r\n  <input\r\n    type=\"text\"\r\n    [id]=\"id\"\r\n    [(ngModel)]=\"currentValue\"\r\n    [placeholder]=\"placeHolder\"\r\n    maxlength=\"10\"\r\n    [readonly]=\"isReadOnly\"\r\n    [tabindex]=\"tabindex\"\r\n    [ngStyle]=\"getInputStyle()\"\r\n    class=\"textBoxInput peer\"\r\n    (focus)=\"onFocus()\"\r\n    (blur)=\"onBlur($event)\"\r\n    (input)=\"onNumberInput($event)\"\r\n  />\r\n\r\n  <label\r\n    [for]=\"id\"\r\n    class=\"textBoxLabel\"\r\n  >\r\n    {{ label }}\r\n    @if (isRequired) { <span class=\"required\">*</span> }\r\n  </label>\r\n\r\n  @if (showError) {\r\n    <p class=\"errorText\">\r\n      Enter valid 10-digit Number\r\n    </p>\r\n  }\r\n\r\n</div>\r\n\r\n"
+        },
+        {
+            "name": "TextAreaComponent",
+            "id": "component-TextAreaComponent-045b12dc36652f4cf0f6da89951e53c91f15a1bf9c43e2ba0c479671534c384190c27d42e27b01869352661d4705553574fc4315a94396caaeeb54d261eb5666",
+            "file": "src/app/controls/text-area-component/text-area-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-text-area-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./text-area-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "label",
+                    "defaultValue": "'Additional Details'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 10,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "placeHolder",
+                    "defaultValue": "'Tell us more about your requirements'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "blur",
+                    "defaultValue": "new EventEmitter<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 14,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "valueChange",
+                    "defaultValue": "new EventEmitter<any>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 13,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "currentValue",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17
+                },
+                {
+                    "name": "isInvalid",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20
+                },
+                {
+                    "name": "maxLength",
+                    "defaultValue": "200",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
+                {
+                    "name": "remainingChars",
+                    "defaultValue": "this.maxLength",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "checkValidation",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 47,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 22,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onBlur",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 42,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onInput",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 28,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-text-area-component',\r\n  templateUrl: './text-area-component.html',\r\n  styleUrl: './text-area-component.scss',\r\n})\r\nexport class TextAreaComponent {\r\n\r\n  @Input() label?: string = 'Additional Details';\r\n  @Input() placeHolder?: string = 'Tell us more about your requirements';\r\n  @Input() value: string = ''; // Add this to accept initial value\r\n  @Output() valueChange = new EventEmitter<any>(); // Add this to emit changes\r\n  @Output() blur = new EventEmitter<void>(); // Add this for blur events\r\n  \r\n  maxLength: number = 200;\r\n  currentValue: string = '';\r\n  remainingChars: number = this.maxLength;\r\n\r\n  isInvalid: boolean = false;\r\n\r\n  ngOnInit() {\r\n    // Initialize with input value if provided\r\n    this.currentValue = this.value || '';\r\n    this.remainingChars = this.maxLength - this.currentValue.length;\r\n  }\r\n\r\n  onInput(event: Event) {\r\n    const value = (event.target as HTMLTextAreaElement).value;\r\n    this.currentValue = value;\r\n    this.remainingChars = this.maxLength - value.length;\r\n    \r\n    // Emit the change event\r\n    this.valueChange.emit({\r\n      label: this.label,\r\n      value: this.currentValue\r\n    });\r\n\r\n    this.checkValidation();\r\n  }\r\n\r\n  onBlur() {\r\n    this.checkValidation();\r\n    this.blur.emit(); // Emit blur event\r\n  }\r\n\r\n  checkValidation() {\r\n    this.isInvalid = this.currentValue.trim().length === 0;\r\n  }\r\n}",
+            "styleUrl": "./text-area-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"textarea-container\">\r\n  \r\n  <textarea\r\n    id=\"message\"\r\n    [attr.maxlength]=\"maxLength\"\r\n    [placeholder]=\"placeHolder\"\r\n    (input)=\"onInput($event)\"\r\n    (blur)=\"onBlur()\"\r\n    [class.error]=\"isInvalid\"\r\n  ></textarea>\r\n\r\n  <label for=\"message\">\r\n    {{label}} <span class=\"required\">*</span>\r\n  </label>\r\n\r\n  <p class=\"char-count\">\r\n    {{ remainingChars }} characters left\r\n  </p>\r\n\r\n</div>\r\n\r\n\r\n"
+        },
+        {
+            "name": "TextBoxComponent",
+            "id": "component-TextBoxComponent-69980164084982f2732fa2ca62fe764fd50d26960de93b17ab32ec537c06b5a7ae15583fe2b482849752f3fae3b49171f20ab993dc199c629c88e297b4b1cd8c",
+            "file": "src/app/controls/text-box-component/text-box-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-text-box-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./text-box-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "id",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 30,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "isAllowSpecialChars",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 32,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isReadOnly",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 31,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isRequired",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 23,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'Text Box'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 21,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "maxLength",
+                    "defaultValue": "50",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 27,
+                    "type": "number",
+                    "decorators": []
+                },
+                {
+                    "name": "minLength",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 26,
+                    "type": "number",
+                    "decorators": []
+                },
+                {
+                    "name": "placeHolder",
+                    "defaultValue": "'Enter here...'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 22,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "showBorder",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 25,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "showCharCount",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 28,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "tabindex",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 33,
+                    "type": "number",
+                    "decorators": []
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 35,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "valueChange",
+                    "defaultValue": "new EventEmitter<any>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 38,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "currentCharCount",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 42
+                },
+                {
+                    "name": "currentValue",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 41
+                },
+                {
+                    "name": "isFocused",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 44
+                },
+                {
+                    "name": "shouldShowCount",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "getInputStyle",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 74,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 52,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onBlur",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 106,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onFocus",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 101,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -422,7 +3089,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 86,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -445,7 +3112,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 70,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -455,7 +3122,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 65,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -481,7 +3148,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  Component,\r\n  Input,\r\n  Output,\r\n  OnInit,\r\n  OnChanges,\r\n  OnDestroy,\r\n  AfterViewInit,\r\n  EventEmitter,\r\n  SimpleChanges\r\n} from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { FormsModule } from '@angular/forms';\r\n\r\n@Component({\r\n  selector: 'app-text-box-component',\r\n  imports: [CommonModule, FormsModule],\r\n  templateUrl: './text-box-component.html',\r\n  styleUrl: './text-box-component.scss',\r\n})\r\nexport class TextBoxComponent implements OnInit, OnChanges {\r\n\r\n  @Input() label?: string = 'Text Box';\r\n  @Input() placeHolder?: string = 'Enter here...';\r\n  @Input() isRequired?: boolean = true;\r\n\r\n  @Input() showBorder: boolean = true;\r\n  @Input() minLength: number = 0;\r\n  @Input() maxLength: number = 50;\r\n  @Input() showCharCount: boolean = true;\r\n\r\n  @Input() id: string = '';\r\n  @Input() isReadOnly: boolean = false;\r\n  @Input() isAllowSpecialChars: boolean = true;\r\n  @Input() tabindex?: number;\r\n\r\n  @Input() value: string = '';\r\n\r\n  @Output() valueChange = new EventEmitter<string>();\r\n\r\n  shouldShowCount: boolean = false;\r\n  currentValue: string = '';\r\n  currentCharCount: number = 0;\r\n\r\n  isFocused: boolean = false;\r\n\r\n  ngOnInit(): void {\r\n    this.currentValue = this.value ?? '';\r\n    this.updateCharCount();\r\n    this.updateShowCount();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes['value'] && !changes['value'].firstChange) {\r\n      this.currentValue = this.value ?? '';\r\n      this.updateCharCount();\r\n      this.updateShowCount();\r\n    }\r\n\r\n    if (changes['maxLength']) {\r\n      this.updateCharCount();\r\n    }\r\n  }\r\n\r\n  private updateShowCount(): void {\r\n    const hasValue = this.currentValue.trim().length > 0;\r\n    this.shouldShowCount = hasValue || this.isFocused;\r\n  }\r\n\r\n  updateCharCount(): void {\r\n    const currentLength = this.currentValue?.length ?? 0;\r\n    this.currentCharCount = this.maxLength - currentLength;\r\n  }\r\n\r\n  getInputStyle() {\r\n    const baseStyle: any = {\r\n      'background-color': 'white'\r\n    };\r\n\r\n    if (!this.showBorder) {\r\n      return { ...baseStyle, border: 'none' };\r\n    }\r\n\r\n    return baseStyle;\r\n  }\r\n\r\n  onValueChange(value: string) {\r\n    this.currentValue = value;\r\n    this.value = value;\r\n\r\n    this.valueChange.emit(value);\r\n\r\n    this.updateCharCount();\r\n    this.updateShowCount();\r\n  }\r\n\r\n  onFocus() {\r\n    this.isFocused = true;\r\n    this.updateShowCount();\r\n  }\r\n\r\n  onBlur(event: FocusEvent) {\r\n    this.isFocused = false;\r\n    this.updateShowCount();\r\n  }\r\n}",
+            "sourceCode": "import {\r\n  Component,\r\n  Input,\r\n  Output,\r\n  OnInit,\r\n  OnChanges,\r\n  EventEmitter,\r\n  SimpleChanges\r\n} from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { FormsModule } from '@angular/forms';\r\n\r\n@Component({\r\n  selector: 'app-text-box-component',\r\n  imports: [CommonModule, FormsModule],\r\n  templateUrl: './text-box-component.html',\r\n  styleUrl: './text-box-component.scss',\r\n})\r\nexport class TextBoxComponent implements OnInit, OnChanges {\r\n\r\n  @Input() label?: string = 'Text Box';\r\n  @Input() placeHolder?: string = 'Enter here...';\r\n  @Input() isRequired?: boolean = true;\r\n\r\n  @Input() showBorder: boolean = true;\r\n  @Input() minLength: number = 0;\r\n  @Input() maxLength: number = 50;\r\n  @Input() showCharCount: boolean = true;\r\n\r\n  @Input() id: string = '';\r\n  @Input() isReadOnly: boolean = false;\r\n  @Input() isAllowSpecialChars: boolean = true;\r\n  @Input() tabindex?: number;\r\n\r\n  @Input() value: string = '';\r\n\r\n  // Change the Output type to any to send an object\r\n  @Output() valueChange = new EventEmitter<any>();\r\n\r\n  shouldShowCount: boolean = false;\r\n  currentValue: string = '';\r\n  currentCharCount: number = 0;\r\n\r\n  isFocused: boolean = false;\r\n\r\n  ngOnInit(): void {\r\n    this.currentValue = this.value ?? '';\r\n    this.updateCharCount();\r\n    this.updateShowCount();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes['value'] && !changes['value'].firstChange) {\r\n      this.currentValue = this.value ?? '';\r\n      this.updateCharCount();\r\n      this.updateShowCount();\r\n    }\r\n\r\n    if (changes['maxLength']) {\r\n      this.updateCharCount();\r\n    }\r\n  }\r\n\r\n  private updateShowCount(): void {\r\n    const hasValue = this.currentValue.trim().length > 0;\r\n    this.shouldShowCount = hasValue || this.isFocused;\r\n  }\r\n\r\n  updateCharCount(): void {\r\n    const currentLength = this.currentValue?.length ?? 0;\r\n    this.currentCharCount = this.maxLength - currentLength;\r\n  }\r\n\r\n  getInputStyle() {\r\n    const baseStyle: any = {\r\n      'background-color': 'white'\r\n    };\r\n\r\n    if (!this.showBorder) {\r\n      return { ...baseStyle, border: 'none' };\r\n    }\r\n\r\n    return baseStyle;\r\n  }\r\n\r\n  onValueChange(value: string) {\r\n    this.currentValue = value;\r\n    this.value = value;\r\n\r\n    // Emit an object with label and value instead of just the string\r\n    this.valueChange.emit({\r\n      label: this.label,\r\n      value: value,\r\n      type: 'text'\r\n    });\r\n\r\n    this.updateCharCount();\r\n    this.updateShowCount();\r\n  }\r\n\r\n  onFocus() {\r\n    this.isFocused = true;\r\n    this.updateShowCount();\r\n  }\r\n\r\n  onBlur(event: FocusEvent) {\r\n    this.isFocused = false;\r\n    this.updateShowCount();\r\n  }\r\n}",
             "styleUrl": "./text-box-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -494,24 +3161,115 @@
             "templateData": "<div class=\"textBoxContainer\">\r\n\r\n  <input\r\n    type=\"text\"\r\n    [id]=\"id\"\r\n    [(ngModel)]=\"currentValue\"\r\n    [placeholder]=\"placeHolder\"\r\n    [attr.maxlength]=\"maxLength\"\r\n    [readonly]=\"isReadOnly\"\r\n    [tabindex]=\"tabindex\"\r\n    [ngStyle]=\"getInputStyle()\"\r\n    class=\"textBoxInput peer\"\r\n    (focus)=\"onFocus()\"\r\n    (blur)=\"onBlur($event)\"\r\n    (ngModelChange)=\"onValueChange($event)\"\r\n  />\r\n\r\n  <label\r\n    [for]=\"id\"\r\n    class=\"textBoxLabel\"\r\n  >\r\n    {{ label }}\r\n    @if (isRequired) { <span class=\"required\">*</span> }\r\n  </label>\r\n\r\n  @if (showCharCount) {\r\n    <p\r\n      class=\"charCountText\"\r\n      [class.showCount]=\"shouldShowCount\"\r\n      [class.hideCount]=\"!shouldShowCount\"\r\n    >\r\n      {{ currentCharCount }} of {{ maxLength }} characters left\r\n    </p>\r\n  }\r\n\r\n</div>\r\n"
         }
     ],
-    "modules": [],
+    "modules": [
+        {
+            "name": "AppRoutingModule",
+            "id": "module-AppRoutingModule-4949d11c6b8872a890a9b8b0d0e426f0fcdb9b94f10ba8e21418feaf43504cf26647da9c4884d8a3af97f2bd0194c800b33ba5a7a11eb7fe6b92f7261aff5d5b",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/app-routing.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { RouterModule, Routes } from '@angular/router';\r\nimport { InfoFormComponent } from './controls/info-form-component/info-form-component';\r\nimport { ModuleComponent } from './controls/module-component/module-component';\r\n\r\n\r\n\r\nconst routes: Routes = [\r\n  { path: '', redirectTo: 'module', pathMatch: 'full' },\r\n  { path: 'module', component: ModuleComponent },\r\n  { path: 'infoform', component: InfoFormComponent },\r\n  { path: '**', redirectTo: 'module' }\r\n];\r\n\r\n@NgModule({\r\n  imports: [RouterModule.forRoot(routes)],\r\n  exports: [RouterModule]\r\n})\r\nexport class AppRoutingModule {}",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        }
+    ],
     "miscellaneous": [],
     "routes": {
         "name": "<root>",
         "kind": "module",
-        "children": []
+        "children": [
+            {
+                "name": "ModuleComponent",
+                "kind": "component",
+                "path": "module",
+                "filename": "src/app/app-routing.module.ts"
+            },
+            {
+                "name": "InfoFormComponent",
+                "kind": "component",
+                "path": "infoform",
+                "filename": "src/app/app-routing.module.ts"
+            },
+            {
+                "name": "AppRoutingModule",
+                "kind": "module",
+                "filename": "src/app/app-routing.module.ts"
+            }
+        ]
     },
     "coverage": {
         "count": 0,
         "status": "low",
         "files": [
             {
+                "filePath": "src/app/controls/app.component/app.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AppComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/controls/body-component/body-component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "BodyComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/calender-component/calender-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CalenderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/42",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/drop-down-component/drop-down-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DropDownComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/45",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/drop-down-component/drop-down-component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "DropDown",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -520,7 +3278,16 @@
                 "linktype": "component",
                 "name": "HeaderComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/info-form-component/info-form-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "InfoFormComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/17",
                 "status": "low"
             },
             {
@@ -533,12 +3300,48 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/controls/number-box-component/number-box-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NumberBoxComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/19",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/text-area-component/text-area-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TextAreaComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/14",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/controls/text-box-component/text-box-component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TextBoxComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/26",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/dropdown.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "DropdownService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/assets/value-configs/drop-down-view-model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "DropdownOption",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             }
         ]

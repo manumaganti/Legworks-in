@@ -1,0 +1,33 @@
+<div class="textBoxContainer">
+
+  <input
+    type="text"
+    [id]="id"
+    [(ngModel)]="currentValue"
+    [placeholder]="placeHolder"
+    maxlength="10"
+    [readonly]="isReadOnly"
+    [tabindex]="tabindex"
+    [ngStyle]="getInputStyle()"
+    class="textBoxInput peer"
+    (focus)="onFocus()"
+    (blur)="onBlur($event)"
+    (input)="onNumberInput($event)"
+  />
+
+  <label
+    [for]="id"
+    class="textBoxLabel"
+  >
+    {{ label }}
+    @if (isRequired) { <span class="required">*</span> }
+  </label>
+
+  @if (showError) {
+    <p class="errorText">
+      Enter valid 10-digit Number
+    </p>
+  }
+
+</div>
+

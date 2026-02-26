@@ -1,0 +1,72 @@
+<div class="container">
+<div class="container">
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 class="title">Request a Service</h1>
+            <p class="subtitle">Fill out the form below and we will connect you on whatsapp</p>
+        </div>
+        <img src="legworksfinal.png" alt="Leg Works Logo" class="logo" style="height: 70px; width: auto; position: relative; z-index: 10;" />
+    </div>
+</div>
+    <div class="body">
+        <app-text-box-component 
+            [label]="'Full Name'" 
+            [value]="fullName"
+            (valueChange)="valueChange($event)"
+            [placeHolder]="'Enter your Full Name'">
+        </app-text-box-component>
+        <app-text-box-component 
+            [label]="'Email Address'" 
+            [value]="email"
+            (valueChange)="valueChange($event)"
+            [placeHolder]="'Eg:John@gmail.com'">
+        </app-text-box-component>
+        <app-number-box-component 
+            [label]="'Phone Number'"
+            [placeHolder]="'+91 98765 56784'"
+            [value]="phone"
+            (valueChange)="valueChange($event)">
+        </app-number-box-component>
+        <app-text-area-component 
+            [label]="'Address'"
+            [placeHolder]="'Please tell your Address'"
+            [value]="address"
+            (valueChange)="valueChange($event)"
+            (blur)="blurEvent()">
+        </app-text-area-component>
+        <app-drop-down-component 
+            [label]="'Select Your Service'"
+            [options]="[{value: 1, name: 'Home Needs & Special Services'}, {value: 2, name: 'Events & Gatherings'}, {value: 3, name: 'Financial/Investment Services'}, {value: 4, name: 'Online Health Care Services'}, {value: 5, name: 'Property Management Services'}, {value: 6, name: 'Tours And Travels Services'}, {value: 7, name: 'Taxation/Legal'}, {value: 8, name: 'Documents Procurement'}]"
+            [dropDownModel]="service"
+            (selectedChange)="selectedChange($event)"
+            (blurEvent)="blurEvent()">
+        </app-drop-down-component>
+        <app-text-area-component 
+            [label]="'Additional Details/Description'"
+            [placeHolder]="'Tell us more about your requirements'"
+            [value]="details"
+            (valueChange)="valueChange($event)"
+            (blur)="blurEvent()">
+        </app-text-area-component>
+        <app-calender-component 
+            [label]="'Legwork’s to Reach you by'"
+            (dateSelected)="dateSelected($event)">
+        </app-calender-component>
+    </div>
+    <div class="buttons">
+        <button class="button-1" (click)="ThankYou()">Send via Whatsapp</button>
+        <button class="button-2" (click)="Hi()">Cancel</button>
+    </div>
+    @if (showPopup) {
+    <div class="popup-overlay">
+        <div class="popup-box">
+            <h2>Thank You!</h2>
+            <p>
+                Thanks for Trusting and Reaching Legwork's,<br>
+                we will be at your Doorstep Soon.
+            </p>
+            <button (click)="closePopup()">Close</button>
+        </div>
+    </div>
+    }
+</div>

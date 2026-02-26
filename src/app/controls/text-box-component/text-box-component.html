@@ -1,0 +1,36 @@
+<div class="textBoxContainer">
+
+  <input
+    type="text"
+    [id]="id"
+    [(ngModel)]="currentValue"
+    [placeholder]="placeHolder"
+    [attr.maxlength]="maxLength"
+    [readonly]="isReadOnly"
+    [tabindex]="tabindex"
+    [ngStyle]="getInputStyle()"
+    class="textBoxInput peer"
+    (focus)="onFocus()"
+    (blur)="onBlur($event)"
+    (ngModelChange)="onValueChange($event)"
+  />
+
+  <label
+    [for]="id"
+    class="textBoxLabel"
+  >
+    {{ label }}
+    @if (isRequired) { <span class="required">*</span> }
+  </label>
+
+  @if (showCharCount) {
+    <p
+      class="charCountText"
+      [class.showCount]="shouldShowCount"
+      [class.hideCount]="!shouldShowCount"
+    >
+      {{ currentCharCount }} of {{ maxLength }} characters left
+    </p>
+  }
+
+</div>

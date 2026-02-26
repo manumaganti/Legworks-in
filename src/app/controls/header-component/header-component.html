@@ -1,10 +1,36 @@
 <div class="body">
-    <div class="text-left">
-        <p>LEG WORKS</p>
+  <div class="text-left">
+    <!-- <p class="text-2">Home</p> -->
+
+    <div class="dropdown">
+      <p class="text-2 dropbtn" (click)="toggleServices()">Services</p>
+
+      @if (isServicesOpen) {
+        <div class="dropdown-content">
+          <p class="drop-item" (click)="hello()">Home Needs & Special Services</p>
+          <p class="drop-item" (click)="hello()">Events & Gatherings</p>
+          <p class="drop-item" (click)="hello()">Financial/Investment Services</p>
+          <p class="drop-item" (click)="hello()">Online Health Care Services</p>
+          <p class="drop-item" (click)="hello()">Property Management Services</p>
+          <p class="drop-item" (click)="hello()">Tours & Travel Support</p>
+          <p class="drop-item" (click)="hello()">Legal/Taxation</p>
+          <p class="drop-item" (click)="hello()">Documentation Procurement</p>
+        </div>
+      }
     </div>
-    <div class="text-right">
-        <P>HOME</P>
-        <P>SERVICES</P>
-        <P>CONTACT</P>
+   
+    <div class="dropdown-1">
+      <p class="text-2">Contact</p>
+      <div class="dropdown-content-1">
+        <p class="drop-item-1">
+          Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032
+        </p>
+        <p class="drop-item-1">Phone: 076600 01221</p>
+      </div>
     </div>
+  </div>
+
+  <div class="text-right">
+    <img src="legworksfinal.png" alt="Leg Works Logo" class="logo" />
+  </div>
 </div>

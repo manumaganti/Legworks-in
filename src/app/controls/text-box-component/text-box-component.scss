@@ -1,0 +1,73 @@
+.textBoxContainer {
+  position: relative;
+  width: 100%;
+}
+
+.textBoxInput {
+  width: 100%;
+  height: 40px; 
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 4px;
+  font-size: 14px;
+  color: #1f2937; 
+  outline: none;
+  transition: all 0.2s;
+  background-color: white;
+  border: 1px solid #cbd5e1; 
+}
+
+.textBoxInput::placeholder {
+  color: transparent;
+}
+
+.textBoxInput:focus::placeholder {
+  color: #9ca3af; 
+}
+
+.textBoxLabel {
+  position: absolute;
+  left: 12px;
+  background-color: white;
+  padding-left: 4px;
+  padding-right: 4px;
+  transition: all 0.2s ease-out;
+  pointer-events: none;
+  color: #6b7280; 
+  font-weight: 500;
+  white-space: nowrap;
+
+  top: -8px;
+  font-size: 12px;
+}
+
+.textBoxInput:placeholder-shown + .textBoxLabel {
+  top: 6px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.textBoxInput:focus + .textBoxLabel {
+  top: -8px;
+  font-size: 12px;
+}
+
+.required {
+  color: red;
+}
+
+.charCountText {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: left;
+  margin-top: 4px;
+  transition: opacity 0.2s;
+}
+
+.showCount {
+  opacity: 1;
+}
+
+.hideCount {
+  opacity: 0;
+}

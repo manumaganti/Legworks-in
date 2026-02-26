@@ -1,0 +1,22 @@
+<div class="textarea-container">
+  
+  <textarea
+    id="message"
+    [attr.maxlength]="maxLength"
+    [placeholder]="placeHolder"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+    [class.error]="isInvalid"
+  ></textarea>
+
+  <label for="message">
+    {{label}} <span class="required">*</span>
+  </label>
+
+  <p class="char-count">
+    {{ remainingChars }} characters left
+  </p>
+
+</div>
+
+
