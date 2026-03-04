@@ -27,6 +27,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/app/assets",
+                "output": "/app/assets/"
               }
             ],
             "styles": [
@@ -121,6 +126,9 @@
             ],
             "outputDir": "storybook-static"
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
