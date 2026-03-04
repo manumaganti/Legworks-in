@@ -182,8 +182,8 @@ selectedChange(value: any) {
 ThankYou() {
 
   const phoneNumbers: string[] = [
-    "917569227605",  
-    "918050507688"    
+    "917660001221",
+    "919542497990",
   ];
 
   const message =
