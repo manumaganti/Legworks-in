@@ -9,10 +9,10 @@ import { Router } from '@angular/router';
   styleUrl: './header-component.scss',
 })
 export class HeaderComponent {
-
   isServicesOpen = false;
+  isContactOpen = false;
 
-  constructor(private dropdownService: DropdownService,private router: Router) {}
+  constructor(private dropdownService: DropdownService, private router: Router) {}
 
   ngOnInit() {
     this.dropdownService.openServices$.subscribe(() => {
@@ -20,10 +20,29 @@ export class HeaderComponent {
       this.isServicesOpen = true;
     });
   }
- hello() {
-this.router.navigate(['/infoform']);
-}
+
+  hello() {
+    this.router.navigate(['/infoform']);
+  }
+
   toggleServices() {
     this.isServicesOpen = !this.isServicesOpen;
+    if (this.isServicesOpen) {
+      this.isContactOpen = false;
+    }
+  }
+
+  showContact() {
+    if (!this.isServicesOpen) {
+      this.isContactOpen = true;
+    }
+  }
+
+  hideContact() {
+    this.isContactOpen = false;
+  }
+
+  hideServices() {
+    this.isServicesOpen = false;
   }
 }
