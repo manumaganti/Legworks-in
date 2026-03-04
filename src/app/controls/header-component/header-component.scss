@@ -15,8 +15,7 @@
   height: 50px;
   width: auto;
   object-fit: contain;
-  margin: 0;     
-  margin-right: -32px;              
+  margin: 0;               
 }
 
 .text-left {
@@ -39,6 +38,7 @@
   color: #555;
   position: relative;
   transition: 0.3s ease;
+  padding: 10px 0;
 }
 
 .text-2:hover {
@@ -58,7 +58,7 @@
   border-radius: 12px;
   padding: 10px 0;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  z-index: 999;
+  z-index: 9999;
 }
 
 .drop-item {
@@ -69,6 +69,7 @@
   color: #444;
   cursor: pointer;
   transition: 0.2s ease;
+  white-space: nowrap;
 }
 
 .drop-item:hover {
@@ -83,14 +84,31 @@
 .dropdown-content-1 {
   display: none;
   position: absolute;
-  top: 45px;                   
+  top: 45px;
   left: 0;
   background-color: #ffffff;
-  min-width: 280px;
+  min-width: 320px;
   border-radius: 12px;
   padding: 10px 0;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  z-index: 999;
+  z-index: 9999;
+}
+.dropdown-1:hover .dropdown-content-1 {
+  display: block;
+}
+.dropdown:hover .dropdown-content-1,
+.dropdown-content:hover .dropdown-content-1 {
+  display: none !important;
+}
+.dropdown-content:hover ~ .dropdown-1 .dropdown-content-1 {
+  display: none !important;
+}
+.dropdown:hover + .dropdown-1 .dropdown-content-1 {
+  display: none !important;
+}
+body:has(.dropdown-content:hover) .dropdown-content-1,
+body:has(.dropdown:hover) .dropdown-content-1 {
+  display: none !important;
 }
 
 .drop-item-1 {
@@ -101,13 +119,73 @@
   color: #444;
   cursor: pointer;
   transition: 0.2s ease;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.5;
 }
 
 .drop-item-1:hover {  
   background-color: #f5f7fa;
   color: #1d4ed8;
 }
+@media screen and (max-width: 768px) {
+  .body {
+    padding: 0 20px;
+  }
+  
+  .text-left {
+    gap: 15px;
+  }
+  
+  .logo {
+    height: 40px;
+  }
+  
+  .dropdown-content {
+    min-width: 250px;
+  }
+  
+  .dropdown-content-1 {
+    min-width: 280px;
+  }
+  
+  .drop-item-1 {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}
 
-.dropdown-1:hover .dropdown-content-1 {
-  display: block;
+@media screen and (max-width: 480px) {
+  .body {
+    padding: 0 15px;
+    height: 70px;
+  }
+  
+  .text-left {
+    gap: 10px;
+  }
+  
+  .logo {
+    height: 35px;
+  }
+  
+  .text-2 {
+    font-size: 13px;
+  }
+  
+  .dropdown-content {
+    min-width: 220px;
+  }
+  
+  .dropdown-content-1 {
+    min-width: 260px;
+    max-width: calc(100vw - 30px);
+  }
+  
+  .drop-item-1 {
+    font-size: 12px;
+    padding: 12px 14px;
+    line-height: 1.6;
+  }
 }

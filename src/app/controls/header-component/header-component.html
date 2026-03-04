@@ -1,12 +1,10 @@
 <div class="body">
   <div class="text-left">
-    <!-- <p class="text-2">Home</p> -->
-
     <div class="dropdown">
-      <p class="text-2 dropbtn" (click)="toggleServices()">Services</p>
+      <p class="text-2 dropbtn" (click)="toggleServices()" (mouseenter)="showContact()">Services</p>
 
       @if (isServicesOpen) {
-        <div class="dropdown-content">
+        <div class="dropdown-content" (mouseleave)="hideServices()">
           <p class="drop-item" (click)="hello()">Home Needs & Special Services</p>
           <p class="drop-item" (click)="hello()">Events & Gatherings</p>
           <p class="drop-item" (click)="hello()">Financial/Investment Services</p>
@@ -20,17 +18,19 @@
     </div>
    
     <div class="dropdown-1">
-      <p class="text-2">Contact</p>
-      <div class="dropdown-content-1">
-        <p class="drop-item-1">
-          Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032
-        </p>
-        <p class="drop-item-1">Phone: 076600 01221</p>
-      </div>
+      <p class="text-2" (mouseenter)="showContact()" (mouseleave)="hideContact()">Contact</p>
+      @if (isContactOpen) {
+        <div class="dropdown-content-1">
+          <p class="drop-item-1">
+            Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032
+          </p>
+          <p class="drop-item-1">Phone: 076600 01221</p>
+        </div>
+      }
     </div>
   </div>
 
   <div class="text-right">
-    <img src="legworksfinal.png" alt="Leg Works Logo" class="logo" />
+    <img src="title.png" alt="Leg Works Logo" class="logo" />
   </div>
 </div>
