@@ -131,6 +131,44 @@
     "directives": [],
     "components": [
         {
+            "name": "AboutUsComponent",
+            "id": "component-AboutUsComponent-008c77772b90ada22e47bc20ea1e4115ddfb688cb20df45515110dd3aaca8fb83b55bdcb008d6060028f4e7b7e24bddd9cf7b239c58fb682834adcd2c1fa83bc",
+            "file": "src/app/controls/about-us-component/about-us-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-about-us-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./about-us-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-about-us-component',\r\n  imports: [],\r\n  templateUrl: './about-us-component.html',\r\n  styleUrl: './about-us-component.scss',\r\n})\r\nexport class AboutUsComponent {\r\n\r\n}\r\n",
+            "styleUrl": "./about-us-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<section class=\"about\" id=\"about\">\r\n\r\n<div class=\"container\">\r\n\r\n    <div class=\"about-header\">\r\n        <h2>About Us</h2>\r\n        <p>Two professionals from diverse backgrounds, united by a shared vision, came together to establish LEGWORKS.</p>\r\n    </div>\r\n\r\n    <div class=\"founders\">\r\n\r\n        <div class=\"founder-card founder1\">\r\n            <div class=\"founder-top\">\r\n                <div class=\"avatar\">H</div>\r\n                <div>\r\n                    <h3>Harish Reddy</h3>\r\n                    <span class=\"role teal\">MBA Graduate</span>\r\n                </div>\r\n            </div>\r\n            <p>\r\n                Brings more than a decade of hands-on experience in BFSI sales, with strong expertise in driving business growth and client relationships.\r\n            </p>\r\n        </div>\r\n\r\n        <div class=\"founder-card founder2\">\r\n            <div class=\"founder-top\">\r\n                <div class=\"avatar pink\">N</div>\r\n                <div>\r\n                    <h3>Naveen</h3>\r\n                    <span class=\"role purple\">B.Tech Graduate</span>\r\n                </div>\r\n            </div>\r\n            <p>\r\n                Possesses more than 15 years of extensive experience across the HR domain, offering deep expertise in talent management, recruitment, and organizational development\r\n            </p>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"mission\">\r\n        <p>\r\n            Together, their complementary strengths and aligned vision form the foundation of LEGWORKS, with a commitment to delivering reliable, efficient, and impactful solutions.\r\n        </p>\r\n    </div>\r\n\r\n    <!-- <div class=\"features\">\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon teal\">📞</div>\r\n            <h4>24/7 Availability</h4>\r\n            <p>Round-the-clock service and support whenever you need us</p>\r\n        </div>\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon pink\">💬</div>\r\n            <h4>Instant Connection</h4>\r\n            <p>Reach us instantly on WhatsApp for quick responses</p>\r\n        </div>\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon purple\">📍</div>\r\n            <h4>Doorstep Service</h4>\r\n            <p>All services delivered right to your location</p>\r\n        </div>\r\n\r\n    </div> -->\r\n\r\n</div>\r\n\r\n</section>\r\n"
+        },
+        {
             "name": "AppComponent",
             "id": "component-AppComponent-d214785d182a86ec1a57a93d190658349741d7460ef0b98950b18753a7be987f6c3689e57cc6e744749a19c45e6d705b073c99e4dc033e6cd8d52386cd206edb",
             "file": "src/app/controls/app.component/app.component.ts",
@@ -249,7 +287,7 @@
                 ]
             },
             "extends": [],
-            "templateData": "<div class=\"large\">\r\n    <img src=\"leg.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    <p class=\"text-2\">NOW DISTANCE <br>DOESN'T MATTER</p>\r\n    <div class=\"large-1\">\r\n        <p class=\"text-3\">LEGWORKS AT YOUR DOORSTEP</p>\r\n    </div>\r\n    <div class=\"large-2\">\r\n        <button class=\"explore\" (click)=\"goToForm()\" >Explore Services</button>\r\n    </div>\r\n</div>\r\n"
+            "templateData": "<div class=\"large\" id=\"home\">\r\n    <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    <p class=\"text-2\">NOW DISTANCE <br>DOESN'T MATTER</p>\r\n    <div class=\"large-1\">\r\n        <p class=\"text-3\">LEGWORKS AT YOUR DOORSTEP</p>\r\n    </div>\r\n    <div class=\"large-2\">\r\n        <button class=\"explore\" (click)=\"goToForm()\" >Explore Services</button>\r\n    </div>\r\n</div>\r\n"
         },
         {
             "name": "CalenderComponent",
@@ -1817,7 +1855,7 @@
         },
         {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-0b460d950401dfeb4692456f51ab3fc26d15e4af1a74db8dee79cc065d36b40b082fe89a5114d9f954b1a8b944a0c61a1a4646a087fc89d9a731225559f1d219",
+            "id": "component-HeaderComponent-5c8a36105acacb2efbfecbf91d97948ff28ea29eda4f3fb29a2cb637ba1d90fe9212bcf57687814bbc59a04de5af6155b65b287de01e2d58acd48b33c02d1db4",
             "file": "src/app/controls/header-component/header-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1836,6 +1874,17 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "isContactOpen",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
+                {
                     "name": "isServicesOpen",
                     "defaultValue": "false",
                     "deprecated": false,
@@ -1844,17 +1893,59 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 15
+                },
+                {
+                    "name": "selectedService",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19
+                },
+                {
+                    "name": "showServiceModal",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
                 }
             ],
             "methodsClass": [
                 {
-                    "name": "hello",
+                    "name": "closeServiceForm",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 23,
+                    "line": 38,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "hideContact",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 56,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "hideServices",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 60,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1864,7 +1955,69 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 23,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "openServiceForm",
+                    "args": [
+                        {
+                            "name": "service",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 30,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "service",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "scrollToAbout",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 63,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "scrollToHome",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 70,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "showContact",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 50,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1874,7 +2027,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -1883,12 +2036,17 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
-            "imports": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "InfoFormComponent",
+                    "type": "component"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-header-component',\r\n  imports: [],\r\n  templateUrl: './header-component.html',\r\n  styleUrl: './header-component.scss',\r\n})\r\nexport class HeaderComponent {\r\n\r\n  isServicesOpen = false;\r\n\r\n  constructor(private dropdownService: DropdownService,private router: Router) {}\r\n\r\n  ngOnInit() {\r\n    this.dropdownService.openServices$.subscribe(() => {\r\n      console.log(\"Signal received in header\");\r\n      this.isServicesOpen = true;\r\n    });\r\n  }\r\n hello() {\r\nthis.router.navigate(['/infoform']);\r\n}\r\n  toggleServices() {\r\n    this.isServicesOpen = !this.isServicesOpen;\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\nimport { Router } from '@angular/router';\r\nimport { InfoFormComponent } from \"../info-form-component/info-form-component\";\r\n\r\n@Component({\r\n  selector: 'app-header-component',\r\n  standalone: true,\r\n  imports: [InfoFormComponent],\r\n  templateUrl: './header-component.html',\r\n  styleUrl: './header-component.scss',\r\n})\r\nexport class HeaderComponent {\r\n\r\n  isServicesOpen = false;\r\n  isContactOpen = false;\r\n\r\n  showServiceModal = false;\r\n  selectedService = '';\r\n\r\n  constructor(private dropdownService: DropdownService, private router: Router) {}\r\n\r\n  ngOnInit() {\r\n    this.dropdownService.openServices$.subscribe(() => {\r\n      console.log(\"Signal received in header\");\r\n      this.isServicesOpen = true;\r\n    });\r\n  }\r\n\r\nopenServiceForm(service: string) {\r\n  this.selectedService = service;\r\n  this.showServiceModal = true;\r\n  this.isServicesOpen = false;\r\n\r\n  document.body.style.overflow = 'hidden';\r\n}\r\n\r\ncloseServiceForm() {\r\n  this.showServiceModal = false;\r\n  document.body.style.overflow = 'auto';\r\n}\r\n\r\n  toggleServices() {\r\n    this.isServicesOpen = !this.isServicesOpen;\r\n    if (this.isServicesOpen) {\r\n      this.isContactOpen = false;\r\n    }\r\n  }\r\n\r\n  showContact() {\r\n    if (!this.isServicesOpen) {\r\n      this.isContactOpen = true;\r\n    }\r\n  }\r\n\r\n  hideContact() {\r\n    this.isContactOpen = false;\r\n  }\r\n\r\n  hideServices() {\r\n    this.isServicesOpen = false;\r\n  }\r\n  scrollToAbout() {\r\n  const element = document.getElementById('about');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n\r\n}\r\n  scrollToHome() {\r\n  const element = document.getElementById('home');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n}\r\n}",
             "styleUrl": "./header-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -1916,7 +2074,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 13,
+                "line": 19,
                 "jsdoctags": [
                     {
                         "name": "dropdownService",
@@ -1943,11 +2101,95 @@
                 ]
             },
             "extends": [],
-            "templateData": "<div class=\"body\">\r\n  <div class=\"text-left\">\r\n    <p class=\"text-2\">Home</p>\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2 dropbtn\" (click)=\"toggleServices()\">Services</p>\r\n\r\n      @if (isServicesOpen) {\r\n        <div class=\"dropdown-content\">\r\n          <p class=\"drop-item\" (click)=\"hello()\">Home Needs & Special Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Events & Gatherings</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Financial/Investment Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Online Health Care Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Property Management Services</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Tours & Travel Support</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Legal/Taxation</p>\r\n          <p class=\"drop-item\" (click)=\"hello()\">Documentation Procurement</p>\r\n        </div>\r\n      }\r\n    </div>\r\n   \r\n    <div class=\"dropdown-1\">\r\n      <p class=\"text-2\">Contact</p>\r\n      <div class=\"dropdown-content-1\">\r\n        <p class=\"drop-item-1\">\r\n          Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032\r\n        </p>\r\n        <p class=\"drop-item-1\">Phone: 076600 01221</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"text-right\">\r\n    <img src=\"leg.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n  </div>\r\n</div>"
+            "templateData": "<div class=\"body\">\r\n  <div class=\"text-left\">\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2\" (click)=\"scrollToHome()\">Home</p>\r\n    </div>\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2 dropbtn\" (click)=\"toggleServices()\" (mouseenter)=\"showContact()\">Services</p>\r\n\r\n      @if (isServicesOpen) {\r\n        <div class=\"dropdown-content\" (mouseleave)=\"hideServices()\">\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Home Needs & Special Services')\">Home Needs & Special Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Events & Gatherings')\">Events & Gatherings</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Financial/Investment Services')\">Financial/Investment Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Online Health Care Services')\">Online Health Care Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Property Management Services')\">Property Management Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Tours & Travel Support')\">Tours & Travel Support</p>\r\n          <!-- <p class=\"drop-item\" (click)=\"openServiceForm('Legal/Taxation')\">Legal/Taxation</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Documentation Procurement')\">Documentation Procurement</p> -->\r\n        </div>\r\n      }\r\n    </div>\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2\" (click)=\"scrollToAbout()\">About Us</p>\r\n    </div>\r\n\r\n    <div class=\"dropdown-1\">\r\n      <p class=\"text-2\" (mouseenter)=\"showContact()\" (mouseleave)=\"hideContact()\">Contact</p>\r\n\r\n      @if (isContactOpen) {\r\n        <div class=\"dropdown-content-1\">\r\n          <p class=\"drop-item-1\">\r\n            Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032\r\n          </p>\r\n          <p class=\"drop-item-1\">Phone: 076600 01221</p>\r\n        </div>\r\n      }\r\n    </div>\r\n\r\n  </div>\r\n\r\n  <div class=\"text-right\">\r\n    <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n  </div>\r\n</div>\r\n\r\n@if(showServiceModal){\r\n<div class=\"modal-overlay\" (click)=\"closeServiceForm()\">\r\n\r\n  <div class=\"modal-container\" (click)=\"$event.stopPropagation()\">\r\n\r\n    <button class=\"close-btn\" (click)=\"closeServiceForm()\">✕</button>\r\n\r\n  <app-info-form-component\r\n      [service]=\"selectedService\">\r\n    </app-info-form-component>\r\n  </div>\r\n\r\n</div>\r\n}"
+        },
+        {
+            "name": "IconComponent",
+            "id": "component-IconComponent-503be402479e83ee3b818d88e1df62447def0117a3e49d286ae1a0f309740c9b4c64494bebac5bcbf95bbc3b9ef4fc7a69d7f25c93743dbbd1daf70c5d926cbf",
+            "file": "src/app/controls/icon/icon.component/icon.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-icon",
+            "styleUrls": [
+                "./icon.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./icon.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "color",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 13,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "hoverColor",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 14,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "name",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "isHovering",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-icon',\r\n  standalone: true,\r\n  templateUrl: './icon.component.html',\r\n  styleUrls: ['./icon.component.scss'],\r\n  schemas: [CUSTOM_ELEMENTS_SCHEMA]\r\n})\r\nexport class IconComponent {\r\n\r\n  @Input() name: string = '';\r\n  @Input() color: string = '';\r\n  @Input() hoverColor: string = '';\r\n\r\n  isHovering = false;\r\n\r\n}",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  line-height: 1;\r\n  vertical-align: middle;\r\n}\r\n\r\niconify-icon {\r\n  display: block;\r\n  font-size: 24px;\r\n}",
+                    "styleUrl": "./icon.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<iconify-icon\r\n  [icon]=\"name\"\r\n  [style.color]=\"isHovering ? hoverColor : color\"\r\n  (mouseenter)=\"isHovering = true\"\r\n  (mouseleave)=\"isHovering = false\">\r\n</iconify-icon>"
         },
         {
             "name": "InfoFormComponent",
-            "id": "component-InfoFormComponent-144945a81317070e59146ed9149b1a44f399981a9af9d220ce3f4562cbb2f35436a60d354031e35a94dda65185b9501c13ddcb2d6e51b37c50a9c9913a522008",
+            "id": "component-InfoFormComponent-2eaa93dba97f38895e2409220f9e9704e58ff50d3771c863269a26900f1cb05543291dad76adcaf4a525cec2315dbf15e0501039e4d8ca2e23f064bd419987c6",
             "file": "src/app/controls/info-form-component/info-form-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1964,7 +2206,17 @@
             ],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "service",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 30,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [
                 {
@@ -2034,17 +2286,6 @@
                     "line": 28
                 },
                 {
-                    "name": "service",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 30
-                },
-                {
                     "name": "showPopup",
                     "defaultValue": "false",
                     "deprecated": false,
@@ -2073,7 +2314,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 217,
+                    "line": 212,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2115,7 +2356,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 221,
+                    "line": 216,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2224,11 +2465,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { Router } from '@angular/router';\r\nimport { TextBoxComponent } from \"../text-box-component/text-box-component\";\r\nimport { TextAreaComponent } from \"../text-area-component/text-area-component\";\r\nimport { CalenderComponent } from \"../calender-component/calender-component\";\r\nimport { DropDownComponent } from \"../drop-down-component/drop-down-component\";\r\nimport { NumberBoxComponent } from \"../number-box-component/number-box-component\";\r\n\r\n@Component({\r\n  selector: 'app-info-form-component',\r\n  standalone: true,\r\n  imports: [\r\n    TextBoxComponent,\r\n    TextAreaComponent,\r\n    CalenderComponent,\r\n    DropDownComponent,\r\n    NumberBoxComponent\r\n  ],\r\n  templateUrl: './info-form-component.html',\r\n  styleUrls: ['./info-form-component.scss']\r\n})\r\nexport class InfoFormComponent {\r\n\r\n\r\n  showPopup: boolean = false;\r\n  fullName: string = '';\r\n  email: string = '';\r\n  phone: string = '';\r\n  address: string = '';\r\n  service: string = '';\r\n  details: string = '';\r\n  date: string = '';\r\n\r\n  constructor(private router: Router) {}\r\n\r\nvalueChange(value: any) {\r\n  console.log('===== VALUE CHANGE =====');\r\n  console.log('Raw event:', value);\r\n  console.log('Event type:', typeof value);\r\n  if (typeof value === 'object') {\r\n    console.log('Object keys:', Object.keys(value));\r\n    console.log('Stringified:', JSON.stringify(value));\r\n  }\r\n  if (typeof value === 'string') {\r\n    console.log('String value received:', value);\r\n    if (!this.fullName) {\r\n      this.fullName = value;\r\n      console.log('Set fullName to:', this.fullName);\r\n    } else if (!this.email) {\r\n      this.email = value;\r\n      console.log('Set email to:', this.email);\r\n    } else if (!this.phone) {\r\n      this.phone = value;\r\n      console.log('Set phone to:', this.phone);\r\n    }\r\n    return;\r\n  }\r\n  if (typeof value === 'object' && value !== null) {\r\n    if (value.text !== undefined) {\r\n      console.log('Text property:', value.text);\r\n      if (value.label === 'Full Name' || value.placeholder?.includes('Name')) {\r\n        this.fullName = value.text;\r\n      } else if (value.label === 'Email Address' || value.placeholder?.includes('Email')) {\r\n        this.email = value.text;\r\n      } else if (value.label === 'Phone Number' || value.placeholder?.includes('+91')) {\r\n        this.phone = value.text;\r\n      } else if (value.label === 'Address') {\r\n        this.address = value.text;\r\n      } else if (value.label === 'Additional Details/Description') {\r\n        this.details = value.text;\r\n      }\r\n    }\r\n    if (value.value !== undefined) {\r\n      console.log('Value property:', value.value);\r\n      if (value.label === 'Full Name') {\r\n        this.fullName = value.value;\r\n      } else if (value.label === 'Email Address') {\r\n        this.email = value.value;\r\n      } else if (value.label === 'Phone Number' || value.type === 'number') {\r\n        this.phone = value.value;\r\n      } else if (value.label === 'Address') {\r\n        this.address = value.value;\r\n      } else if (value.label === 'Additional Details/Description') {\r\n        this.details = value.value;\r\n      }\r\n    }\r\n    if (value.input !== undefined) {\r\n      console.log('Input property:', value.input);\r\n      if (!this.fullName) this.fullName = value.input;\r\n      else if (!this.email) this.email = value.input;\r\n      else if (!this.phone) this.phone = value.input;\r\n    }\r\n  }\r\n  \r\n  console.log('Current state:', {\r\n    fullName: this.fullName,\r\n    email: this.email,\r\n    phone: this.phone,\r\n    address: this.address,\r\n    service: this.service,\r\n    details: this.details\r\n  });\r\n  console.log('===== END =====');\r\n}\r\n\r\nselectedChange(value: any) {\r\n  console.log('Dropdown selected:', value);\r\n  if (value?.name) {\r\n    this.service = value.name;\r\n    console.log('Service set by name:', this.service);\r\n  }\r\n  else if (value?.value) {\r\n    const options = [\r\n      {value: 1, name: 'Home Needs & Special Services'},\r\n      {value: 2, name: 'Events & Gatherings'},\r\n      {value: 3, name: 'Financial/Investment Services'},\r\n      {value: 4, name: 'Online Health Care Services'},\r\n      {value: 5, name: 'Property Management Services'},\r\n      {value: 6, name: 'Tours And Travels Services'},\r\n      {value: 7, name: 'Taxation/Legal'},\r\n      {value: 8, name: 'Documents Procurement'}\r\n    ];\r\n    \r\n    const selectedOption = options.find(opt => opt.value === value.value);\r\n    if (selectedOption) {\r\n      this.service = selectedOption.name;\r\n      console.log('Service set by value:', this.service);\r\n    }\r\n  }\r\n  else if (typeof value === 'object' && value !== null) {\r\n    const firstKey = Object.keys(value)[0];\r\n    if (firstKey) {\r\n      this.service = value[firstKey];\r\n      console.log('Service set from object property:', this.service);\r\n    }\r\n  }\r\n  else if (typeof value === 'string') {\r\n    this.service = value;\r\n    console.log('Service set as string:', this.service);\r\n  }\r\n  else if (typeof value === 'number') {\r\n    const options = [\r\n      {value: 1, name: 'Home Needs & Special Services'},\r\n      {value: 2, name: 'Events & Gatherings'},\r\n      {value: 3, name: 'Financial/Investment Services'},\r\n      {value: 4, name: 'Online Health Care Services'},\r\n      {value: 5, name: 'Property Management Services'},\r\n      {value: 6, name: 'Tours And Travels Services'},\r\n      {value: 7, name: 'Taxation/Legal'},\r\n      {value: 8, name: 'Documents Procurement'}\r\n    ];\r\n    \r\n    const selectedOption = options.find(opt => opt.value === value);\r\n    if (selectedOption) {\r\n      this.service = selectedOption.name;\r\n      console.log('Service set by number value:', this.service);\r\n    }\r\n  }\r\n  \r\n  console.log('Current service value:', this.service);\r\n}\r\n\r\n  dateSelected(value: Date | null) {\r\n    console.log('=== DATE SELECTED ===');\r\n    console.log('Date event:', value);\r\n    \r\n    if (value) {\r\n      if (typeof value === 'string') {\r\n        this.date = value;\r\n      } else if (value instanceof Date) {\r\n        this.date = value.toDateString();\r\n      }\r\n      console.log('Set date to:', this.date);\r\n    }\r\n    console.log('=== END DATE ===');\r\n  }\r\n\r\n  blurEvent() {\r\n    console.log('Blur event triggered');\r\n  }\r\n\r\nThankYou() {\r\n  console.log('=== FINAL FORM VALUES ===');\r\n  console.log('Full Name:', this.fullName);\r\n  console.log('Email:', this.email);\r\n  console.log('Phone:', this.phone);\r\n  console.log('Address:', this.address);  \r\n  console.log('Service:', this.service);\r\n  console.log('Details:', this.details);\r\n  console.log('Date:', this.date);\r\n  console.log('=== END FINAL VALUES ===');\r\n\r\n  const phoneNumber = \"917569227605\"; \r\n\r\n  const message = \r\n`*New Service Request*\r\n\r\nName: ${this.fullName || 'Not provided'}\r\nEmail: ${this.email || 'Not provided'}\r\nPhone: ${this.phone || 'Not provided'}\r\nAddress: ${this.address || 'Not provided'}\r\nService: ${this.service || 'Not provided'}\r\nPreferred Date: ${this.date || 'Not provided'}\r\n\r\nDetails:\r\n${this.details || 'No details provided'}`;\r\n  console.log('Message to send:', message);\r\n\r\n  const encodedMessage = encodeURIComponent(message);\r\n  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;\r\n\r\n  window.open(whatsappURL, '_blank');\r\n\r\n  this.showPopup = true;\r\n}\r\n\r\n  closePopup() {\r\n    this.showPopup = false;\r\n    this.router.navigate(['/module']);\r\n  }\r\n Hi() {\r\nthis.router.navigate(['/module']);\r\n}\r\n}",
+            "sourceCode": "import { Component, Input } from '@angular/core';\r\nimport { Router } from '@angular/router';\r\nimport { TextBoxComponent } from \"../text-box-component/text-box-component\";\r\nimport { TextAreaComponent } from \"../text-area-component/text-area-component\";\r\nimport { CalenderComponent } from \"../calender-component/calender-component\";\r\nimport { DropDownComponent } from \"../drop-down-component/drop-down-component\";\r\nimport { NumberBoxComponent } from \"../number-box-component/number-box-component\";\r\n\r\n@Component({\r\n  selector: 'app-info-form-component',\r\n  standalone: true,\r\n  imports: [\r\n    TextBoxComponent,\r\n    TextAreaComponent,\r\n    CalenderComponent,\r\n    DropDownComponent,\r\n    NumberBoxComponent\r\n  ],\r\n  templateUrl: './info-form-component.html',\r\n  styleUrls: ['./info-form-component.scss']\r\n})\r\nexport class InfoFormComponent {\r\n\r\n\r\n  showPopup: boolean = false;\r\n  fullName: string = '';\r\n  email: string = '';\r\n  phone: string = '';\r\n  address: string = '';\r\n  @Input() service: string = '';\r\n  details: string = '';\r\n  date: string = '';\r\n  \r\n  constructor(private router: Router) {}\r\n\r\nvalueChange(value: any) {\r\n  console.log('===== VALUE CHANGE =====');\r\n  console.log('Raw event:', value);\r\n  console.log('Event type:', typeof value);\r\n  if (typeof value === 'object') {\r\n    console.log('Object keys:', Object.keys(value));\r\n    console.log('Stringified:', JSON.stringify(value));\r\n  }\r\n  if (typeof value === 'string') {\r\n    console.log('String value received:', value);\r\n    if (!this.fullName) {\r\n      this.fullName = value;\r\n      console.log('Set fullName to:', this.fullName);\r\n    } else if (!this.email) {\r\n      this.email = value;\r\n      console.log('Set email to:', this.email);\r\n    } else if (!this.phone) {\r\n      this.phone = value;\r\n      console.log('Set phone to:', this.phone);\r\n    }\r\n    return;\r\n  }\r\n  if (typeof value === 'object' && value !== null) {\r\n    if (value.text !== undefined) {\r\n      console.log('Text property:', value.text);\r\n      if (value.label === 'Full Name' || value.placeholder?.includes('Name')) {\r\n        this.fullName = value.text;\r\n      } else if (value.label === 'Email Address' || value.placeholder?.includes('Email')) {\r\n        this.email = value.text;\r\n      } else if (value.label === 'Phone Number' || value.placeholder?.includes('+91')) {\r\n        this.phone = value.text;\r\n      } else if (value.label === 'Address') {\r\n        this.address = value.text;\r\n      } else if (value.label === 'Additional Details/Description') {\r\n        this.details = value.text;\r\n      }\r\n    }\r\n    if (value.value !== undefined) {\r\n      console.log('Value property:', value.value);\r\n      if (value.label === 'Full Name') {\r\n        this.fullName = value.value;\r\n      } else if (value.label === 'Email Address') {\r\n        this.email = value.value;\r\n      } else if (value.label === 'Phone Number' || value.type === 'number') {\r\n        this.phone = value.value;\r\n      } else if (value.label === 'Address') {\r\n        this.address = value.value;\r\n      } else if (value.label === 'Additional Details/Description') {\r\n        this.details = value.value;\r\n      }\r\n    }\r\n    if (value.input !== undefined) {\r\n      console.log('Input property:', value.input);\r\n      if (!this.fullName) this.fullName = value.input;\r\n      else if (!this.email) this.email = value.input;\r\n      else if (!this.phone) this.phone = value.input;\r\n    }\r\n  }\r\n  \r\n  console.log('Current state:', {\r\n    fullName: this.fullName,\r\n    email: this.email,\r\n    phone: this.phone,\r\n    address: this.address,\r\n    service: this.service,\r\n    details: this.details\r\n  });\r\n  console.log('===== END =====');\r\n}\r\n\r\nselectedChange(value: any) {\r\n  console.log('Dropdown selected:', value);\r\n  if (value?.name) {\r\n    this.service = value.name;\r\n    console.log('Service set by name:', this.service);\r\n  }\r\n  else if (value?.value) {\r\n    const options = [\r\n      {value: 1, name: 'Home Needs & Special Services'},\r\n      {value: 2, name: 'Events & Gatherings'},\r\n      {value: 3, name: 'Financial/Investment Services'},\r\n      {value: 4, name: 'Online Health Care Services'},\r\n      {value: 5, name: 'Property Management Services'},\r\n      {value: 6, name: 'Tours And Travels Services'},\r\n      {value: 7, name: 'Taxation/Legal'},\r\n      {value: 8, name: 'Documents Procurement'}\r\n    ];\r\n    \r\n    const selectedOption = options.find(opt => opt.value === value.value);\r\n    if (selectedOption) {\r\n      this.service = selectedOption.name;\r\n      console.log('Service set by value:', this.service);\r\n    }\r\n  }\r\n  else if (typeof value === 'object' && value !== null) {\r\n    const firstKey = Object.keys(value)[0];\r\n    if (firstKey) {\r\n      this.service = value[firstKey];\r\n      console.log('Service set from object property:', this.service);\r\n    }\r\n  }\r\n  else if (typeof value === 'string') {\r\n    this.service = value;\r\n    console.log('Service set as string:', this.service);\r\n  }\r\n  else if (typeof value === 'number') {\r\n    const options = [\r\n      {value: 1, name: 'Home Needs & Special Services'},\r\n      {value: 2, name: 'Events & Gatherings'},\r\n      {value: 3, name: 'Financial/Investment Services'},\r\n      {value: 4, name: 'Online Health Care Services'},\r\n      {value: 5, name: 'Property Management Services'},\r\n      {value: 6, name: 'Tours And Travels Services'},\r\n      {value: 7, name: 'Taxation/Legal'},\r\n      {value: 8, name: 'Documents Procurement'}\r\n    ];\r\n    \r\n    const selectedOption = options.find(opt => opt.value === value);\r\n    if (selectedOption) {\r\n      this.service = selectedOption.name;\r\n      console.log('Service set by number value:', this.service);\r\n    }\r\n  }\r\n  \r\n  console.log('Current service value:', this.service);\r\n}\r\n\r\n  dateSelected(value: Date | null) {\r\n    console.log('=== DATE SELECTED ===');\r\n    console.log('Date event:', value);\r\n    \r\n    if (value) {\r\n      if (typeof value === 'string') {\r\n        this.date = value;\r\n      } else if (value instanceof Date) {\r\n        this.date = value.toDateString();\r\n      }\r\n      console.log('Set date to:', this.date);\r\n    }\r\n    console.log('=== END DATE ===');\r\n  }\r\n\r\n  blurEvent() {\r\n    console.log('Blur event triggered');\r\n  }\r\n\r\nThankYou() {\r\n\r\n  const phoneNumbers: string[] = [\r\n    \"917660001221\",\r\n    \"919542497990\",\r\n  ];\r\n\r\n  const message =\r\n`*New Service Request*\r\n\r\nName: ${this.fullName || 'Not provided'}\r\nEmail: ${this.email || 'Not provided'}\r\nPhone: ${this.phone || 'Not provided'}\r\nAddress: ${this.address || 'Not provided'}\r\nService: ${this.service || 'Not provided'}\r\nPreferred Date: ${this.date || 'Not provided'}\r\n\r\nDetails:\r\n${this.details || 'No details provided'}`;\r\n\r\n  const encodedMessage = encodeURIComponent(message);\r\n\r\n  phoneNumbers.forEach((number: string) => {\r\n    const whatsappURL = `https://wa.me/${number}?text=${encodedMessage}`;\r\n    window.open(whatsappURL, '_blank');\r\n  });\r\n\r\n  this.showPopup = true;\r\n}\r\n\r\n  closePopup() {\r\n    this.showPopup = false;\r\n    this.router.navigate(['/module']);\r\n  }\r\n Hi() {\r\nthis.router.navigate(['/module']);\r\n}\r\n}",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".container {\r\n  width: 100%;\r\n  max-width: 1150px;\r\n  margin: 0 auto;\r\n  border-radius: 24px;\r\n  overflow: hidden;\r\n  background: white;\r\n  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);\r\n}\r\n.header {\r\n  background: linear-gradient(to bottom right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  padding: 50px 45px;\r\n  border-top-left-radius: 24px;\r\n  border-top-right-radius: 24px;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n.header::before {\r\n  content: \"\";\r\n  position: absolute;\r\n  top: -50px;\r\n  right: -50px;\r\n  width: 220px;\r\n  height: 220px;\r\n  background: rgba(255, 255, 255, 0.12);\r\n  border-radius: 50%;\r\n}\r\n\r\n.header::after {\r\n  content: \"\";\r\n  position: absolute;\r\n  bottom: -80px;\r\n  left: -80px;\r\n  width: 260px;\r\n  height: 260px;\r\n  background: rgba(255, 255, 255, 0.08);\r\n  border-radius: 50%;\r\n}\r\n\r\n.title {\r\n  font-size: 44px;\r\n  font-weight: 800;\r\n  margin-bottom: 14px;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n\r\n.subtitle {\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n  opacity: 0.9;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n\r\n@media (max-width: 640px) {\r\n  .header {\r\n    padding: 35px 25px;\r\n  }\r\n\r\n  .title {\r\n    font-size: 34px;\r\n  }\r\n\r\n  .subtitle {\r\n    font-size: 16px;\r\n  }\r\n}\r\n\r\n.body {\r\n  padding: 28px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 18px; \r\n}\r\n\r\n@media (min-width: 640px) {\r\n  .body {\r\n    padding: 32px;\r\n    gap: 22px;\r\n  }\r\n}\r\n\r\n.body > * {\r\n  width: 100%;\r\n  display: block;\r\n}\r\n\r\n.buttons {\r\n  padding: 25px 45px 45px 45px;\r\n  display: flex;\r\n  gap: 16px;\r\n  justify-content: space-between;\r\n}\r\n\r\n@media (max-width: 640px) {\r\n  .buttons {\r\n    flex-direction: column;\r\n    padding: 20px 25px 35px 25px;\r\n  }\r\n}\r\n\r\n.button-1 {\r\n  flex: 1;\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  padding: 16px 22px;\r\n  border-radius: 14px;\r\n  font-weight: 700;\r\n  font-size: 16px;\r\n  border: none;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n  box-shadow: 0px 10px 25px rgba(29, 78, 216, 0.25);\r\n}\r\n\r\n.button-1:hover {\r\n  transform: translateY(-2px);\r\n  box-shadow: 0px 14px 30px rgba(13, 148, 136, 0.35);\r\n}\r\n\r\n.button-1:active {\r\n  transform: scale(0.98);\r\n}\r\n\r\n.button-2 {\r\n  min-width: 160px;\r\n  padding: 16px 22px;\r\n  border-radius: 14px;\r\n  font-weight: 700;\r\n  font-size: 16px;\r\n  border: 2px solid #cbd5e1;\r\n  background: white;\r\n  color: #1f2937;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.button-2:hover {\r\n  border-color: #1d4ed8;\r\n  color: #1d4ed8;\r\n  background: rgba(29, 78, 216, 0.05);\r\n}\r\n\r\n.button-2:active {\r\n  transform: scale(0.98);\r\n}\r\n.popup-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(15, 23, 42, 0.65);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  z-index: 9999;\r\n}\r\n\r\n.popup-box {\r\n  background: white;\r\n  padding: 100px 35px;\r\n  border-radius: 24px;\r\n  width: 90%;\r\n  max-width: 420px;\r\n  text-align: center;\r\n  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.25);\r\n  animation: scaleIn 0.3s ease-in-out;\r\n}\r\n.popup-box h2 {\r\n  font-size: 36px;\r\n  margin-bottom: 15px;\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  -webkit-background-clip: text;\r\n  -webkit-text-fill-color: transparent;\r\n}\r\n.popup-box p {\r\n  font-size: 16px;\r\n  margin-bottom: 25px;\r\n  color: #334155;\r\n  line-height: 1.6;\r\n}\r\n.popup-box button {\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  border: none;\r\n  padding: 12px 28px;\r\n  border-radius: 12px;\r\n  font-weight: 600;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.popup-box button:hover {\r\n  transform: translateY(-2px);\r\n  box-shadow: 0px 10px 25px rgba(29, 78, 216, 0.35);\r\n}\r\n\r\n@keyframes scaleIn {\r\n  from {\r\n    transform: scale(0.8);\r\n    opacity: 0;\r\n  }\r\n  to {\r\n    transform: scale(1);\r\n    opacity: 1;\r\n  }\r\n}\r\n",
+                    "data": ".container {\r\n  width: 100%;\r\n  max-width: 1150px;\r\n  margin: 0 auto;\r\n  border-radius: 24px;\r\n  overflow: hidden;\r\n  background: white;\r\n  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);\r\n}\r\n.header {\r\n  background: linear-gradient(to bottom right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  padding: 50px 45px;\r\n  border-top-left-radius: 24px;\r\n  border-top-right-radius: 24px;\r\n  position: relative;\r\n  overflow: hidden;\r\n  display: flex !important; \r\n  justify-content: space-between !important;\r\n  align-items: center !important;\r\n}\r\n\r\n.header::before {\r\n  content: \"\";\r\n  position: absolute;\r\n  top: -50px;\r\n  right: -50px;\r\n  width: 220px;\r\n  height: 220px;\r\n  background: rgba(255, 255, 255, 0.12);\r\n  border-radius: 50%;\r\n}\r\n\r\n.header::after {\r\n  content: \"\";\r\n  position: absolute;\r\n  bottom: -80px;\r\n  left: -80px;\r\n  width: 260px;\r\n  height: 260px;\r\n  background: rgba(255, 255, 255, 0.08);\r\n  border-radius: 50%;\r\n}\r\n\r\n.title {\r\n  font-size: 44px;\r\n  font-weight: 800;\r\n  margin-bottom: 14px;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n\r\n.subtitle {\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n  opacity: 0.9;\r\n  position: relative;\r\n  z-index: 2;\r\n}\r\n\r\n.logo {\r\n  position: relative;\r\n  z-index: 2;\r\n  max-width: 120px; \r\n  height: auto;\r\n}\r\n@media (max-width: 640px) {\r\n  .header {\r\n    padding: 35px 25px;\r\n    flex-direction: column; \r\n    text-align: center;\r\n    gap: 20px;\r\n  }\r\n  \r\n  .header > div {\r\n    width: 100%; \r\n  }\r\n  \r\n  .title {\r\n    font-size: 34px;\r\n  }\r\n  \r\n  .subtitle {\r\n    font-size: 16px;\r\n  }\r\n  \r\n  .logo {\r\n    max-width: 100px; \r\n    margin-top: 10px;\r\n  }\r\n}\r\n\r\n.body {\r\n  padding: 28px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 18px; \r\n}\r\n\r\n@media (min-width: 640px) {\r\n  .body {\r\n    padding: 32px;\r\n    gap: 22px;\r\n  }\r\n}\r\n\r\n.body > * {\r\n  width: 100%;\r\n  display: block;\r\n}\r\n\r\n.buttons {\r\n  padding: 25px 45px 45px 45px;\r\n  display: flex;\r\n  gap: 16px;\r\n  justify-content: space-between;\r\n}\r\n\r\n@media (max-width: 640px) {\r\n  .buttons {\r\n    flex-direction: column;\r\n    padding: 20px 25px 35px 25px;\r\n  }\r\n}\r\n\r\n.button-1 {\r\n  flex: 1;\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  padding: 16px 22px;\r\n  border-radius: 14px;\r\n  font-weight: 700;\r\n  font-size: 16px;\r\n  border: none;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n  box-shadow: 0px 10px 25px rgba(29, 78, 216, 0.25);\r\n}\r\n\r\n.button-1:hover {\r\n  transform: translateY(-2px);\r\n  box-shadow: 0px 14px 30px rgba(13, 148, 136, 0.35);\r\n}\r\n\r\n.button-1:active {\r\n  transform: scale(0.98);\r\n}\r\n\r\n.button-2 {\r\n  min-width: 160px;\r\n  padding: 16px 22px;\r\n  border-radius: 14px;\r\n  font-weight: 700;\r\n  font-size: 16px;\r\n  border: 2px solid #cbd5e1;\r\n  background: white;\r\n  color: #1f2937;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.button-2:hover {\r\n  border-color: #1d4ed8;\r\n  color: #1d4ed8;\r\n  background: rgba(29, 78, 216, 0.05);\r\n}\r\n\r\n.button-2:active {\r\n  transform: scale(0.98);\r\n}\r\n.popup-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(15, 23, 42, 0.65);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  z-index: 9999;\r\n}\r\n\r\n.popup-box {\r\n  background: white;\r\n  padding: 100px 35px;\r\n  border-radius: 24px;\r\n  width: 90%;\r\n  max-width: 420px;\r\n  text-align: center;\r\n  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.25);\r\n  animation: scaleIn 0.3s ease-in-out;\r\n}\r\n.popup-box h2 {\r\n  font-size: 36px;\r\n  margin-bottom: 15px;\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  background-clip: text;\r\n  -webkit-background-clip: text;\r\n  -webkit-text-fill-color: transparent;\r\n}\r\n.popup-box p {\r\n  font-size: 16px;\r\n  margin-bottom: 25px;\r\n  color: #334155;\r\n  line-height: 1.6;\r\n}\r\n.popup-box button {\r\n  background: linear-gradient(to right, #0d9488, #1d4ed8);\r\n  color: white;\r\n  border: none;\r\n  padding: 12px 28px;\r\n  border-radius: 12px;\r\n  font-weight: 600;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.popup-box button:hover {\r\n  transform: translateY(-2px);\r\n  box-shadow: 0px 10px 25px rgba(29, 78, 216, 0.35);\r\n}\r\n\r\n@keyframes scaleIn {\r\n  from {\r\n    transform: scale(0.8);\r\n    opacity: 0;\r\n  }\r\n  to {\r\n    transform: scale(1);\r\n    opacity: 1;\r\n  }\r\n}\r\n.logo {\r\n  height: auto;\r\n  width: auto;\r\n  max-width: 100%;\r\n  max-height: 70px; \r\n  position: relative;\r\n  z-index: 10;\r\n  object-fit: contain; \r\n}\r\n@media screen and (max-width: 1024px) {\r\n  .logo {\r\n    max-height: 65px;\r\n  }\r\n}\r\n\r\n@media screen and (max-width: 768px) {\r\n  .logo {\r\n    max-height: 60px;\r\n  }\r\n}\r\n\r\n@media screen and (max-width: 480px) {\r\n  .logo {\r\n    max-height: 50px; \r\n    display: block;\r\n    margin-left: 0; \r\n    margin-right: auto; \r\n  }\r\n}\r\n\r\n@media screen and (max-width: 480px) {\r\n  .logo {\r\n    max-height: 55px;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    display: block;\r\n  }\r\n}\r\n\r\n\r\n@media screen and (max-width: 360px) {\r\n  .logo {\r\n    max-height: 45px;\r\n  }\r\n}\r\n",
                     "styleUrl": "./info-form-component.scss"
                 }
             ],
@@ -2264,11 +2505,11 @@
                 ]
             },
             "extends": [],
-            "templateData": "<div class=\"container\">\r\n<div class=\"container\">\r\n    <div class=\"header\" style=\"display: flex; justify-content: space-between; align-items: center;\">\r\n        <div>\r\n            <h1 class=\"title\">Request a Service</h1>\r\n            <p class=\"subtitle\">Fill out the form below and we will connect you on whatsapp</p>\r\n        </div>\r\n        <img src=\"leg.png\" alt=\"Leg Works Logo\" class=\"logo\" style=\"height: 70px; width: auto; position: relative; z-index: 10;\" />\r\n    </div>\r\n</div>\r\n    <div class=\"body\">\r\n        <app-text-box-component \r\n            [label]=\"'Full Name'\" \r\n            [value]=\"fullName\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-text-box-component>\r\n        <app-text-box-component \r\n            [label]=\"'Email Address'\" \r\n            [value]=\"email\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-text-box-component>\r\n        <app-number-box-component \r\n            [label]=\"'Phone Number'\"\r\n            [placeHolder]=\"'+91 98765 56784'\"\r\n            [value]=\"phone\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-number-box-component>\r\n        <app-text-area-component \r\n            [label]=\"'Address'\"\r\n            [placeHolder]=\"'Please tell your Address'\"\r\n            [value]=\"address\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-drop-down-component \r\n            [label]=\"'Select Your Service'\"\r\n            [options]=\"[{value: 1, name: 'Home Needs & Special Services'}, {value: 2, name: 'Events & Gatherings'}, {value: 3, name: 'Financial/Investment Services'}, {value: 4, name: 'Online Health Care Services'}, {value: 5, name: 'Property Management Services'}, {value: 6, name: 'Tours And Travels Services'}, {value: 7, name: 'Taxation/Legal'}, {value: 8, name: 'Documents Procurement'}]\"\r\n            [dropDownModel]=\"service\"\r\n            (selectedChange)=\"selectedChange($event)\"\r\n            (blurEvent)=\"blurEvent()\">\r\n        </app-drop-down-component>\r\n        <app-text-area-component \r\n            [label]=\"'Additional Details/Description'\"\r\n            [placeHolder]=\"'Tell us more about your requirements'\"\r\n            [value]=\"details\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-calender-component \r\n            [label]=\"'Legwork’s to Reach you by'\"\r\n            (dateSelected)=\"dateSelected($event)\">\r\n        </app-calender-component>\r\n    </div>\r\n    <div class=\"buttons\">\r\n        <button class=\"button-1\" (click)=\"ThankYou()\">Send via Whatsapp</button>\r\n        <button class=\"button-2\" (click)=\"Hi()\">Cancel</button>\r\n    </div>\r\n    @if (showPopup) {\r\n    <div class=\"popup-overlay\">\r\n        <div class=\"popup-box\">\r\n            <h2>Thank You!</h2>\r\n            <p>\r\n                Thanks for Trusting and Reaching Legwork's,<br>\r\n                we will be at your Doorstep Soon.\r\n            </p>\r\n            <button (click)=\"closePopup()\">Close</button>\r\n        </div>\r\n    </div>\r\n    }\r\n</div>"
+            "templateData": "<div class=\"container\">\r\n<div class=\"container\">\r\n    <div class=\"header\" style=\"display: flex; justify-content: space-between; align-items: center;\">\r\n        <div>\r\n            <h1 class=\"title\">Request a Service</h1>\r\n            <p class=\"subtitle\">Fill out the form below and we will connect you on whatsapp</p>\r\n        </div>\r\n        <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    </div>\r\n</div>\r\n    <div class=\"body\">\r\n        <app-text-box-component \r\n            [label]=\"'Full Name'\" \r\n            [value]=\"fullName\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            [placeHolder]=\"'Enter your Full Name'\">\r\n        </app-text-box-component>\r\n        <app-text-box-component \r\n            [label]=\"'Email Address'\" \r\n            [value]=\"email\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            [placeHolder]=\"'Eg:John@gmail.com'\">\r\n        </app-text-box-component>\r\n        <app-number-box-component \r\n            [label]=\"'Phone Number'\"\r\n            [placeHolder]=\"'+91 98765 56784'\"\r\n            [value]=\"phone\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-number-box-component>\r\n        <app-text-area-component \r\n            [label]=\"'Address'\"\r\n            [placeHolder]=\"'Please tell your Address'\"\r\n            [value]=\"address\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-drop-down-component \r\n            [label]=\"'Select Your Service'\"\r\n            [options]=\"[{value: 1, name: 'Home Needs & Special Services'}, {value: 2, name: 'Events & Gatherings'}, {value: 3, name: 'Financial/Investment Services'}, {value: 4, name: 'Online Health Care Services'}, {value: 5, name: 'Property Management Services'}, {value: 6, name: 'Tours And Travels Services'}, {value: 7, name: 'Taxation/Legal'}, {value: 8, name: 'Documents Procurement'}]\"\r\n            [dropDownModel]=\"service\"\r\n            (selectedChange)=\"selectedChange($event)\"\r\n            (blurEvent)=\"blurEvent()\">\r\n        </app-drop-down-component>\r\n        <app-text-area-component \r\n            [label]=\"'Additional Details/Description'\"\r\n            [placeHolder]=\"'Tell us more about your requirements'\"\r\n            [value]=\"details\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-calender-component \r\n            [label]=\"'Legwork’s to Reach you by'\"\r\n            (dateSelected)=\"dateSelected($event)\">\r\n        </app-calender-component>\r\n    </div>\r\n    <div class=\"buttons\">\r\n        <button class=\"button-1\" (click)=\"ThankYou()\">Send via Whatsapp</button>\r\n        <!-- <button class=\"button-2\" (click)=\"Hi()\">Cancel</button> -->\r\n    </div>\r\n    @if (showPopup) {\r\n    <div class=\"popup-overlay\">\r\n        <div class=\"popup-box\">\r\n            <h2>Thank You!</h2>\r\n            <p>\r\n                Thanks for Trusting and Reaching Legwork's,<br>\r\n                we will be at your Doorstep Soon.\r\n            </p>\r\n            <button (click)=\"closePopup()\">Close</button>\r\n        </div>\r\n    </div>\r\n    }\r\n</div>"
         },
         {
             "name": "ModuleComponent",
-            "id": "component-ModuleComponent-d9a0c12a752e3407cac91ec116de8f3e5d58ef1e64163f58feffd1c9ab1550fedd417fd03717e6b5ba508c09692dc95b7ba0fb3d369088f03ed6fee5c6cb8df9",
+            "id": "component-ModuleComponent-6c1fbe696257c5eaf254fc192191f872f8f99e99213f7374c2cea680789dad5f5b633002c75942545a222a26b91642d8a62d9f4c542dca881c944359286becf0",
             "file": "src/app/controls/module-component/module-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2300,18 +2541,26 @@
                 {
                     "name": "BodyComponent",
                     "type": "component"
+                },
+                {
+                    "name": "VariousServicesComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "AboutUsComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { HeaderComponent } from \"../header-component/header-component\";\r\nimport { BodyComponent } from \"../body-component/body-component\";\r\n\r\n@Component({\r\n  selector: 'app-module-component',\r\n  imports: [HeaderComponent, BodyComponent],\r\n  templateUrl: './module-component.html',\r\n  styleUrl: './module-component.scss',\r\n})\r\nexport class ModuleComponent {\r\n\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { HeaderComponent } from \"../header-component/header-component\";\r\nimport { BodyComponent } from \"../body-component/body-component\";\r\nimport { VariousServicesComponent } from \"../various-services-component/various-services-component\";\r\nimport { AboutUsComponent } from \"../about-us-component/about-us-component\";\r\n\r\n@Component({\r\n  selector: 'app-module-component',\r\n  imports: [HeaderComponent, BodyComponent, VariousServicesComponent, AboutUsComponent],\r\n  templateUrl: './module-component.html',\r\n  styleUrl: './module-component.scss',\r\n})\r\nexport class ModuleComponent {\r\n\r\n}\r\n",
             "styleUrl": "./module-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div>\r\n    <app-header-component></app-header-component>\r\n    <app-body-component></app-body-component>\r\n</div>\r\n"
+            "templateData": "<div>\r\n    <app-header-component></app-header-component>\r\n    <app-body-component></app-body-component>\r\n    <app-various-services-component></app-various-services-component>\r\n    <app-about-us-component></app-about-us-component>\r\n</div>\r\n"
         },
         {
             "name": "NumberBoxComponent",
@@ -2795,7 +3044,7 @@
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div class=\"textarea-container\">\r\n  \r\n  <textarea\r\n    id=\"message\"\r\n    [attr.maxlength]=\"maxLength\"\r\n    [placeholder]=\"placeHolder\"\r\n    (input)=\"onInput($event)\"\r\n    (blur)=\"onBlur()\"\r\n    [class.error]=\"isInvalid\"\r\n  ></textarea>\r\n\r\n  <label for=\"message\">\r\n    {{label}} <span class=\"required\">*</span>\r\n  </label>\r\n\r\n  <p class=\"char-count\">\r\n    {{ remainingChars }} characters left\r\n  </p>\r\n\r\n</div>\r\n\r\n\r\n"
+            "templateData": "<div class=\"textarea-container\">\r\n  \r\n  <textarea\r\n    id=\"message\"\r\n    [attr.maxlength]=\"maxLength\"\r\n    [placeholder]=\"placeHolder\"\r\n    (input)=\"onInput($event)\"\r\n    (blur)=\"onBlur()\"\r\n    [class.error]=\"isInvalid\"\r\n  ></textarea>\r\n\r\n  <label for=\"message\">\r\n    {{label}} <span class=\"required\">*</span>\r\n  </label>\r\n\r\n  <!-- <p class=\"char-count\">\r\n    {{ remainingChars }} characters left\r\n  </p> -->\r\n\r\n</div>\r\n\r\n\r\n"
         },
         {
             "name": "TextBoxComponent",
@@ -3158,19 +3407,161 @@
                 "OnInit",
                 "OnChanges"
             ],
-            "templateData": "<div class=\"textBoxContainer\">\r\n\r\n  <input\r\n    type=\"text\"\r\n    [id]=\"id\"\r\n    [(ngModel)]=\"currentValue\"\r\n    [placeholder]=\"placeHolder\"\r\n    [attr.maxlength]=\"maxLength\"\r\n    [readonly]=\"isReadOnly\"\r\n    [tabindex]=\"tabindex\"\r\n    [ngStyle]=\"getInputStyle()\"\r\n    class=\"textBoxInput peer\"\r\n    (focus)=\"onFocus()\"\r\n    (blur)=\"onBlur($event)\"\r\n    (ngModelChange)=\"onValueChange($event)\"\r\n  />\r\n\r\n  <label\r\n    [for]=\"id\"\r\n    class=\"textBoxLabel\"\r\n  >\r\n    {{ label }}\r\n    @if (isRequired) { <span class=\"required\">*</span> }\r\n  </label>\r\n\r\n  @if (showCharCount) {\r\n    <p\r\n      class=\"charCountText\"\r\n      [class.showCount]=\"shouldShowCount\"\r\n      [class.hideCount]=\"!shouldShowCount\"\r\n    >\r\n      {{ currentCharCount }} of {{ maxLength }} characters left\r\n    </p>\r\n  }\r\n\r\n</div>\r\n"
+            "templateData": "<div class=\"textBoxContainer\">\r\n\r\n  <input\r\n    type=\"text\"\r\n    [id]=\"id\"\r\n    [(ngModel)]=\"currentValue\"\r\n    [placeholder]=\"placeHolder\"\r\n    [attr.maxlength]=\"maxLength\"\r\n    [readonly]=\"isReadOnly\"\r\n    [tabindex]=\"tabindex\"\r\n    [ngStyle]=\"getInputStyle()\"\r\n    class=\"textBoxInput peer\"\r\n    (focus)=\"onFocus()\"\r\n    (blur)=\"onBlur($event)\"\r\n    (ngModelChange)=\"onValueChange($event)\"\r\n  />\r\n\r\n  <label\r\n    [for]=\"id\"\r\n    class=\"textBoxLabel\"\r\n  >\r\n    {{ label }}\r\n    @if (isRequired) { <span class=\"required\">*</span> }\r\n  </label>\r\n\r\n  <!-- @if (showCharCount) {\r\n    <p\r\n      class=\"charCountText\"\r\n      [class.showCount]=\"shouldShowCount\"\r\n      [class.hideCount]=\"!shouldShowCount\"\r\n    >\r\n      {{ currentCharCount }} of {{ maxLength }} characters left\r\n    </p>\r\n  } -->\r\n\r\n</div>\r\n"
+        },
+        {
+            "name": "TypesComponent",
+            "id": "component-TypesComponent-5f32dbb0fac5fb574cc612acf941c1f6181e7fd51194ca40d47a0ed74a2cb9666f51b57acb8a5c0558075c44bd4b4856ad9adcba8a2ee158bdb9195905bea310",
+            "file": "src/app/controls/types-component/types-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-types-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./types-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "showService",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "closeService",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "openService",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-types-component',\r\n  imports: [],\r\n  templateUrl: './types-component.html',\r\n  styleUrl: './types-component.scss',\r\n})\r\nexport class TypesComponent {\r\n  showService = false;\r\n  openService(){\r\n    this.showService = true;\r\n  }\r\n  closeService(){\r\n    this.showService = false;\r\n  }\r\n  \r\n}\r\n",
+            "styleUrl": "./types-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "@if(showService){\r\n\r\n<div class=\"header\">\r\n    <div class=\"icon-cart\">🛒</div>\r\n    <h1 class=\"text-1\">Home Needs & Special Services</h1>\r\n    <button class=\"close-btn\" (click)=\"closeService()\">✕</button>\r\n</div>\r\n\r\n<div class=\"container\">\r\n\r\n    <div class=\"content-2\">\r\n\r\n        <h1 class=\"overview\">Overview</h1>\r\n\r\n        <p class=\"text\">\r\n            We are here to support you and your family with all your essential home needs,\r\n            ensuring comfort, convenience, and peace of mind....from everyday necessities\r\n            to special purchases, we take care of everything with attention and reliability.\r\n        </p>\r\n\r\n        <h1 class=\"overview\">What We Assist With</h1>\r\n\r\n        <div class=\"grid\">\r\n\r\n            <div class=\"card\">\r\n                ✔ Grocery shopping and doorstep delivery\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Live clothing purchases and personal shopping assistance\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Home furnishings and décor selection\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Appliances sourcing and coordination\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Packaging and delivery anywhere in India\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ International shipping arrangements\r\n            </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"highlighted-box\">\r\n\r\n            <h1>Why Choose Us</h1>\r\n\r\n            <p>\r\n                Whether you are living abroad or managing things from a distance,\r\n                we act as your trusted support system on the ground — handling every\r\n                detail with care, transparency, and efficiency.\r\n            </p>\r\n\r\n        </div>\r\n\r\n        <div class=\"button-group\">\r\n\r\n            <button class=\"button-primary\">\r\n                Request This Service\r\n            </button>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n\r\n}"
+        },
+        {
+            "name": "VariousServicesComponent",
+            "id": "component-VariousServicesComponent-c472eec6b886e75acb64683e80ceace673f12798643019d1ea6d863c6cad258f818987564e60b7d5914d9567163ae0078df2506470532a79be3c001138a2b05f",
+            "file": "src/app/controls/various-services-component/various-services-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-various-services-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./various-services-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "showDetailView",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "closeService",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "openService",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 13,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { IconComponent } from \"../icon/icon.component/icon.component\";\r\n\r\n@Component({\r\n  selector: 'app-various-services-component',\r\n  imports: [],\r\n  templateUrl: './various-services-component.html',\r\n  styleUrl: './various-services-component.scss',\r\n})\r\nexport class VariousServicesComponent {\r\nshowDetailView = false;\r\n\r\n  openService() {\r\n    this.showDetailView = true;\r\n  }\r\n\r\n  closeService() {\r\n    this.showDetailView = false;\r\n  }\r\n}\r\n",
+            "styleUrl": "./various-services-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<section class=\"services-section\">\r\n\r\n<div class=\"container\">\r\n    <div class=\"header\">\r\n        <h1>Our Services</h1>\r\n        <span>Comprehensive solutions delivered right to your doorstep with authenticity and quality</span>\r\n    </div>\r\n    <div class=\"service-grid\">\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🛒</div>\r\n            <h2>Home Needs & Special Services</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🎁</div>\r\n            <h2>Event Planning & Management</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">💰</div>\r\n            <h2>Financial and Investment Management Services</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🏥</div>\r\n            <h2>Health Care Support</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🏠</div>\r\n            <h2>Property Management Services</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">✈️</div>\r\n            <h2>Tours and Travels Support</h2>\r\n        </div>\r\n    </div>\r\n</div>\r\n</section>"
         }
     ],
     "modules": [
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-4949d11c6b8872a890a9b8b0d0e426f0fcdb9b94f10ba8e21418feaf43504cf26647da9c4884d8a3af97f2bd0194c800b33ba5a7a11eb7fe6b92f7261aff5d5b",
+            "id": "module-AppRoutingModule-b5905f627584406b4ccd99b374a57bd76684587eb40f6fc1a34d950e6abcb7c5e1ab4b4c3eefd1af40b08619d911c9384e574aecb83f146a4d922a0f6d2d307c",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { RouterModule, Routes } from '@angular/router';\r\nimport { InfoFormComponent } from './controls/info-form-component/info-form-component';\r\nimport { ModuleComponent } from './controls/module-component/module-component';\r\n\r\n\r\n\r\nconst routes: Routes = [\r\n  { path: '', redirectTo: 'module', pathMatch: 'full' },\r\n  { path: 'module', component: ModuleComponent },\r\n  { path: 'infoform', component: InfoFormComponent },\r\n  { path: '**', redirectTo: 'module' }\r\n];\r\n\r\n@NgModule({\r\n  imports: [RouterModule.forRoot(routes)],\r\n  exports: [RouterModule]\r\n})\r\nexport class AppRoutingModule {}",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { RouterModule, Routes } from '@angular/router';\r\nimport { InfoFormComponent } from './controls/info-form-component/info-form-component';\r\nimport { ModuleComponent } from './controls/module-component/module-component';\r\n\r\n\r\n\r\nconst routes: Routes = [\r\n  { path: '', redirectTo: 'module', pathMatch: 'full' },\r\n  { path: 'module', component: ModuleComponent },\r\n  // { path: 'infoform', component: InfoFormComponent },\r\n  // { path: '**', redirectTo: 'module' }\r\n];\r\n\r\n@NgModule({\r\n  imports: [RouterModule.forRoot(routes)],\r\n  exports: [RouterModule]\r\n})\r\nexport class AppRoutingModule {}",
             "children": [
                 {
                     "type": "providers",
@@ -3199,7 +3590,40 @@
             ]
         }
     ],
-    "miscellaneous": [],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "iconRegistry",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/icons/icons-registry.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Record<string, IconifyIcon>",
+                "defaultValue": "{\r\n  'shopping_cart': shopping_cart\r\n}"
+            }
+        ],
+        "functions": [],
+        "typealiases": [],
+        "enumerations": [],
+        "groupedVariables": {
+            "src/app/icons/icons-registry.ts": [
+                {
+                    "name": "iconRegistry",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/icons/icons-registry.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Record<string, IconifyIcon>",
+                    "defaultValue": "{\r\n  'shopping_cart': shopping_cart\r\n}"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {}
+    },
     "routes": {
         "name": "<root>",
         "kind": "module",
@@ -3208,12 +3632,6 @@
                 "name": "ModuleComponent",
                 "kind": "component",
                 "path": "module",
-                "filename": "src/app/app-routing.module.ts"
-            },
-            {
-                "name": "InfoFormComponent",
-                "kind": "component",
-                "path": "infoform",
                 "filename": "src/app/app-routing.module.ts"
             },
             {
@@ -3227,6 +3645,15 @@
         "count": 0,
         "status": "low",
         "files": [
+            {
+                "filePath": "src/app/controls/about-us-component/about-us-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AboutUsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
             {
                 "filePath": "src/app/controls/app.component/app.component.ts",
                 "type": "component",
@@ -3278,7 +3705,16 @@
                 "linktype": "component",
                 "name": "HeaderComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/15",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/icon/icon.component/icon.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "IconComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -3324,6 +3760,34 @@
                 "name": "TextBoxComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/26",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/types-component/types-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TypesComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/various-services-component/various-services-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "VariousServicesComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/icons/icons-registry.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "iconRegistry",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
