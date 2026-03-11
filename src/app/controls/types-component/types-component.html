@@ -1,0 +1,43 @@
+<div class="service-details">
+  <div class="header">
+    <div class="icon-cart">{{ serviceIcon }}</div>
+    <h1 class="text-1">{{ serviceTitle }}</h1>
+    <button class="close-btn" (click)="closeService()">✕</button>
+  </div>
+
+  <div class="container">
+    <div class="content-2">
+      <h1 class="overview">Overview</h1>
+      <p class="text">{{ overviewText }}</p>
+
+      <h1 class="overview">What We Assist With</h1>
+
+      <div class="grid">
+        @for (item of assistItems; track $index) {
+          <div class="card">✔ {{ item }}</div>
+        }
+      </div>
+
+      <div class="highlighted-box">
+        <h2>Why Choose Us</h2>
+        <p>{{ whyChooseUsText }}</p>
+      </div>
+
+      <div class="button-group">
+        <button class="button-primary" (click)="openInfoForm()">{{ buttonText }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Info Form Modal -->
+@if(showInfoModal) {
+<div class="modal-overlay" (click)="closeInfoForm()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+   <button class="close-btn" (click)="closeService();">✕</button>
+    
+    <!-- Your existing info form component -->
+    <app-info-form-component [service]="serviceTitle"></app-info-form-component>
+  </div>
+</div>
+}
