@@ -1,0 +1,20 @@
+<div class="parent-container">
+  <div class="services-wrapper">
+    <app-various-services-component 
+      (serviceSelected)="onServiceToggled($event)">
+    </app-various-services-component>
+  </div>
+  
+@if (showServiceDetail && selectedService) {
+  <div class="service-detail-section" id="service-detail">
+    <app-types-component 
+      [serviceTitle]="selectedService.title"
+      [serviceIcon]="selectedService.icon"
+      [overviewText]="selectedService.overview"
+      [assistItems]="selectedService.assistItems"
+      [whyChooseUsText]="selectedService.whyChooseUs"
+      (closeClicked)="onCloseService()">
+    </app-types-component>
+  </div>
+}
+</div>

@@ -1,0 +1,55 @@
+.parent-container {
+  width: 100%;
+  min-height: 100vh; // Ensures full viewport height
+  margin: 0;
+  padding: 0;
+}
+
+.services-wrapper {
+  width: 100%;
+  
+  .services-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+.home-needs-section {
+  width: 100%;
+  padding: 40px 20px;
+  margin-top: 0; 
+  // animation: fadeIn 0.3s ease-in-out;
+  
+  .service-details {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Ensure all child sections take full width
+::ng-deep {
+  .services-section,
+  .service-details {
+    width: 100%;
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 20px;
+    }
+  }
+}
