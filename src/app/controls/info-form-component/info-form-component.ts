@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TextBoxComponent } from "../text-box-component/text-box-component";
 import { TextAreaComponent } from "../text-area-component/text-area-component";
@@ -27,10 +27,10 @@ export class InfoFormComponent {
   email: string = '';
   phone: string = '';
   address: string = '';
-  service: string = '';
+  @Input() service: string = '';
   details: string = '';
   date: string = '';
-
+  
   constructor(private router: Router) {}
 
 valueChange(value: any) {
