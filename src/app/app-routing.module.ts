@@ -8,8 +8,8 @@ import { ModuleComponent } from './controls/module-component/module-component';
 const routes: Routes = [
   { path: '', redirectTo: 'module', pathMatch: 'full' },
   { path: 'module', component: ModuleComponent },
-  { path: 'infoform', component: InfoFormComponent },
-  { path: '**', redirectTo: 'module' }
+  // { path: 'infoform', component: InfoFormComponent },
+  // { path: '**', redirectTo: 'module' }
 ];
 
 @NgModule({

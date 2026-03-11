@@ -7,6 +7,12 @@ import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/controls/app.component/app.component';
 
 bootstrapApplication(AppComponent, {
-    providers: [importProvidersFrom(CommonModule, HttpClientModule, AppRoutingModule)]
+  providers: [
+    importProvidersFrom(
+      CommonModule,
+      HttpClientModule,
+      AppRoutingModule
+    )
+  ]
 })
-  .catch(err => console.error(err));
+.catch(err => console.error(err));
