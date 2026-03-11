@@ -1,0 +1,130 @@
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+.services-section{
+  padding:100px 20px;
+//   background: linear-gradient(#84eff0,#338284);  
+    background:linear-gradient(to bottom right,#ecfdf5,#eff6ff);
+}
+
+.header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    margin-bottom:60px;
+}
+.icon-cart{
+    font-size:48px;   /* text-5xl */
+    margin-bottom:16px; /* mb-4 */
+}
+.header h1{
+    font-size:42px;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:14px;
+    letter-spacing:-0.5px;
+}
+
+.header span{
+    font-size:18px;
+    color:#64748b;
+    max-width:620px;
+    line-height:1.6;
+}
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+}
+
+.service-card{
+    background:#ffffff;
+    padding:40px 28px;
+    border-radius:18px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.06);
+    transition:all 0.35s ease;
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    min-height:140px;
+    position:relative;
+    overflow:hidden;
+}
+
+.service-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom right,#0d9488,#1d4ed8);
+    opacity:0;
+    transition:opacity 0.35s ease;
+}
+
+.service-card h2{
+    font-size:19px;
+    font-weight:600;
+    color:#0f172a;
+    line-height:1.4;
+    // position:relative;
+    // z-index:1;
+}
+
+.service-card:hover{
+    transform:translateY(-6px);
+
+    box-shadow:
+        0 10px 25px rgba(13,148,136,0.25),
+        0 15px 35px rgba(29,78,216,0.25);
+
+    border:1px solid transparent;
+    background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(to bottom right,#0d9488,#1d4ed8) border-box;
+}
+
+
+.service-card:hover::before{
+    opacity:0.08;
+}
+
+@media (max-width:992px){
+
+.service-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media (max-width:600px){
+
+.container{
+padding:60px 18px;
+}
+
+.header h1{
+font-size:34px;
+}
+
+.header span{
+font-size:16px;
+}
+
+.service-grid{
+grid-template-columns:1fr;
+gap:22px;
+}
+
+.service-card{
+padding:30px 22px;
+min-height:120px;
+}
+
+}
