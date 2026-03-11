@@ -1,24 +1,33 @@
 <div class="body">
   <div class="text-left">
+
+    <div class="dropdown">
+      <p class="text-2" (click)="scrollToHome()">Home</p>
+    </div>
+
     <div class="dropdown">
       <p class="text-2 dropbtn" (click)="toggleServices()" (mouseenter)="showContact()">Services</p>
 
       @if (isServicesOpen) {
         <div class="dropdown-content" (mouseleave)="hideServices()">
-          <p class="drop-item" (click)="hello()">Home Needs & Special Services</p>
-          <p class="drop-item" (click)="hello()">Events & Gatherings</p>
-          <p class="drop-item" (click)="hello()">Financial/Investment Services</p>
-          <p class="drop-item" (click)="hello()">Online Health Care Services</p>
-          <p class="drop-item" (click)="hello()">Property Management Services</p>
-          <p class="drop-item" (click)="hello()">Tours & Travel Support</p>
-          <p class="drop-item" (click)="hello()">Legal/Taxation</p>
-          <p class="drop-item" (click)="hello()">Documentation Procurement</p>
+          <p class="drop-item" (click)="openServiceForm()">Home Needs & Special Services</p>
+          <p class="drop-item" (click)="openServiceForm()">Events & Gatherings</p>
+          <p class="drop-item" (click)="openServiceForm()">Financial/Investment Services</p>
+          <p class="drop-item" (click)="openServiceForm()">Online Health Care Services</p>
+          <p class="drop-item" (click)="openServiceForm()">Property Management Services</p>
+          <p class="drop-item" (click)="openServiceForm()">Tours & Travel Support</p>
+          <!-- <p class="drop-item" (click)="openServiceForm('Legal/Taxation')">Legal/Taxation</p>
+          <p class="drop-item" (click)="openServiceForm('Documentation Procurement')">Documentation Procurement</p> -->
         </div>
       }
     </div>
-   
+    <div class="dropdown">
+      <p class="text-2" (click)="scrollToAbout()">About Us</p>
+    </div>
+
     <div class="dropdown-1">
       <p class="text-2" (mouseenter)="showContact()" (mouseleave)="hideContact()">Contact</p>
+
       @if (isContactOpen) {
         <div class="dropdown-content-1">
           <p class="drop-item-1">
@@ -28,9 +37,25 @@
         </div>
       }
     </div>
+
   </div>
 
   <div class="text-right">
     <img src="title.png" alt="Leg Works Logo" class="logo" />
   </div>
 </div>
+
+@if(showServiceModal){
+<div class="modal-overlay" (click)="closeServiceForm()">
+
+  <div class="modal-container" (click)="$event.stopPropagation()">
+
+    <button class="close-btn" (click)="closeServiceForm()">✕</button>
+
+  <app-info-form-component
+      [service]="selectedService">
+    </app-info-form-component>
+  </div>
+
+</div>
+}

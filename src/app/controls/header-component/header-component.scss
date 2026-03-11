@@ -6,9 +6,17 @@
   padding: 0 40px;           
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;  
   z-index: 1000;
+}
+:host {
+  display: block;
+  padding-top: 80px;  
 }
 
 .logo {
@@ -110,7 +118,12 @@ body:has(.dropdown-content:hover) .dropdown-content-1,
 body:has(.dropdown:hover) .dropdown-content-1 {
   display: none !important;
 }
-
+#about {
+  scroll-margin-top: 100px;
+}
+#home {
+  scroll-margin-top: 100px;
+}
 .drop-item-1 {
   font-family: 'Segoe UI', sans-serif;
   padding: 12px 20px;
@@ -187,5 +200,56 @@ body:has(.dropdown:hover) .dropdown-content-1 {
     font-size: 12px;
     padding: 12px 14px;
     line-height: 1.6;
+  }
+}
+.modal-overlay{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background: rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;  
+}
+
+.modal-container{
+  background:white;
+  border-radius:20px;
+  width:90%;
+  max-width:1100px;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+
+.close-btn{
+  position:absolute;
+  top:15px;
+  right:20px;
+  border:none;
+  background:none;
+  font-size:28px;
+  cursor:pointer;
+}
+:host{
+  position: relative;
+  z-index: 1;
+}
+.modal-container{
+  animation: modalPop 0.25s ease;
+}
+
+@keyframes modalPop{
+  from{
+    transform:scale(0.9);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
   }
 }
