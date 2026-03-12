@@ -31,6 +31,7 @@
   gap: 30px;
   align-items: center;
   white-space: nowrap;
+  flex: 1; 
 }
 
 .text-right {
@@ -93,9 +94,12 @@
   display: none;
   position: absolute;
   top: 45px;
-  left: 0;
+  left: 50%; /* Center the dropdown */
+  transform: translateX(-50%); /* Center the dropdown */
   background-color: #ffffff;
   min-width: 320px;
+  max-width: 400px;
+  width: max-content;
   border-radius: 12px;
   padding: 10px 0;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
@@ -135,12 +139,44 @@ body:has(.dropdown:hover) .dropdown-content-1 {
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: normal;
-  line-height: 1.5;
+  line-height: 1.7;
+  font-weight: 600;
 }
 
 .drop-item-1:hover {  
   background-color: #f5f7fa;
   color: #1d4ed8;
+}
+/* Fix for iOS tap highlight */
+.dropdown-1 {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dropdown-content-1 {
+  display: block !important; 
+  position: absolute;
+  top: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  min-width: 320px;
+  border-radius: 12px;
+  padding: 10px 0;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  z-index: 99999; 
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .dropdown-content-1 {
+    position: fixed; 
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+    width: auto;
+    min-width: 280px;
+  }
 }
 @media screen and (max-width: 768px) {
   .body {
@@ -161,7 +197,11 @@ body:has(.dropdown:hover) .dropdown-content-1 {
   
   .dropdown-content-1 {
     min-width: 280px;
+    max-width: 350px;
+    left: 50%;
+    transform: translateX(-50%);
   }
+  
   
   .drop-item-1 {
     font-size: 13px;
@@ -193,14 +233,54 @@ body:has(.dropdown:hover) .dropdown-content-1 {
   
   .dropdown-content-1 {
     min-width: 260px;
-    max-width: calc(100vw - 30px);
+    max-width: 300px;
+    left: 50%;
+    transform: translateX(-50%);
   }
-  
   .drop-item-1 {
     font-size: 12px;
     padding: 12px 14px;
     line-height: 1.6;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
+  @media screen and (max-width: 360px) {
+  .body {
+    padding: 0 8px;
+    height: 65px;
+  }
+  
+  .text-left {
+    gap: 5px;
+  }
+  
+  .text-2 {
+    font-size: 12px;
+  }
+  
+  .logo {
+    height: 28px;
+    max-width: 100px; /* Limit logo size on very small screens */
+  }
+  
+  .text-right {
+    margin-left: 5px;
+  }
+}
+@media screen and (max-width: 640px) {
+  .body {
+    padding: 0 15px;
+  }
+  
+  .text-left {
+    gap: 12px;
+  }
+  
+  .text-right {
+    margin-left: 10px;
+  }
+}
 }
 .modal-overlay{
   position: fixed;
