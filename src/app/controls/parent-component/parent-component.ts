@@ -45,14 +45,12 @@ export class ParentComponent {
     eventPlanning: {
       title: 'Event Planning & Management',
       icon: '🎁',
-      overview: 'We will be your trusted virtual partner for all your events and special occasions.',
+      overview: 'We help make your events special and stress-free by providing complete support for your gatherings and celebrations.',
       assistItems: [
-        'Wedding planning and coordination',
-        'Birthday party arrangements',
-        'Corporate event management',
-        'Venue selection and decoration',
-        'Catering and entertainment booking',
-        'Guest management and invitations'
+        'Gift Selection Assistance',
+        'Event Decorations Support',
+        'Guest Care & Coordination',
+        'Global Purchase & Delivery Support',
       ],
       whyChooseUs: 'We blend tradition with elegance to ensure unforgettable celebrations.'
     },
