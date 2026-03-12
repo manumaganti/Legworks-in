@@ -21,7 +21,7 @@ export class TypesComponent {
     'International shipping arrangements'
   ];
   @Input() whyChooseUsText: string = 'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground — handling every detail with care, transparency, and efficiency.';
-  @Input() buttonText: string = 'Request This Service';
+  @Input() buttonText: string = 'Request this service';
   @Output() closeClicked = new EventEmitter<void>();
   
   // Modal properties

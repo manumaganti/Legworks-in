@@ -30,13 +30,11 @@
   </div>
 </div>
 
-<!-- Info Form Modal -->
 @if(showInfoModal) {
 <div class="modal-overlay" (click)="closeInfoForm()">
   <div class="modal-container" (click)="$event.stopPropagation()">
    <button class="close-btn" (click)="closeService();">✕</button>
-    
-    <!-- Your existing info form component -->
+
     <app-info-form-component [service]="serviceTitle"></app-info-form-component>
   </div>
 </div>
