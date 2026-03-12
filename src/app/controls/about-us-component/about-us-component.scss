@@ -5,6 +5,7 @@ padding:80px 20px;
 .container{
 max-width:1200px;
 margin:auto;
+padding:0 20px;
 }
 
 .about-header{
@@ -28,7 +29,7 @@ line-height:1.6;
 }
 .founders{
 display:grid;
-grid-template-columns:repeat(2,1fr);
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:32px;
 margin-bottom:70px;
 }
@@ -168,6 +169,27 @@ grid-template-columns:1fr;
 .features{
 grid-template-columns:1fr;
 gap:30px;
+}
+
+}
+@media(max-width:600px){
+.about{
+padding:60px 20px;
+}
+
+.about-header h2{
+font-size:34px;
+}
+
+.about-header p{
+font-size:17px;
+}
+
+.mission p{
+font-size:19px;
+}
+.founder-card{
+padding:25px;
 }
 
 }
