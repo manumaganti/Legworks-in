@@ -3,7 +3,7 @@
     <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
         <div>
             <h1 class="title">Request a Service</h1>
-            <p class="subtitle">Fill out the form below and we will connect you on whatsapp</p>
+            <p class="subtitle">Fill out the form below and we will connect you on WhatsApp</p>
         </div>
         <img src="title.png" alt="Leg Works Logo" class="logo" />
     </div>
@@ -42,19 +42,19 @@
             (blurEvent)="blurEvent()">
         </app-drop-down-component>
         <app-text-area-component 
-            [label]="'Additional Details/Description'"
+            [label]="'Additional Details/ Description'"
             [placeHolder]="'Tell us more about your requirements'"
             [value]="details"
             (valueChange)="valueChange($event)"
             (blur)="blurEvent()">
         </app-text-area-component>
         <app-calender-component 
-            [label]="'Legwork’s to Reach you by'"
+            [label]="'Legworks to reach you by'"
             (dateSelected)="dateSelected($event)">
         </app-calender-component>
     </div>
     <div class="buttons">
-        <button class="button-1" (click)="ThankYou()">Send via Whatsapp</button>
+        <button class="button-1" (click)="ThankYou()">Send via WhatsApp</button>
         <!-- <button class="button-2" (click)="Hi()">Cancel</button> -->
     </div>
     @if (showPopup) {
@@ -62,8 +62,8 @@
         <div class="popup-box">
             <h2>Thank You!</h2>
             <p>
-                Thanks for Trusting and Reaching Legwork's,<br>
-                we will be at your Doorstep Soon.
+                Thanks for trusting and reaching Legworks,<br>
+                we will be at your doorstep soon.
             </p>
             <button (click)="closePopup()">Close</button>
         </div>
