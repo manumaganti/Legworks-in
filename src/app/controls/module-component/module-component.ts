@@ -7,7 +7,7 @@ import { ParentComponent } from "../parent-component/parent-component";
 
 @Component({
   selector: 'app-module-component',
-  imports: [HeaderComponent, BodyComponent, VariousServicesComponent, AboutUsComponent, ParentComponent],
+  imports: [HeaderComponent, BodyComponent, AboutUsComponent, ParentComponent],
   templateUrl: './module-component.html',
   styleUrl: './module-component.scss',
 })
