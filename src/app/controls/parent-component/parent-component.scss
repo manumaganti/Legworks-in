@@ -1,6 +1,6 @@
 .parent-container {
   width: 100%;
-  min-height: 100vh; // Ensures full viewport height
+  min-height: 100vh; 
   margin: 0;
   padding: 0;
 }
@@ -19,7 +19,6 @@
   width: 100%;
   padding: 40px 20px;
   margin-top: 0; 
-  // animation: fadeIn 0.3s ease-in-out;
   
   .service-details {
     max-width: 1200px;
@@ -38,8 +37,6 @@
     transform: translateY(0);
   }
 }
-
-// Ensure all child sections take full width
 ::ng-deep {
   .services-section,
   .service-details {
@@ -52,4 +49,7 @@
       padding: 0 20px;
     }
   }
+}
+#service-detail{
+  padding: 80px 10px;
 }
