@@ -13,7 +13,9 @@
   width: 100%;
   box-sizing: border-box;  
   z-index: 1000;
+  flex-wrap: nowrap; /* prevents breaking */
 }
+
 :host {
   display: block;
   padding-top: 80px;  
@@ -24,6 +26,7 @@
   width: auto;
   object-fit: contain;
   margin: 0;               
+  flex-shrink: 0;
 }
 
 .text-left {
@@ -31,12 +34,14 @@
   gap: 30px;
   align-items: center;
   white-space: nowrap;
-  flex: 1; 
+  flex: 1;
+  overflow-x: auto; /* prevents overflow on very small screens */
 }
 
 .text-right {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .text-2 {
@@ -88,14 +93,21 @@
 
 .dropdown-1 {
   position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.dropdown-1:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
 }
 
 .dropdown-content-1 {
-  display: none;
   position: absolute;
   top: 45px;
-  left: 50%; /* Center the dropdown */
-  transform: translateX(-50%); /* Center the dropdown */
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #ffffff;
   min-width: 320px;
   max-width: 400px;
@@ -103,31 +115,29 @@
   border-radius: 12px;
   padding: 10px 0;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  z-index: 9999;
+  z-index: 99999;
+  animation: fadeIn 0.2s ease;
 }
-.dropdown-1:hover .dropdown-content-1 {
-  display: block;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
-.dropdown:hover .dropdown-content-1,
-.dropdown-content:hover .dropdown-content-1 {
-  display: none !important;
-}
-.dropdown-content:hover ~ .dropdown-1 .dropdown-content-1 {
-  display: none !important;
-}
-.dropdown:hover + .dropdown-1 .dropdown-content-1 {
-  display: none !important;
-}
-body:has(.dropdown-content:hover) .dropdown-content-1,
-body:has(.dropdown:hover) .dropdown-content-1 {
-  display: none !important;
-}
+
 #about {
   scroll-margin-top: 100px;
 }
+
 #home {
   scroll-margin-top: 100px;
 }
+
 .drop-item-1 {
   font-family: 'Segoe UI', sans-serif;
   padding: 12px 20px;
@@ -147,141 +157,35 @@ body:has(.dropdown:hover) .dropdown-content-1 {
   background-color: #f5f7fa;
   color: #1d4ed8;
 }
-/* Fix for iOS tap highlight */
-.dropdown-1 {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
 
-.dropdown-content-1 {
-  display: block !important; 
-  position: absolute;
-  top: 45px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ffffff;
-  min-width: 320px;
-  border-radius: 12px;
-  padding: 10px 0;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  z-index: 99999; 
-}
-
+/* Mobile-specific styles */
 @media (hover: none) and (pointer: coarse) {
+
   .dropdown-content-1 {
-    position: fixed; 
-    top: auto;
+    position: fixed;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
     max-width: 90vw;
     width: auto;
     min-width: 280px;
+    max-height: 80vh;
+    overflow-y: auto;
   }
-}
-@media screen and (max-width: 768px) {
-  .body {
-    padding: 0 20px;
+
+  .dropdown-1:active {
+    opacity: 0.7;
   }
-  
-  .text-left {
-    gap: 15px;
+
+  @media screen and (max-height: 600px) {
+    .dropdown-content-1 {
+      top: 70px;
+      max-height: 70vh;
+    }
   }
-  
-  .logo {
-    height: 40px;
-  }
-  
-  .dropdown-content {
-    min-width: 250px;
-  }
-  
-  .dropdown-content-1 {
-    min-width: 280px;
-    max-width: 350px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  
-  .drop-item-1 {
-    font-size: 13px;
-    padding: 10px 16px;
-  }
+
 }
 
-@media screen and (max-width: 480px) {
-  .body {
-    padding: 0 15px;
-    height: 70px;
-  }
-  
-  .text-left {
-    gap: 10px;
-  }
-  
-  .logo {
-    height: 35px;
-  }
-  
-  .text-2 {
-    font-size: 13px;
-  }
-  
-  .dropdown-content {
-    min-width: 220px;
-  }
-  
-  .dropdown-content-1 {
-    min-width: 260px;
-    max-width: 300px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .drop-item-1 {
-    font-size: 12px;
-    padding: 12px 14px;
-    line-height: 1.6;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-  }
-  @media screen and (max-width: 360px) {
-  .body {
-    padding: 0 8px;
-    height: 65px;
-  }
-  
-  .text-left {
-    gap: 5px;
-  }
-  
-  .text-2 {
-    font-size: 12px;
-  }
-  
-  .logo {
-    height: 28px;
-    max-width: 100px; /* Limit logo size on very small screens */
-  }
-  
-  .text-right {
-    margin-left: 5px;
-  }
-}
-@media screen and (max-width: 640px) {
-  .body {
-    padding: 0 15px;
-  }
-  
-  .text-left {
-    gap: 12px;
-  }
-  
-  .text-right {
-    margin-left: 10px;
-  }
-}
-}
 .modal-overlay{
   position: fixed;
   top:0;
@@ -304,6 +208,7 @@ body:has(.dropdown:hover) .dropdown-content-1 {
   overflow-y:auto;
   position:relative;
   box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  animation: modalPop 0.25s ease;
 }
 
 .close-btn{
@@ -315,12 +220,10 @@ body:has(.dropdown:hover) .dropdown-content-1 {
   font-size:28px;
   cursor:pointer;
 }
+
 :host{
   position: relative;
   z-index: 1;
-}
-.modal-container{
-  animation: modalPop 0.25s ease;
 }
 
 @keyframes modalPop{
@@ -332,4 +235,99 @@ body:has(.dropdown:hover) .dropdown-content-1 {
     transform:scale(1);
     opacity:1;
   }
+}
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+
+  .body {
+    padding: 0 25px;
+  }
+
+  .text-left {
+    gap: 20px;
+  }
+
+}
+
+/* Tablet small */
+@media screen and (max-width: 768px) {
+
+  .body {
+    padding: 0 20px;
+  }
+
+  .text-left {
+    gap: 15px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  .dropdown-content {
+    min-width: 250px;
+  }
+
+  .dropdown-content-1 {
+    min-width: 280px;
+    max-width: 350px;
+  }
+
+}
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+
+  .body {
+    padding: 0 15px;
+    height: 70px;
+  }
+
+  :host{
+    padding-top:70px;
+  }
+
+  .text-left {
+    gap: 10px;
+  }
+
+  .logo {
+    height: 35px;
+  }
+
+  .text-2 {
+    font-size: 13px;
+  }
+
+  .dropdown-content {
+    min-width: 220px;
+  }
+
+}
+
+/* Very small phones */
+@media screen and (max-width: 360px) {
+
+  .body {
+    padding: 0 10px;
+    height: 65px;
+  }
+
+  :host{
+    padding-top:65px;
+  }
+
+  .text-left {
+    gap: 6px;
+  }
+
+  .text-2 {
+    font-size: 12px;
+  }
+
+  .logo {
+    height: 28px;
+  }
+
 }
