@@ -4,7 +4,7 @@ import { InfoFormComponent } from "../info-form-component/info-form-component";
 @Component({
   selector: 'app-types-component',
   standalone: true,
-  imports: [InfoFormComponent], // Make sure to import InfoFormComponent here if it's standalone
+  imports: [InfoFormComponent], 
   templateUrl: './types-component.html',
   styleUrl: './types-component.scss',
 })
