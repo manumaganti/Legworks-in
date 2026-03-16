@@ -10,8 +10,10 @@ import { DropdownService } from '../../services/dropdown.service';
 export class BodyComponent {
 constructor(private dropdownService: DropdownService) {}
 
-goToForm() {
-  console.log("Button clicked");
-  this.dropdownService.openServices();
+  openServiceForm() {
+  const element = document.getElementById('services');
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 }

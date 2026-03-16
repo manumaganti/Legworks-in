@@ -1,5 +1,11 @@
+// html, body{
+//   margin: 0;
+//   padding: 0;
+//   height: 100%;
+// }
+
 .large {
-  min-height: calc(100svh - 80px); 
+  min-height: calc(102dvh - 86px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,8 +15,9 @@
   background: linear-gradient(to right, #158f92, #2f55d4);
   color: white;
 }
+
 #home {
-  scroll-margin-top: 80px; /* Adjust this value to match your header height */
+  scroll-margin-top: 70px; 
 }
 
 .text-1 {
@@ -25,6 +32,7 @@
   font-weight: 800;
   line-height: 1.2;
   margin-bottom: 40px;
+  word-break: break-word; /* prevents overflow */
 }
 
 .large-1 {
@@ -63,7 +71,19 @@
   transform: scale(0.95);
 }
 
+@media (max-width: 1024px) {
+
+  .text-2 {
+    font-size: 52px;
+  }
+
+  .large-1 {
+    padding: 16px 40px;
+  }
+
+}
 @media (max-width: 768px) {
+
   .text-2 {
     font-size: 40px;
   }
@@ -75,6 +95,43 @@
   .text-3 {
     font-size: 14px;
   }
+
+  .large-1 {
+    padding: 14px 35px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .text-2 {
+    font-size: 32px;
+  }
+
+  .large {
+    padding: 20px;
+  }
+
+  .explore {
+    padding: 12px 28px;
+  }
+
+}
+
+@media (max-width: 360px) {
+
+  .text-2 {
+    font-size: 28px;
+  }
+
+  .text-1 {
+    font-size: 14px;
+  }
+
+  .explore {
+    font-size: 14px;
+  }
+
 }
 
 .logo {
@@ -113,13 +170,15 @@
   }
 }
 
-/* Extra Landscape Fix */
 @media (orientation: landscape) and (max-height: 500px) {
+
   .text-2 {
     font-size: 36px;
   }
 
   .large {
     padding: 10px 20px;
+    min-height: auto; /* prevents overflow on landscape phones */
   }
+
 }
