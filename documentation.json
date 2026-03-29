@@ -70,6 +70,113 @@
             "kind": 172,
             "methods": [],
             "extends": []
+        },
+        {
+            "name": "ServiceData",
+            "id": "interface-ServiceData-3184e1cb33abeb03bf06b7afe4d53eaf2382d3f5a03a9d21ae74c30c85f1b8e8f53883a6c7a3f0fed769905fe2f2f7a2e8def335a6fc11087f15394a60725a1f",
+            "file": "src/app/controls/parent-component/parent-component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { VariousServicesComponent } from \"../various-services-component/various-services-component\";\r\nimport { TypesComponent } from \"../types-component/types-component\";\r\n\r\ninterface ServiceData {\r\n  title: string;\r\n  icon: string;\r\n  overview: string;\r\n  assistItems: string[];\r\n  whyChooseUs: string;\r\n  buttonText?: string; \r\n}\r\n\r\ninterface ServicesMap {\r\n  [key: string]: ServiceData; \r\n}\r\n\r\n@Component({\r\n  selector: 'app-parent-component',\r\n  imports: [VariousServicesComponent, TypesComponent],\r\n  templateUrl: './parent-component.html',\r\n  styleUrl: './parent-component.scss',\r\n})\r\nexport class ParentComponent {\r\n\r\n  showServiceDetail = false;\r\n  selectedService: ServiceData | null = null;\r\n\r\n  serviceData: ServicesMap = {\r\n    homeNeeds: {\r\n      title: 'Home Needs & Special Services',\r\n      icon: '🛒',\r\n      overview: 'We are here to support you and your family with all your essential home needs, ensuring comfort, convenience, and peace of mind.',\r\n      assistItems: [\r\n        'Grocery shopping and doorstep delivery',\r\n        'Live clothing purchases and personal shopping assistance',\r\n        'Home furnishings and décor selection',\r\n        'Appliances sourcing and coordination',\r\n        'Packaging and delivery anywhere in India',\r\n        'International shipping arrangements'\r\n      ],\r\n      whyChooseUs: 'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground.'\r\n    },\r\n\r\n    eventPlanning: {\r\n      title: 'Event Planning & Management',\r\n      icon: '🎁',\r\n      overview: 'We help make your events special and stress-free by providing complete support for your gatherings and celebrations.',\r\n      assistItems: [\r\n        'Gift Selection Assistance',\r\n        'Event Decorations Support',\r\n        'Guest Care & Coordination',\r\n        'Global Purchase & Delivery Support',\r\n      ],\r\n      whyChooseUs: 'We blend tradition with elegance to ensure unforgettable celebrations.'\r\n    },\r\n\r\n    financialServices: {\r\n      title: 'Financial and Investment Management Services',\r\n      icon: '💰',\r\n      overview: 'In India, we are backed by highly experienced professionals with over a decade of industry expertise. Our experts provide personalized guidance and strategic support to help you make informed financial decisions.',\r\n      assistItems: [\r\n        'Financial Planning',\r\n        'Investment Strategies',\r\n        'Tax Planning & Compliance',\r\n        'Wealth Management Insights',\r\n        'Risk Assessment & Portfolio Review',\r\n      ],\r\n      whyChooseUs: 'Our goal is to ensure your financial journey is secure, structured, and aligned with your long-term goals. With trusted advice and thoughtful planning, we help you build a stronger financial future.'\r\n    },\r\n\r\n    healthCare: {\r\n      title: 'Health Care Support',\r\n      icon: '🏥',\r\n      overview: 'Don’t worry — we are here to support you and care for them like our own. We understand how challenging it can be to stay away from your loved ones. That’s why we provide dependable assistance to ensure your elderly parents receive the attention and care they deserve.',\r\n      assistItems: [\r\n        'Arranging regular health check-ups',\r\n        'Coordinating medical investigations and diagnostic tests',\r\n        'Assisting with doctor appointments',\r\n        'Monitoring monthly or periodic health reviews',\r\n        'Providing updates and reports to family members'\r\n      ],\r\n      whyChooseUs: 'With compassion, responsibility, and professionalism, we help ensure your parents’ basic health needs are met — giving you peace of mind, no matter where you are in the world.'\r\n    },\r\n\r\n    propertyManagement: {\r\n      title: 'Property Management Services',\r\n      icon: '🏠',\r\n      overview: 'If you are living abroad and concerned about managing your properties or assets in India, you’re not alone — and you don’t have to handle it alone. We provide reliable support to help you safeguard and manage your assets efficiently, even from a distance.',\r\n      assistItems: [\r\n        'Property monitoring and coordination',\r\n        'Assistance with documentation and paperwork',\r\n        'Support for registrations and legal formalities',\r\n        'Liaising with concerned authorities and professionals',\r\n        'Connecting you with trusted local experts',\r\n        'Ensuring smooth, hassle-free completion of tasks'\r\n      ],\r\n      whyChooseUs: 'With our strong network and on-ground presence, we help you complete your work efficiently and transparently.'\r\n    },\r\n\r\n    toursTravels: {\r\n      title: 'Tours and Travels Support',\r\n      icon: '✈️',\r\n      overview: 'If you are planning a tour to India, we are here to design a smooth, memorable, and completely tension-free holiday tailored to your preferences. We carefully plan your journey based on your interests — whether you love heritage, spirituality, nature, luxury, adventure, food, or family experiences.',\r\n      assistItems: [\r\n        'Customized holiday planning',\r\n        'Personalized itinerary creation',\r\n        'Guidance on the best destinations based on your interests',\r\n        'Hotel and local travel coordination',\r\n        'On-ground assistance and support',\r\n        'Guidance on arranging travel tickets for your loved ones from India at the best possible prices'\r\n      ],\r\n      whyChooseUs: 'With our local expertise and trusted network, we ensure your trip is comfortable, well-organized, and truly unforgettable.'\r\n    }\r\n  };\r\n\r\nonServiceToggled(serviceType: string) {\r\n\r\n  const service = this.serviceData[serviceType];\r\n\r\n  if (this.selectedService?.title === service.title && this.showServiceDetail) {\r\n    this.onCloseService();\r\n  } else {\r\n\r\n    this.selectedService = service;\r\n    this.showServiceDetail = true;\r\n    setTimeout(() => {\r\n      const element = document.getElementById('service-detail');\r\n      if (element) {\r\n        element.scrollIntoView({ behavior: 'smooth' });\r\n      }\r\n    }, 50);\r\n\r\n  }\r\n}\r\n  onCloseService() {\r\n\r\n    this.showServiceDetail = false;\r\n    this.selectedService = null;\r\n\r\n    setTimeout(() => {\r\n      const element = document.getElementById('services');\r\n      if (element) {\r\n        element.scrollIntoView({ behavior: 'smooth' });\r\n      }\r\n    }, 50);\r\n\r\n  }\r\n}",
+            "properties": [
+                {
+                    "name": "assistItems",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "buttonText",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "icon",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "overview",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "whyChooseUs",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ServicesMap",
+            "id": "interface-ServicesMap-3184e1cb33abeb03bf06b7afe4d53eaf2382d3f5a03a9d21ae74c30c85f1b8e8f53883a6c7a3f0fed769905fe2f2f7a2e8def335a6fc11087f15394a60725a1f",
+            "file": "src/app/controls/parent-component/parent-component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { VariousServicesComponent } from \"../various-services-component/various-services-component\";\r\nimport { TypesComponent } from \"../types-component/types-component\";\r\n\r\ninterface ServiceData {\r\n  title: string;\r\n  icon: string;\r\n  overview: string;\r\n  assistItems: string[];\r\n  whyChooseUs: string;\r\n  buttonText?: string; \r\n}\r\n\r\ninterface ServicesMap {\r\n  [key: string]: ServiceData; \r\n}\r\n\r\n@Component({\r\n  selector: 'app-parent-component',\r\n  imports: [VariousServicesComponent, TypesComponent],\r\n  templateUrl: './parent-component.html',\r\n  styleUrl: './parent-component.scss',\r\n})\r\nexport class ParentComponent {\r\n\r\n  showServiceDetail = false;\r\n  selectedService: ServiceData | null = null;\r\n\r\n  serviceData: ServicesMap = {\r\n    homeNeeds: {\r\n      title: 'Home Needs & Special Services',\r\n      icon: '🛒',\r\n      overview: 'We are here to support you and your family with all your essential home needs, ensuring comfort, convenience, and peace of mind.',\r\n      assistItems: [\r\n        'Grocery shopping and doorstep delivery',\r\n        'Live clothing purchases and personal shopping assistance',\r\n        'Home furnishings and décor selection',\r\n        'Appliances sourcing and coordination',\r\n        'Packaging and delivery anywhere in India',\r\n        'International shipping arrangements'\r\n      ],\r\n      whyChooseUs: 'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground.'\r\n    },\r\n\r\n    eventPlanning: {\r\n      title: 'Event Planning & Management',\r\n      icon: '🎁',\r\n      overview: 'We help make your events special and stress-free by providing complete support for your gatherings and celebrations.',\r\n      assistItems: [\r\n        'Gift Selection Assistance',\r\n        'Event Decorations Support',\r\n        'Guest Care & Coordination',\r\n        'Global Purchase & Delivery Support',\r\n      ],\r\n      whyChooseUs: 'We blend tradition with elegance to ensure unforgettable celebrations.'\r\n    },\r\n\r\n    financialServices: {\r\n      title: 'Financial and Investment Management Services',\r\n      icon: '💰',\r\n      overview: 'In India, we are backed by highly experienced professionals with over a decade of industry expertise. Our experts provide personalized guidance and strategic support to help you make informed financial decisions.',\r\n      assistItems: [\r\n        'Financial Planning',\r\n        'Investment Strategies',\r\n        'Tax Planning & Compliance',\r\n        'Wealth Management Insights',\r\n        'Risk Assessment & Portfolio Review',\r\n      ],\r\n      whyChooseUs: 'Our goal is to ensure your financial journey is secure, structured, and aligned with your long-term goals. With trusted advice and thoughtful planning, we help you build a stronger financial future.'\r\n    },\r\n\r\n    healthCare: {\r\n      title: 'Health Care Support',\r\n      icon: '🏥',\r\n      overview: 'Don’t worry — we are here to support you and care for them like our own. We understand how challenging it can be to stay away from your loved ones. That’s why we provide dependable assistance to ensure your elderly parents receive the attention and care they deserve.',\r\n      assistItems: [\r\n        'Arranging regular health check-ups',\r\n        'Coordinating medical investigations and diagnostic tests',\r\n        'Assisting with doctor appointments',\r\n        'Monitoring monthly or periodic health reviews',\r\n        'Providing updates and reports to family members'\r\n      ],\r\n      whyChooseUs: 'With compassion, responsibility, and professionalism, we help ensure your parents’ basic health needs are met — giving you peace of mind, no matter where you are in the world.'\r\n    },\r\n\r\n    propertyManagement: {\r\n      title: 'Property Management Services',\r\n      icon: '🏠',\r\n      overview: 'If you are living abroad and concerned about managing your properties or assets in India, you’re not alone — and you don’t have to handle it alone. We provide reliable support to help you safeguard and manage your assets efficiently, even from a distance.',\r\n      assistItems: [\r\n        'Property monitoring and coordination',\r\n        'Assistance with documentation and paperwork',\r\n        'Support for registrations and legal formalities',\r\n        'Liaising with concerned authorities and professionals',\r\n        'Connecting you with trusted local experts',\r\n        'Ensuring smooth, hassle-free completion of tasks'\r\n      ],\r\n      whyChooseUs: 'With our strong network and on-ground presence, we help you complete your work efficiently and transparently.'\r\n    },\r\n\r\n    toursTravels: {\r\n      title: 'Tours and Travels Support',\r\n      icon: '✈️',\r\n      overview: 'If you are planning a tour to India, we are here to design a smooth, memorable, and completely tension-free holiday tailored to your preferences. We carefully plan your journey based on your interests — whether you love heritage, spirituality, nature, luxury, adventure, food, or family experiences.',\r\n      assistItems: [\r\n        'Customized holiday planning',\r\n        'Personalized itinerary creation',\r\n        'Guidance on the best destinations based on your interests',\r\n        'Hotel and local travel coordination',\r\n        'On-ground assistance and support',\r\n        'Guidance on arranging travel tickets for your loved ones from India at the best possible prices'\r\n      ],\r\n      whyChooseUs: 'With our local expertise and trusted network, we ensure your trip is comfortable, well-organized, and truly unforgettable.'\r\n    }\r\n  };\r\n\r\nonServiceToggled(serviceType: string) {\r\n\r\n  const service = this.serviceData[serviceType];\r\n\r\n  if (this.selectedService?.title === service.title && this.showServiceDetail) {\r\n    this.onCloseService();\r\n  } else {\r\n\r\n    this.selectedService = service;\r\n    this.showServiceDetail = true;\r\n    setTimeout(() => {\r\n      const element = document.getElementById('service-detail');\r\n      if (element) {\r\n        element.scrollIntoView({ behavior: 'smooth' });\r\n      }\r\n    }, 50);\r\n\r\n  }\r\n}\r\n  onCloseService() {\r\n\r\n    this.showServiceDetail = false;\r\n    this.selectedService = null;\r\n\r\n    setTimeout(() => {\r\n      const element = document.getElementById('services');\r\n      if (element) {\r\n        element.scrollIntoView({ behavior: 'smooth' });\r\n      }\r\n    }, 50);\r\n\r\n  }\r\n}",
+            "properties": [],
+            "indexSignatures": [
+                {
+                    "id": "index-declaration-3184e1cb33abeb03bf06b7afe4d53eaf2382d3f5a03a9d21ae74c30c85f1b8e8f53883a6c7a3f0fed769905fe2f2f7a2e8def335a6fc11087f15394a60725a1f",
+                    "args": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "ServiceData",
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "kind": 182,
+            "methods": [],
+            "extends": []
         }
     ],
     "injectables": [
@@ -166,7 +273,7 @@
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<section class=\"about\" id=\"about\">\r\n\r\n<div class=\"container\">\r\n\r\n    <div class=\"about-header\">\r\n        <h2>About Us</h2>\r\n        <p>Two professionals from diverse backgrounds, united by a shared vision, came together to establish LEGWORKS.</p>\r\n    </div>\r\n\r\n    <div class=\"founders\">\r\n\r\n        <div class=\"founder-card founder1\">\r\n            <div class=\"founder-top\">\r\n                <div class=\"avatar\">H</div>\r\n                <div>\r\n                    <h3>Harish Reddy</h3>\r\n                    <span class=\"role teal\">MBA Graduate</span>\r\n                </div>\r\n            </div>\r\n            <p>\r\n                Brings more than a decade of hands-on experience in BFSI sales, with strong expertise in driving business growth and client relationships.\r\n            </p>\r\n        </div>\r\n\r\n        <div class=\"founder-card founder2\">\r\n            <div class=\"founder-top\">\r\n                <div class=\"avatar pink\">N</div>\r\n                <div>\r\n                    <h3>Naveen</h3>\r\n                    <span class=\"role purple\">B.Tech Graduate</span>\r\n                </div>\r\n            </div>\r\n            <p>\r\n                Possesses more than 15 years of extensive experience across the HR domain, offering deep expertise in talent management, recruitment, and organizational development\r\n            </p>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"mission\">\r\n        <p>\r\n            Together, their complementary strengths and aligned vision form the foundation of LEGWORKS, with a commitment to delivering reliable, efficient, and impactful solutions.\r\n        </p>\r\n    </div>\r\n\r\n    <!-- <div class=\"features\">\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon teal\">📞</div>\r\n            <h4>24/7 Availability</h4>\r\n            <p>Round-the-clock service and support whenever you need us</p>\r\n        </div>\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon pink\">💬</div>\r\n            <h4>Instant Connection</h4>\r\n            <p>Reach us instantly on WhatsApp for quick responses</p>\r\n        </div>\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon purple\">📍</div>\r\n            <h4>Doorstep Service</h4>\r\n            <p>All services delivered right to your location</p>\r\n        </div>\r\n\r\n    </div> -->\r\n\r\n</div>\r\n\r\n</section>\r\n"
+            "templateData": "<section class=\"about\" id=\"about\">\r\n\r\n<div class=\"container\">\r\n\r\n    <div class=\"about-header\">\r\n        <h2>About Us</h2>\r\n        <p>Two professionals from diverse backgrounds, united by a shared vision, came together to establish LEGWORKS.</p>\r\n    </div>\r\n\r\n    <div class=\"founders\">\r\n\r\n        <div class=\"founder-card founder1\">\r\n            <div class=\"founder-top\">\r\n                <div class=\"avatar\">H</div>\r\n                <div>\r\n                    <h3>Harish Reddy Panyala</h3>\r\n                    <span class=\"role teal\">MBA</span>\r\n                </div>\r\n            </div>\r\n            <p>\r\n                Brings more than a decade of hands-on experience in BFSI sales, with strong expertise in driving business growth and client relationships.\r\n            </p>\r\n        </div>\r\n\r\n        <div class=\"founder-card founder2\">\r\n            <div class=\"founder-top\">\r\n                <div class=\"avatar pink\">N</div>\r\n                <div>\r\n                    <h3>Naveen Kumar Regula</h3>\r\n                    <span class=\"role purple\">B.Tech</span>\r\n                </div>\r\n            </div>\r\n            <p>\r\n                Brings more than 15 years of extensive experience across the HR domains, offering deep expertise in talent management, recruitment, and organizational development.\r\n            </p>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"mission\">\r\n        <p>\r\n            Together, their complementary strengths and aligned vision form the foundation of LEGWORKS, with a commitment to delivering reliable, efficient, and impactful solutions.\r\n        </p>\r\n    </div>\r\n\r\n    <!-- <div class=\"features\">\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon teal\">📞</div>\r\n            <h4>24/7 Availability</h4>\r\n            <p>Round-the-clock service and support whenever you need us</p>\r\n        </div>\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon pink\">💬</div>\r\n            <h4>Instant Connection</h4>\r\n            <p>Reach us instantly on WhatsApp for quick responses</p>\r\n        </div>\r\n\r\n        <div class=\"feature\">\r\n            <div class=\"icon purple\">📍</div>\r\n            <h4>Doorstep Service</h4>\r\n            <p>All services delivered right to your location</p>\r\n        </div>\r\n\r\n    </div> -->\r\n\r\n</div>\r\n\r\n</section>\r\n"
         },
         {
             "name": "AppComponent",
@@ -212,7 +319,7 @@
         },
         {
             "name": "BodyComponent",
-            "id": "component-BodyComponent-9ebd4dfbe31ebf94357eefeae1e79a45ad76a3c9b96f1510e3630a9688afdcafd877b783368451768c04464afc2086dab1b7bfb9929e26350257099c45cd303f",
+            "id": "component-BodyComponent-117d484f8d5327e3ed7a3c72207bb80323d16b9776bd2eb4c531d700b2ea3e1d90ddb4c4fedb2bc825930916357f2a9904250491a93a36d386857a096998061b",
             "file": "src/app/controls/body-component/body-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -232,7 +339,7 @@
             "propertiesClass": [],
             "methodsClass": [
                 {
-                    "name": "goToForm",
+                    "name": "openServiceForm",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
@@ -251,7 +358,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\n\r\n@Component({\r\n  selector: 'app-body-component',\r\n  imports: [],\r\n  templateUrl: './body-component.html',\r\n  styleUrl: './body-component.scss',\r\n})\r\nexport class BodyComponent {\r\nconstructor(private dropdownService: DropdownService) {}\r\n\r\ngoToForm() {\r\n  console.log(\"Button clicked\");\r\n  this.dropdownService.openServices();\r\n}\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\n\r\n@Component({\r\n  selector: 'app-body-component',\r\n  imports: [],\r\n  templateUrl: './body-component.html',\r\n  styleUrl: './body-component.scss',\r\n})\r\nexport class BodyComponent {\r\nconstructor(private dropdownService: DropdownService) {}\r\n\r\n  openServiceForm() {\r\n  const element = document.getElementById('services');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n}\r\n}\r\n",
             "styleUrl": "./body-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -287,7 +394,7 @@
                 ]
             },
             "extends": [],
-            "templateData": "<div class=\"large\" id=\"home\">\r\n    <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    <p class=\"text-2\">NOW DISTANCE <br>DOESN'T MATTER</p>\r\n    <div class=\"large-1\">\r\n        <p class=\"text-3\">LEGWORKS AT YOUR DOORSTEP</p>\r\n    </div>\r\n    <div class=\"large-2\">\r\n        <button class=\"explore\" (click)=\"goToForm()\" >Explore Services</button>\r\n    </div>\r\n</div>\r\n"
+            "templateData": "<div class=\"large\" id=\"home\">\r\n    <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    <p class=\"text-2\">NOW DISTANCE <br>DOESN'T MATTER</p>\r\n    <div class=\"large-1\">\r\n        <p class=\"text-3\">LEGWORKS AT YOUR DOORSTEP</p>\r\n    </div>\r\n    <div class=\"large-2\">\r\n        <button class=\"explore\" (click)=\"openServiceForm()\" >Explore Services</button>\r\n    </div>\r\n</div>\r\n"
         },
         {
             "name": "CalenderComponent",
@@ -1016,6 +1123,165 @@
                 }
             },
             "templateData": "<div class=\"calendar-wrapper\">\r\n\r\n  <label class=\"dob-label\"\r\n    [ngClass]=\"{\r\n      'floating-label': isLabelFloating,\r\n      'invalid-label': touched && isRequired && !selectedDate\r\n    }\">\r\n\r\n    {{ label }}\r\n    <span *ngIf=\"isRequired\" class=\"required\">*</span>\r\n\r\n  </label>\r\n\r\n  <div class=\"input-container\">\r\n\r\n    <input\r\n      type=\"text\"\r\n      class=\"dob-input\"\r\n      [value]=\"formattedDate\"\r\n      placeholder=\"dd-mm-yyyy\"\r\n      readonly\r\n      (click)=\"openDatePicker($event)\"\r\n      [ngClass]=\"{ 'error-border': touched && isRequired && !selectedDate }\"\r\n    />\r\n\r\n  </div>\r\n\r\n  <div class=\"error-message\" *ngIf=\"touched && isRequired && !selectedDate\">\r\n    Date is required\r\n  </div>\r\n\r\n  <div class=\"calendar-overlay\" *ngIf=\"showCalendar\" (click)=\"closeCalendar()\">\r\n\r\n    <div class=\"calendar-container\" (click)=\"$event.stopPropagation()\">\r\n\r\n      <div class=\"calendar-header\">\r\n\r\n        <div class=\"month-year-selectors\">\r\n          <div class=\"dropdown\">\r\n            <div class=\"dropdown-display\" (click)=\"toggleMonthDropdown()\">\r\n              {{ months[currentMonth] }}\r\n            </div>\r\n\r\n            <ul class=\"dropdown-list\" *ngIf=\"showMonthDropdown\">\r\n              <li\r\n                *ngFor=\"let month of months; let i = index\"\r\n                [class.selected]=\"i === currentMonth\"\r\n                (click)=\"selectMonth(i)\">\r\n                {{ month }}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"dropdown\">\r\n            <div class=\"dropdown-display\" (click)=\"toggleYearDropdown()\">\r\n              {{ currentYear }}\r\n            </div>\r\n\r\n            <ul class=\"dropdown-list\" *ngIf=\"showYearDropdown\">\r\n              <li\r\n                *ngFor=\"let year of years\"\r\n                [class.selected]=\"year === currentYear\"\r\n                (click)=\"selectYear(year)\">\r\n                {{ year }}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"nav-btns\">\r\n          <button class=\"nav-btn\" (click)=\"previousMonth()\">◀</button>\r\n          <button class=\"nav-btn\" (click)=\"nextMonth()\">▶</button>\r\n        </div>\r\n\r\n      </div>\r\n\r\n      <div class=\"calendar-body\">\r\n\r\n        <div class=\"calendar-weekdays\">\r\n          <div class=\"weekday\" *ngFor=\"let weekday of weekdays\">\r\n            {{ weekday }}\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"calendar-grid\">\r\n          <div\r\n            class=\"calendar-day\"\r\n            *ngFor=\"let day of calendarDays\"\r\n            [class.current-month]=\"day.isCurrentMonth\"\r\n            [class.other-month]=\"!day.isCurrentMonth\"\r\n            [class.today]=\"day.isToday\"\r\n            [class.selected]=\"day.isSelected\"\r\n            (click)=\"selectDate(day)\">\r\n            {{ day.day }}\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n\r\n      <div class=\"calendar-footer\">\r\n        <button class=\"footer-btn today-btn\" (click)=\"goToToday()\">Today</button>\r\n        <button class=\"footer-btn clear-btn\" (click)=\"clearSelection()\">Clear</button>\r\n        <button class=\"footer-btn close-btn\" (click)=\"closeCalendar()\">Close</button>\r\n      </div>\r\n\r\n    </div>\r\n\r\n  </div>\r\n\r\n</div>\r\n"
+        },
+        {
+            "name": "DoughnutChartComponent",
+            "id": "component-DoughnutChartComponent-8fdfc95563c768b9e95f5acb1d94af468caa2a77d1321e5b6b20dfcc771a1d70d67ad7ac83b432314a12bf03169cfbe7740d6f3f2345d480c6bf4a4a4448ec3c",
+            "file": "src/app/charts/doughnut-chart-component/doughnut-chart-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-doughnut-chart-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./doughnut-chart-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "chart",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Chart | undefined",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "colors",
+                    "defaultValue": "[\r\n    '#f0f9ff',\r\n    '#f0fdf4',\r\n    '#fef3c7',\r\n    '#f3e8ff',\r\n    '#ffe4e6',\r\n    '#e0e7ff'\r\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "data",
+                    "defaultValue": "[25, 20, 15, 18, 12, 10]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "doughnutChartCanvas",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ElementRef<HTMLCanvasElement>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'doughnutChartCanvas'"
+                        }
+                    ],
+                    "modifierKind": [
+                        171
+                    ]
+                },
+                {
+                    "name": "labels",
+                    "defaultValue": "[\r\n    'Dedicated Relationship Manager',\r\n    'Peace of Mind', \r\n    'Personal, Not Transactional',\r\n    'Live Video Transparency',\r\n    'Trusted Local Network',\r\n    'Confidential & Secure'\r\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "createDoughnutChart",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 44,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 40,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 38,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';\r\nimport Chart from 'chart.js/auto';\r\n\r\n@Component({\r\n  selector: 'app-doughnut-chart-component',\r\n  standalone: true,\r\n  imports: [],\r\n  templateUrl: './doughnut-chart-component.html',\r\n  styleUrl: './doughnut-chart-component.scss',\r\n})\r\nexport class DoughnutChartComponent implements OnInit, AfterViewInit {\r\n  @ViewChild('doughnutChartCanvas') doughnutChartCanvas!: ElementRef<HTMLCanvasElement>;\r\n  private chart: Chart | undefined;\r\n\r\n  // Define colors separately as a typed array\r\n  private readonly colors: string[] = [\r\n    '#f0f9ff',\r\n    '#f0fdf4',\r\n    '#fef3c7',\r\n    '#f3e8ff',\r\n    '#ffe4e6',\r\n    '#e0e7ff'\r\n  ];\r\n\r\n  private readonly labels: string[] = [\r\n    'Dedicated Relationship Manager',\r\n    'Peace of Mind', \r\n    'Personal, Not Transactional',\r\n    'Live Video Transparency',\r\n    'Trusted Local Network',\r\n    'Confidential & Secure'\r\n  ];\r\n\r\n  private readonly data: number[] = [25, 20, 15, 18, 12, 10];\r\n\r\n  constructor() { }\r\n\r\n  ngOnInit(): void { }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.createDoughnutChart();\r\n  }\r\n\r\n  createDoughnutChart(): void {\r\n    if (this.doughnutChartCanvas?.nativeElement) {\r\n      const ctx = this.doughnutChartCanvas.nativeElement.getContext('2d');\r\n      if (ctx) {\r\n        this.chart = new Chart(ctx, {\r\n          type: 'doughnut',\r\n          data: {\r\n            labels: this.labels,\r\n            datasets: [{\r\n              data: this.data,\r\n              backgroundColor: this.colors,\r\n              borderColor: '#ffffff',\r\n              borderWidth: 2,\r\n              hoverOffset: 10,\r\n            }]\r\n          },\r\n          options: {\r\n            responsive: true,\r\n            maintainAspectRatio: false,\r\n            cutout: '60%',\r\n            plugins: {\r\n              legend: {\r\n                position: 'bottom',\r\n                labels: {\r\n                  font: {\r\n                    size: 12,\r\n                    weight: 'bold'\r\n                  },\r\n                  padding: 10,\r\n                  usePointStyle: true,\r\n                  pointStyle: 'circle',\r\n                  // Simple generateLabels without complex type issues\r\n                  generateLabels: (chart) => {\r\n                    const { labels, datasets } = chart.data;\r\n                    if (!labels || !datasets.length) return [];\r\n                    \r\n                    return labels.map((label, i) => ({\r\n                      text: `${label} (${this.data[i]})`,\r\n                      fillStyle: this.colors[i],\r\n                      strokeStyle: this.colors[i],\r\n                      lineWidth: 2,\r\n                      hidden: false,\r\n                      index: i\r\n                    }));\r\n                  }\r\n                }\r\n              },\r\n              tooltip: {\r\n                callbacks: {\r\n                  label: (context) => {\r\n                    const label = context.label || '';\r\n                    const value = context.raw as number;\r\n                    const total = this.data.reduce((a, b) => a + b, 0);\r\n                    const percentage = ((value / total) * 100).toFixed(1);\r\n                    return `${label}: ${value} (${percentage}%)`;\r\n                  }\r\n                }\r\n              }\r\n            }\r\n          }\r\n        });\r\n      }\r\n    }\r\n  }\r\n}",
+            "styleUrl": "./doughnut-chart-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 34
+            },
+            "extends": [],
+            "implements": [
+                "OnInit",
+                "AfterViewInit"
+            ],
+            "templateData": "<div class=\"doughnut-chart-container\">\r\n  <h2 class=\"chart-title\">Service Features Distribution</h2>\r\n  \r\n  <div class=\"chart-wrapper\">\r\n    <canvas #doughnutChartCanvas></canvas>\r\n    <div class=\"center-text\">\r\n      <div class=\"center-value\">6</div>\r\n      <div class=\"center-label\">Features</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"chart-stats\">\r\n    <div class=\"stat-card\">\r\n      <div class=\"stat-label\">Total Features</div>\r\n      <div class=\"stat-value\">6</div>\r\n    </div>\r\n    <div class=\"stat-card\">\r\n      <div class=\"stat-label\">Top Feature</div>\r\n      <div class=\"stat-value\">Relationship Manager</div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
         },
         {
             "name": "DropDownComponent",
@@ -1854,8 +2120,46 @@
             "templateData": "<div class=\"custom-dropdown\"\r\n     [class.error]=\"isInvalid\"\r\n     [class.active]=\"isOpen\"\r\n     [class.has-value]=\"selectedValue\">\r\n\r\n  <span class=\"dropdown-label\"\r\n        [ngClass]=\"{\r\n          'label-default': !isActive && !selectedValue,\r\n          'label-floating': isActive || selectedValue,\r\n          'label-error': isInvalid\r\n        }\">\r\n    {{ label }}\r\n    @if (isRequired) {\r\n      <span class=\"required\">*</span>\r\n    }\r\n  </span>\r\n\r\n  <div class=\"custom-dropdown-selected\"\r\n       tabindex=\"0\"\r\n       (click)=\"toggleDropdown()\"\r\n       (focus)=\"isActive = true\"\r\n       (blur)=\"onBlur()\"\r\n       [class.placeholder-mode]=\"!selectedLabel\">\r\n    \r\n    <span class=\"selected-text\">{{ selectedLabel ? selectedLabel : 'Choose a service' }}</span>\r\n    \r\n    <svg class=\"dropdown-arrow\" [class.rotated]=\"isOpen\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\r\n      <path d=\"M4 6L8 10L12 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\r\n    </svg>\r\n  </div>\r\n\r\n  @if(isOpen) {\r\n    <ul class=\"custom-dropdown-list\" [class.open-up]=\"isOpenUp\">\r\n      @for (option of options; track option.value) {\r\n        <li (click)=\"selectOption(option)\"\r\n            [class.selected]=\"selectedValue === option.value\">\r\n          {{ option.name }}\r\n        </li>\r\n      }\r\n\r\n      @if(draggable) {\r\n        <hr class=\"resize-hr\" />\r\n      }\r\n    </ul>\r\n  }\r\n</div>"
         },
         {
+            "name": "FooterComponent",
+            "id": "component-FooterComponent-d643ef7bb43b06d7a72f707660b336b08c1fb36e22958419f74dd66885c60de352e8136aad3961ce46cdfd4fc2ad184cd8ab7292c494b1a28707ba82130174d8",
+            "file": "src/app/controls/footer-component/footer-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-footer-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./footer-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-footer-component',\r\n  imports: [],\r\n  templateUrl: './footer-component.html',\r\n  styleUrl: './footer-component.scss',\r\n})\r\nexport class FooterComponent {\r\n\r\n}\r\n",
+            "styleUrl": "./footer-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"body\">\r\n      <div class=\"contact-phone\">\r\n      <span class=\"icon\">📞</span>\r\n      <span class=\"phone\">076600 01221</span>\r\n\r\n    <span class=\"divider\">|</span>\r\n\r\n      <span class=\"icon\">📞</span>\r\n      <span class=\"phone\">95424 97990</span>\r\n  </div>\r\n\r\n  <div class=\"contact-address\">\r\n    <span class=\"icon\">📍</span>\r\n    <span>\r\n      8th Floor, QuickStart, Vasavi Sky City, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032\r\n    </span>\r\n  </div>\r\n\r\n  <div class=\"contact-email\">\r\n    <span class=\"icon\">✉️</span>\r\n    <span>reachus@legworks.com</span>\r\n  </div>\r\n\r\n</div>\r\n"
+        },
+        {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-5c8a36105acacb2efbfecbf91d97948ff28ea29eda4f3fb29a2cb637ba1d90fe9212bcf57687814bbc59a04de5af6155b65b287de01e2d58acd48b33c02d1db4",
+            "id": "component-HeaderComponent-8bedbe177bbeadaf0495b92fb47d08efe126477f8599e73296e22a681ed7129f8924074662fcf85c38244e141bf96b233a99a95838d00dac0bc3b13538a8c037",
             "file": "src/app/controls/header-component/header-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1961,35 +2265,13 @@
                 },
                 {
                     "name": "openServiceForm",
-                    "args": [
-                        {
-                            "name": "service",
-                            "type": "string",
-                            "optional": false,
-                            "dotDotDotToken": false,
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
+                    "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 76,
                     "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "service",
-                            "type": "string",
-                            "optional": false,
-                            "dotDotDotToken": false,
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
+                    "deprecationMessage": ""
                 },
                 {
                     "name": "scrollToAbout",
@@ -2046,7 +2328,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\nimport { Router } from '@angular/router';\r\nimport { InfoFormComponent } from \"../info-form-component/info-form-component\";\r\n\r\n@Component({\r\n  selector: 'app-header-component',\r\n  standalone: true,\r\n  imports: [InfoFormComponent],\r\n  templateUrl: './header-component.html',\r\n  styleUrl: './header-component.scss',\r\n})\r\nexport class HeaderComponent {\r\n\r\n  isServicesOpen = false;\r\n  isContactOpen = false;\r\n\r\n  showServiceModal = false;\r\n  selectedService = '';\r\n\r\n  constructor(private dropdownService: DropdownService, private router: Router) {}\r\n\r\n  ngOnInit() {\r\n    this.dropdownService.openServices$.subscribe(() => {\r\n      console.log(\"Signal received in header\");\r\n      this.isServicesOpen = true;\r\n    });\r\n  }\r\n\r\nopenServiceForm(service: string) {\r\n  this.selectedService = service;\r\n  this.showServiceModal = true;\r\n  this.isServicesOpen = false;\r\n\r\n  document.body.style.overflow = 'hidden';\r\n}\r\n\r\ncloseServiceForm() {\r\n  this.showServiceModal = false;\r\n  document.body.style.overflow = 'auto';\r\n}\r\n\r\n  toggleServices() {\r\n    this.isServicesOpen = !this.isServicesOpen;\r\n    if (this.isServicesOpen) {\r\n      this.isContactOpen = false;\r\n    }\r\n  }\r\n\r\n  showContact() {\r\n    if (!this.isServicesOpen) {\r\n      this.isContactOpen = true;\r\n    }\r\n  }\r\n\r\n  hideContact() {\r\n    this.isContactOpen = false;\r\n  }\r\n\r\n  hideServices() {\r\n    this.isServicesOpen = false;\r\n  }\r\n  scrollToAbout() {\r\n  const element = document.getElementById('about');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n\r\n}\r\n  scrollToHome() {\r\n  const element = document.getElementById('home');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n}\r\n}",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { DropdownService } from '../../services/dropdown.service';\r\nimport { Router } from '@angular/router';\r\nimport { InfoFormComponent } from \"../info-form-component/info-form-component\";\r\n\r\n@Component({\r\n  selector: 'app-header-component',\r\n  standalone: true,\r\n  imports: [InfoFormComponent],\r\n  templateUrl: './header-component.html',\r\n  styleUrl: './header-component.scss',\r\n})\r\nexport class HeaderComponent {\r\n\r\n  isServicesOpen = false;\r\n  isContactOpen = false;\r\n\r\n  showServiceModal = false;\r\n  selectedService = '';\r\n\r\n  constructor(private dropdownService: DropdownService, private router: Router) {}\r\n\r\n  ngOnInit() {\r\n    this.dropdownService.openServices$.subscribe(() => {\r\n      console.log(\"Signal received in header\");\r\n      this.isServicesOpen = true;\r\n    });\r\n  }\r\n\r\n// openServiceForm(service: string) {\r\n//   this.selectedService = service;\r\n//   this.showServiceModal = true;\r\n//   this.isServicesOpen = false;\r\n\r\n//   document.body.style.overflow = 'hidden';\r\n// }\r\n\r\ncloseServiceForm() {\r\n  this.showServiceModal = false;\r\n  document.body.style.overflow = 'auto';\r\n}\r\n\r\n  toggleServices() {\r\n    this.isServicesOpen = !this.isServicesOpen;\r\n    if (this.isServicesOpen) {\r\n      this.isContactOpen = false;\r\n    }\r\n  }\r\n\r\n  showContact() {\r\n    if (!this.isServicesOpen) {\r\n      this.isContactOpen = true;\r\n    }\r\n  }\r\n\r\n  hideContact() {\r\n    this.isContactOpen = false;\r\n  }\r\n\r\n  hideServices() {\r\n    this.isServicesOpen = false;\r\n  }\r\n  scrollToAbout() {\r\n  const element = document.getElementById('about');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n\r\n}\r\n  scrollToHome() {\r\n  const element = document.getElementById('home');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n}\r\n  openServiceForm() {\r\n  const element = document.getElementById('services');\r\n  if (element) {\r\n    element.scrollIntoView({ behavior: 'smooth' });\r\n  }\r\n}\r\n}",
             "styleUrl": "./header-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -2101,91 +2383,7 @@
                 ]
             },
             "extends": [],
-            "templateData": "<div class=\"body\">\r\n  <div class=\"text-left\">\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2\" (click)=\"scrollToHome()\">Home</p>\r\n    </div>\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2 dropbtn\" (click)=\"toggleServices()\" (mouseenter)=\"showContact()\">Services</p>\r\n\r\n      @if (isServicesOpen) {\r\n        <div class=\"dropdown-content\" (mouseleave)=\"hideServices()\">\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Home Needs & Special Services')\">Home Needs & Special Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Events & Gatherings')\">Events & Gatherings</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Financial/Investment Services')\">Financial/Investment Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Online Health Care Services')\">Online Health Care Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Property Management Services')\">Property Management Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Tours & Travel Support')\">Tours & Travel Support</p>\r\n          <!-- <p class=\"drop-item\" (click)=\"openServiceForm('Legal/Taxation')\">Legal/Taxation</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Documentation Procurement')\">Documentation Procurement</p> -->\r\n        </div>\r\n      }\r\n    </div>\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2\" (click)=\"scrollToAbout()\">About Us</p>\r\n    </div>\r\n\r\n    <div class=\"dropdown-1\">\r\n      <p class=\"text-2\" (mouseenter)=\"showContact()\" (mouseleave)=\"hideContact()\">Contact</p>\r\n\r\n      @if (isContactOpen) {\r\n        <div class=\"dropdown-content-1\">\r\n          <p class=\"drop-item-1\">\r\n            Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032\r\n          </p>\r\n          <p class=\"drop-item-1\">Phone: 076600 01221</p>\r\n        </div>\r\n      }\r\n    </div>\r\n\r\n  </div>\r\n\r\n  <div class=\"text-right\">\r\n    <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n  </div>\r\n</div>\r\n\r\n@if(showServiceModal){\r\n<div class=\"modal-overlay\" (click)=\"closeServiceForm()\">\r\n\r\n  <div class=\"modal-container\" (click)=\"$event.stopPropagation()\">\r\n\r\n    <button class=\"close-btn\" (click)=\"closeServiceForm()\">✕</button>\r\n\r\n  <app-info-form-component\r\n      [service]=\"selectedService\">\r\n    </app-info-form-component>\r\n  </div>\r\n\r\n</div>\r\n}"
-        },
-        {
-            "name": "IconComponent",
-            "id": "component-IconComponent-503be402479e83ee3b818d88e1df62447def0117a3e49d286ae1a0f309740c9b4c64494bebac5bcbf95bbc3b9ef4fc7a69d7f25c93743dbbd1daf70c5d926cbf",
-            "file": "src/app/controls/icon/icon.component/icon.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-icon",
-            "styleUrls": [
-                "./icon.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./icon.component.html"
-            ],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [
-                {
-                    "name": "color",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 13,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "hoverColor",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 14,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "name",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 12,
-                    "type": "string",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [
-                {
-                    "name": "isHovering",
-                    "defaultValue": "false",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "unknown",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 16
-                }
-            ],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": true,
-            "imports": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-icon',\r\n  standalone: true,\r\n  templateUrl: './icon.component.html',\r\n  styleUrls: ['./icon.component.scss'],\r\n  schemas: [CUSTOM_ELEMENTS_SCHEMA]\r\n})\r\nexport class IconComponent {\r\n\r\n  @Input() name: string = '';\r\n  @Input() color: string = '';\r\n  @Input() hoverColor: string = '';\r\n\r\n  isHovering = false;\r\n\r\n}",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ":host {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  line-height: 1;\r\n  vertical-align: middle;\r\n}\r\n\r\niconify-icon {\r\n  display: block;\r\n  font-size: 24px;\r\n}",
-                    "styleUrl": "./icon.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "extends": [],
-            "templateData": "<iconify-icon\r\n  [icon]=\"name\"\r\n  [style.color]=\"isHovering ? hoverColor : color\"\r\n  (mouseenter)=\"isHovering = true\"\r\n  (mouseleave)=\"isHovering = false\">\r\n</iconify-icon>"
+            "templateData": "<div class=\"body\">\r\n  <div class=\"text-left\">\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2\" (click)=\"scrollToHome()\">Home</p>\r\n    </div>\r\n\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2 dropbtn\" (click)=\"openServiceForm()\">Services</p>\r\n\r\n      <!-- @if (isServicesOpen) {\r\n        <div class=\"dropdown-content\" (mouseleave)=\"hideServices()\">\r\n          <p class=\"drop-item\" (click)=\"openServiceForm()\">Home Needs & Special Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm()\">Events & Gatherings</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm()\">Financial/Investment Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm()\">Online Health Care Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm()\">Property Management Services</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm()\">Tours & Travel Support</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Legal/Taxation')\">Legal/Taxation</p>\r\n          <p class=\"drop-item\" (click)=\"openServiceForm('Documentation Procurement')\">Documentation Procurement</p>\r\n        </div>\r\n      } -->\r\n    </div>\r\n    <div class=\"dropdown\">\r\n      <p class=\"text-2\" (click)=\"scrollToAbout()\">About Us</p>\r\n    </div>\r\n\r\n<!-- <div class=\"dropdown-1\"\r\n     (mouseenter)=\"showContact()\"\r\n     (mouseleave)=\"hideContact()\">\r\n\r\n  <p class=\"text-2\">Contact</p>\r\n\r\n  @if (isContactOpen) {\r\n    <div class=\"dropdown-content-1\">\r\n      <p class=\"drop-item-1\">\r\n        Address: 8th Floor, Vasavi Sky City, Quick Start, Gachibowli, Serilingampalle (M), Hyderabad, Telangana 500032\r\n      </p>\r\n      <p class=\"drop-item-1\">Phone: 076600 01221</p>\r\n    </div>\r\n  }\r\n\r\n</div> -->\r\n\r\n  </div>\r\n\r\n  <div class=\"text-right\">\r\n    <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n  </div>\r\n</div>\r\n\r\n@if(showServiceModal){\r\n<div class=\"modal-overlay\" (click)=\"closeServiceForm()\">\r\n\r\n  <div class=\"modal-container\" (click)=\"$event.stopPropagation()\">\r\n\r\n    <button class=\"close-btn\" (click)=\"closeServiceForm()\">✕</button>\r\n\r\n  <app-info-form-component\r\n      [service]=\"selectedService\">\r\n    </app-info-form-component>\r\n  </div>\r\n\r\n</div>\r\n}"
         },
         {
             "name": "InfoFormComponent",
@@ -2505,11 +2703,11 @@
                 ]
             },
             "extends": [],
-            "templateData": "<div class=\"container\">\r\n<div class=\"container\">\r\n    <div class=\"header\" style=\"display: flex; justify-content: space-between; align-items: center;\">\r\n        <div>\r\n            <h1 class=\"title\">Request a Service</h1>\r\n            <p class=\"subtitle\">Fill out the form below and we will connect you on whatsapp</p>\r\n        </div>\r\n        <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    </div>\r\n</div>\r\n    <div class=\"body\">\r\n        <app-text-box-component \r\n            [label]=\"'Full Name'\" \r\n            [value]=\"fullName\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            [placeHolder]=\"'Enter your Full Name'\">\r\n        </app-text-box-component>\r\n        <app-text-box-component \r\n            [label]=\"'Email Address'\" \r\n            [value]=\"email\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            [placeHolder]=\"'Eg:John@gmail.com'\">\r\n        </app-text-box-component>\r\n        <app-number-box-component \r\n            [label]=\"'Phone Number'\"\r\n            [placeHolder]=\"'+91 98765 56784'\"\r\n            [value]=\"phone\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-number-box-component>\r\n        <app-text-area-component \r\n            [label]=\"'Address'\"\r\n            [placeHolder]=\"'Please tell your Address'\"\r\n            [value]=\"address\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-drop-down-component \r\n            [label]=\"'Select Your Service'\"\r\n            [options]=\"[{value: 1, name: 'Home Needs & Special Services'}, {value: 2, name: 'Events & Gatherings'}, {value: 3, name: 'Financial/Investment Services'}, {value: 4, name: 'Online Health Care Services'}, {value: 5, name: 'Property Management Services'}, {value: 6, name: 'Tours And Travels Services'}, {value: 7, name: 'Taxation/Legal'}, {value: 8, name: 'Documents Procurement'}]\"\r\n            [dropDownModel]=\"service\"\r\n            (selectedChange)=\"selectedChange($event)\"\r\n            (blurEvent)=\"blurEvent()\">\r\n        </app-drop-down-component>\r\n        <app-text-area-component \r\n            [label]=\"'Additional Details/Description'\"\r\n            [placeHolder]=\"'Tell us more about your requirements'\"\r\n            [value]=\"details\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-calender-component \r\n            [label]=\"'Legwork’s to Reach you by'\"\r\n            (dateSelected)=\"dateSelected($event)\">\r\n        </app-calender-component>\r\n    </div>\r\n    <div class=\"buttons\">\r\n        <button class=\"button-1\" (click)=\"ThankYou()\">Send via Whatsapp</button>\r\n        <!-- <button class=\"button-2\" (click)=\"Hi()\">Cancel</button> -->\r\n    </div>\r\n    @if (showPopup) {\r\n    <div class=\"popup-overlay\">\r\n        <div class=\"popup-box\">\r\n            <h2>Thank You!</h2>\r\n            <p>\r\n                Thanks for Trusting and Reaching Legwork's,<br>\r\n                we will be at your Doorstep Soon.\r\n            </p>\r\n            <button (click)=\"closePopup()\">Close</button>\r\n        </div>\r\n    </div>\r\n    }\r\n</div>"
+            "templateData": "<div class=\"container\">\r\n<div class=\"container\">\r\n    <div class=\"header\" style=\"display: flex; justify-content: space-between; align-items: center;\">\r\n        <div>\r\n            <h1 class=\"title\">Request a Service</h1>\r\n            <p class=\"subtitle\">Fill out the form below and we will connect you on WhatsApp</p>\r\n        </div>\r\n        <img src=\"title.png\" alt=\"Leg Works Logo\" class=\"logo\" />\r\n    </div>\r\n</div>\r\n    <div class=\"body\">\r\n        <app-text-box-component \r\n            [label]=\"'Full Name'\" \r\n            [value]=\"fullName\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            [placeHolder]=\"'Enter your Full Name'\">\r\n        </app-text-box-component>\r\n        <app-text-box-component \r\n            [label]=\"'Email Address'\" \r\n            [value]=\"email\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            [placeHolder]=\"'Eg:John@gmail.com'\">\r\n        </app-text-box-component>\r\n        <app-number-box-component \r\n            [label]=\"'Phone Number'\"\r\n            [placeHolder]=\"'+91 98765 56784'\"\r\n            [value]=\"phone\"\r\n            (valueChange)=\"valueChange($event)\">\r\n        </app-number-box-component>\r\n        <app-text-area-component \r\n            [label]=\"'Address'\"\r\n            [placeHolder]=\"'Please tell your Address'\"\r\n            [value]=\"address\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-drop-down-component \r\n            [label]=\"'Select Your Service'\"\r\n            [options]=\"[{value: 1, name: 'Home Needs & Special Services'}, {value: 2, name: 'Events & Gatherings'}, {value: 3, name: 'Financial/Investment Services'}, {value: 4, name: 'Online Health Care Services'}, {value: 5, name: 'Property Management Services'}, {value: 6, name: 'Tours And Travels Services'}, {value: 7, name: 'Taxation/Legal'}, {value: 8, name: 'Documents Procurement'}]\"\r\n            [dropDownModel]=\"service\"\r\n            (selectedChange)=\"selectedChange($event)\"\r\n            (blurEvent)=\"blurEvent()\">\r\n        </app-drop-down-component>\r\n        <app-text-area-component \r\n            [label]=\"'Additional Details/ Description'\"\r\n            [placeHolder]=\"'Tell us more about your requirements'\"\r\n            [value]=\"details\"\r\n            (valueChange)=\"valueChange($event)\"\r\n            (blur)=\"blurEvent()\">\r\n        </app-text-area-component>\r\n        <app-calender-component \r\n            [label]=\"'Legworks to reach you by'\"\r\n            (dateSelected)=\"dateSelected($event)\">\r\n        </app-calender-component>\r\n    </div>\r\n    <div class=\"buttons\">\r\n        <button class=\"button-1\" (click)=\"ThankYou()\">Send via WhatsApp</button>\r\n        <!-- <button class=\"button-2\" (click)=\"Hi()\">Cancel</button> -->\r\n    </div>\r\n    @if (showPopup) {\r\n    <div class=\"popup-overlay\">\r\n        <div class=\"popup-box\">\r\n            <h2>Thank You!</h2>\r\n            <p>\r\n                Thanks for trusting and reaching Legworks,<br>\r\n                we will be at your doorstep soon.\r\n            </p>\r\n            <button (click)=\"closePopup()\">Close</button>\r\n        </div>\r\n    </div>\r\n    }\r\n</div>"
         },
         {
             "name": "ModuleComponent",
-            "id": "component-ModuleComponent-6c1fbe696257c5eaf254fc192191f872f8f99e99213f7374c2cea680789dad5f5b633002c75942545a222a26b91642d8a62d9f4c542dca881c944359286becf0",
+            "id": "component-ModuleComponent-9d6510fe5f414422249cc90521c0adcdd2f17b94ae6acaeb5325d1d6faec6f69d8cb72e2f1219267d65a046e42b6cf028847a2241f7a9b89d6321f35c83b232d",
             "file": "src/app/controls/module-component/module-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2543,24 +2741,28 @@
                     "type": "component"
                 },
                 {
-                    "name": "VariousServicesComponent",
+                    "name": "AboutUsComponent",
                     "type": "component"
                 },
                 {
-                    "name": "AboutUsComponent",
+                    "name": "ParentComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "FooterComponent",
                     "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { HeaderComponent } from \"../header-component/header-component\";\r\nimport { BodyComponent } from \"../body-component/body-component\";\r\nimport { VariousServicesComponent } from \"../various-services-component/various-services-component\";\r\nimport { AboutUsComponent } from \"../about-us-component/about-us-component\";\r\n\r\n@Component({\r\n  selector: 'app-module-component',\r\n  imports: [HeaderComponent, BodyComponent, VariousServicesComponent, AboutUsComponent],\r\n  templateUrl: './module-component.html',\r\n  styleUrl: './module-component.scss',\r\n})\r\nexport class ModuleComponent {\r\n\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { HeaderComponent } from \"../header-component/header-component\";\r\nimport { BodyComponent } from \"../body-component/body-component\";\r\nimport { VariousServicesComponent } from \"../various-services-component/various-services-component\";\r\nimport { AboutUsComponent } from \"../about-us-component/about-us-component\";\r\nimport { ParentComponent } from \"../parent-component/parent-component\";\r\nimport { FooterComponent } from \"../footer-component/footer-component\";\r\n\r\n@Component({\r\n  selector: 'app-module-component',\r\n  imports: [HeaderComponent, BodyComponent, AboutUsComponent, ParentComponent, FooterComponent],\r\n  templateUrl: './module-component.html',\r\n  styleUrl: './module-component.scss',\r\n})\r\nexport class ModuleComponent {\r\n\r\n}\r\n",
             "styleUrl": "./module-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div>\r\n    <app-header-component></app-header-component>\r\n    <app-body-component></app-body-component>\r\n    <app-various-services-component></app-various-services-component>\r\n    <app-about-us-component></app-about-us-component>\r\n</div>\r\n"
+            "templateData": "<div>\r\n    <app-header-component></app-header-component>\r\n    <app-body-component></app-body-component>\r\n    <app-parent-component></app-parent-component>\r\n    <app-about-us-component></app-about-us-component>\r\n    <app-footer-component></app-footer-component>\r\n</div>\r\n"
         },
         {
             "name": "NumberBoxComponent",
@@ -2854,6 +3056,130 @@
                 "OnChanges"
             ],
             "templateData": "<div class=\"textBoxContainer\">\r\n\r\n  <input\r\n    type=\"text\"\r\n    [id]=\"id\"\r\n    [(ngModel)]=\"currentValue\"\r\n    [placeholder]=\"placeHolder\"\r\n    maxlength=\"10\"\r\n    [readonly]=\"isReadOnly\"\r\n    [tabindex]=\"tabindex\"\r\n    [ngStyle]=\"getInputStyle()\"\r\n    class=\"textBoxInput peer\"\r\n    (focus)=\"onFocus()\"\r\n    (blur)=\"onBlur($event)\"\r\n    (input)=\"onNumberInput($event)\"\r\n  />\r\n\r\n  <label\r\n    [for]=\"id\"\r\n    class=\"textBoxLabel\"\r\n  >\r\n    {{ label }}\r\n    @if (isRequired) { <span class=\"required\">*</span> }\r\n  </label>\r\n\r\n  @if (showError) {\r\n    <p class=\"errorText\">\r\n      Enter valid 10-digit Number\r\n    </p>\r\n  }\r\n\r\n</div>\r\n\r\n"
+        },
+        {
+            "name": "ParentComponent",
+            "id": "component-ParentComponent-3184e1cb33abeb03bf06b7afe4d53eaf2382d3f5a03a9d21ae74c30c85f1b8e8f53883a6c7a3f0fed769905fe2f2f7a2e8def335a6fc11087f15394a60725a1f",
+            "file": "src/app/controls/parent-component/parent-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-parent-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./parent-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "selectedService",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ServiceData | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27
+                },
+                {
+                    "name": "serviceData",
+                    "defaultValue": "{\r\n    homeNeeds: {\r\n      title: 'Home Needs & Special Services',\r\n      icon: '🛒',\r\n      overview: 'We are here to support you and your family with all your essential home needs, ensuring comfort, convenience, and peace of mind.',\r\n      assistItems: [\r\n        'Grocery shopping and doorstep delivery',\r\n        'Live clothing purchases and personal shopping assistance',\r\n        'Home furnishings and décor selection',\r\n        'Appliances sourcing and coordination',\r\n        'Packaging and delivery anywhere in India',\r\n        'International shipping arrangements'\r\n      ],\r\n      whyChooseUs: 'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground.'\r\n    },\r\n\r\n    eventPlanning: {\r\n      title: 'Event Planning & Management',\r\n      icon: '🎁',\r\n      overview: 'We help make your events special and stress-free by providing complete support for your gatherings and celebrations.',\r\n      assistItems: [\r\n        'Gift Selection Assistance',\r\n        'Event Decorations Support',\r\n        'Guest Care & Coordination',\r\n        'Global Purchase & Delivery Support',\r\n      ],\r\n      whyChooseUs: 'We blend tradition with elegance to ensure unforgettable celebrations.'\r\n    },\r\n\r\n    financialServices: {\r\n      title: 'Financial and Investment Management Services',\r\n      icon: '💰',\r\n      overview: 'In India, we are backed by highly experienced professionals with over a decade of industry expertise. Our experts provide personalized guidance and strategic support to help you make informed financial decisions.',\r\n      assistItems: [\r\n        'Financial Planning',\r\n        'Investment Strategies',\r\n        'Tax Planning & Compliance',\r\n        'Wealth Management Insights',\r\n        'Risk Assessment & Portfolio Review',\r\n      ],\r\n      whyChooseUs: 'Our goal is to ensure your financial journey is secure, structured, and aligned with your long-term goals. With trusted advice and thoughtful planning, we help you build a stronger financial future.'\r\n    },\r\n\r\n    healthCare: {\r\n      title: 'Health Care Support',\r\n      icon: '🏥',\r\n      overview: 'Don’t worry — we are here to support you and care for them like our own. We understand how challenging it can be to stay away from your loved ones. That’s why we provide dependable assistance to ensure your elderly parents receive the attention and care they deserve.',\r\n      assistItems: [\r\n        'Arranging regular health check-ups',\r\n        'Coordinating medical investigations and diagnostic tests',\r\n        'Assisting with doctor appointments',\r\n        'Monitoring monthly or periodic health reviews',\r\n        'Providing updates and reports to family members'\r\n      ],\r\n      whyChooseUs: 'With compassion, responsibility, and professionalism, we help ensure your parents’ basic health needs are met — giving you peace of mind, no matter where you are in the world.'\r\n    },\r\n\r\n    propertyManagement: {\r\n      title: 'Property Management Services',\r\n      icon: '🏠',\r\n      overview: 'If you are living abroad and concerned about managing your properties or assets in India, you’re not alone — and you don’t have to handle it alone. We provide reliable support to help you safeguard and manage your assets efficiently, even from a distance.',\r\n      assistItems: [\r\n        'Property monitoring and coordination',\r\n        'Assistance with documentation and paperwork',\r\n        'Support for registrations and legal formalities',\r\n        'Liaising with concerned authorities and professionals',\r\n        'Connecting you with trusted local experts',\r\n        'Ensuring smooth, hassle-free completion of tasks'\r\n      ],\r\n      whyChooseUs: 'With our strong network and on-ground presence, we help you complete your work efficiently and transparently.'\r\n    },\r\n\r\n    toursTravels: {\r\n      title: 'Tours and Travels Support',\r\n      icon: '✈️',\r\n      overview: 'If you are planning a tour to India, we are here to design a smooth, memorable, and completely tension-free holiday tailored to your preferences. We carefully plan your journey based on your interests — whether you love heritage, spirituality, nature, luxury, adventure, food, or family experiences.',\r\n      assistItems: [\r\n        'Customized holiday planning',\r\n        'Personalized itinerary creation',\r\n        'Guidance on the best destinations based on your interests',\r\n        'Hotel and local travel coordination',\r\n        'On-ground assistance and support',\r\n        'Guidance on arranging travel tickets for your loved ones from India at the best possible prices'\r\n      ],\r\n      whyChooseUs: 'With our local expertise and trusted network, we ensure your trip is comfortable, well-organized, and truly unforgettable.'\r\n    }\r\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ServicesMap",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29
+                },
+                {
+                    "name": "showServiceDetail",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onCloseService",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 136,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onServiceToggled",
+                    "args": [
+                        {
+                            "name": "serviceType",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 117,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "serviceType",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "VariousServicesComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "TypesComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { VariousServicesComponent } from \"../various-services-component/various-services-component\";\r\nimport { TypesComponent } from \"../types-component/types-component\";\r\n\r\ninterface ServiceData {\r\n  title: string;\r\n  icon: string;\r\n  overview: string;\r\n  assistItems: string[];\r\n  whyChooseUs: string;\r\n  buttonText?: string; \r\n}\r\n\r\ninterface ServicesMap {\r\n  [key: string]: ServiceData; \r\n}\r\n\r\n@Component({\r\n  selector: 'app-parent-component',\r\n  imports: [VariousServicesComponent, TypesComponent],\r\n  templateUrl: './parent-component.html',\r\n  styleUrl: './parent-component.scss',\r\n})\r\nexport class ParentComponent {\r\n\r\n  showServiceDetail = false;\r\n  selectedService: ServiceData | null = null;\r\n\r\n  serviceData: ServicesMap = {\r\n    homeNeeds: {\r\n      title: 'Home Needs & Special Services',\r\n      icon: '🛒',\r\n      overview: 'We are here to support you and your family with all your essential home needs, ensuring comfort, convenience, and peace of mind.',\r\n      assistItems: [\r\n        'Grocery shopping and doorstep delivery',\r\n        'Live clothing purchases and personal shopping assistance',\r\n        'Home furnishings and décor selection',\r\n        'Appliances sourcing and coordination',\r\n        'Packaging and delivery anywhere in India',\r\n        'International shipping arrangements'\r\n      ],\r\n      whyChooseUs: 'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground.'\r\n    },\r\n\r\n    eventPlanning: {\r\n      title: 'Event Planning & Management',\r\n      icon: '🎁',\r\n      overview: 'We help make your events special and stress-free by providing complete support for your gatherings and celebrations.',\r\n      assistItems: [\r\n        'Gift Selection Assistance',\r\n        'Event Decorations Support',\r\n        'Guest Care & Coordination',\r\n        'Global Purchase & Delivery Support',\r\n      ],\r\n      whyChooseUs: 'We blend tradition with elegance to ensure unforgettable celebrations.'\r\n    },\r\n\r\n    financialServices: {\r\n      title: 'Financial and Investment Management Services',\r\n      icon: '💰',\r\n      overview: 'In India, we are backed by highly experienced professionals with over a decade of industry expertise. Our experts provide personalized guidance and strategic support to help you make informed financial decisions.',\r\n      assistItems: [\r\n        'Financial Planning',\r\n        'Investment Strategies',\r\n        'Tax Planning & Compliance',\r\n        'Wealth Management Insights',\r\n        'Risk Assessment & Portfolio Review',\r\n      ],\r\n      whyChooseUs: 'Our goal is to ensure your financial journey is secure, structured, and aligned with your long-term goals. With trusted advice and thoughtful planning, we help you build a stronger financial future.'\r\n    },\r\n\r\n    healthCare: {\r\n      title: 'Health Care Support',\r\n      icon: '🏥',\r\n      overview: 'Don’t worry — we are here to support you and care for them like our own. We understand how challenging it can be to stay away from your loved ones. That’s why we provide dependable assistance to ensure your elderly parents receive the attention and care they deserve.',\r\n      assistItems: [\r\n        'Arranging regular health check-ups',\r\n        'Coordinating medical investigations and diagnostic tests',\r\n        'Assisting with doctor appointments',\r\n        'Monitoring monthly or periodic health reviews',\r\n        'Providing updates and reports to family members'\r\n      ],\r\n      whyChooseUs: 'With compassion, responsibility, and professionalism, we help ensure your parents’ basic health needs are met — giving you peace of mind, no matter where you are in the world.'\r\n    },\r\n\r\n    propertyManagement: {\r\n      title: 'Property Management Services',\r\n      icon: '🏠',\r\n      overview: 'If you are living abroad and concerned about managing your properties or assets in India, you’re not alone — and you don’t have to handle it alone. We provide reliable support to help you safeguard and manage your assets efficiently, even from a distance.',\r\n      assistItems: [\r\n        'Property monitoring and coordination',\r\n        'Assistance with documentation and paperwork',\r\n        'Support for registrations and legal formalities',\r\n        'Liaising with concerned authorities and professionals',\r\n        'Connecting you with trusted local experts',\r\n        'Ensuring smooth, hassle-free completion of tasks'\r\n      ],\r\n      whyChooseUs: 'With our strong network and on-ground presence, we help you complete your work efficiently and transparently.'\r\n    },\r\n\r\n    toursTravels: {\r\n      title: 'Tours and Travels Support',\r\n      icon: '✈️',\r\n      overview: 'If you are planning a tour to India, we are here to design a smooth, memorable, and completely tension-free holiday tailored to your preferences. We carefully plan your journey based on your interests — whether you love heritage, spirituality, nature, luxury, adventure, food, or family experiences.',\r\n      assistItems: [\r\n        'Customized holiday planning',\r\n        'Personalized itinerary creation',\r\n        'Guidance on the best destinations based on your interests',\r\n        'Hotel and local travel coordination',\r\n        'On-ground assistance and support',\r\n        'Guidance on arranging travel tickets for your loved ones from India at the best possible prices'\r\n      ],\r\n      whyChooseUs: 'With our local expertise and trusted network, we ensure your trip is comfortable, well-organized, and truly unforgettable.'\r\n    }\r\n  };\r\n\r\nonServiceToggled(serviceType: string) {\r\n\r\n  const service = this.serviceData[serviceType];\r\n\r\n  if (this.selectedService?.title === service.title && this.showServiceDetail) {\r\n    this.onCloseService();\r\n  } else {\r\n\r\n    this.selectedService = service;\r\n    this.showServiceDetail = true;\r\n    setTimeout(() => {\r\n      const element = document.getElementById('service-detail');\r\n      if (element) {\r\n        element.scrollIntoView({ behavior: 'smooth' });\r\n      }\r\n    }, 50);\r\n\r\n  }\r\n}\r\n  onCloseService() {\r\n\r\n    this.showServiceDetail = false;\r\n    this.selectedService = null;\r\n\r\n    setTimeout(() => {\r\n      const element = document.getElementById('services');\r\n      if (element) {\r\n        element.scrollIntoView({ behavior: 'smooth' });\r\n      }\r\n    }, 50);\r\n\r\n  }\r\n}",
+            "styleUrl": "./parent-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"parent-container\">\r\n  <div class=\"services-wrapper\">\r\n    <app-various-services-component \r\n      (serviceSelected)=\"onServiceToggled($event)\">\r\n    </app-various-services-component>\r\n  </div>\r\n  \r\n@if (showServiceDetail && selectedService) {\r\n  <div class=\"service-detail-section\" id=\"service-detail\">\r\n    <app-types-component \r\n      [serviceTitle]=\"selectedService.title\"\r\n      [serviceIcon]=\"selectedService.icon\"\r\n      [overviewText]=\"selectedService.overview\"\r\n      [assistItems]=\"selectedService.assistItems\"\r\n      [whyChooseUsText]=\"selectedService.whyChooseUs\"\r\n      (closeClicked)=\"onCloseService()\">\r\n    </app-types-component>\r\n  </div>\r\n}\r\n</div>"
         },
         {
             "name": "TextAreaComponent",
@@ -3411,7 +3737,7 @@
         },
         {
             "name": "TypesComponent",
-            "id": "component-TypesComponent-5f32dbb0fac5fb574cc612acf941c1f6181e7fd51194ca40d47a0ed74a2cb9666f51b57acb8a5c0558075c44bd4b4856ad9adcba8a2ee158bdb9195905bea310",
+            "id": "component-TypesComponent-415ab3eb3a59444ef6a21b0fe54e1f8e789d4d9f3e7014a202283be48de7498c290b2b718738a65ea07f53e1a86d2611eb5d532bbaf716db01c1c1295373f1af",
             "file": "src/app/controls/types-component/types-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3426,11 +3752,75 @@
             ],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
-            "outputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "assistItems",
+                    "defaultValue": "[\r\n    'Grocery shopping and doorstep delivery',\r\n    'Live clothing purchases and personal shopping assistance',\r\n    'Home furnishings and décor selection',\r\n    'Appliances sourcing and coordination',\r\n    'Packaging and delivery anywhere in India',\r\n    'International shipping arrangements'\r\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 15,
+                    "type": "string[]",
+                    "decorators": []
+                },
+                {
+                    "name": "buttonText",
+                    "defaultValue": "'Request this service'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 24,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "overviewText",
+                    "defaultValue": "'We are here to support you and your family with all your essential home needs, ensuring comfort, convenience, and peace of mind. From everyday necessities to special purchases, we take care of everything with attention and reliability.'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 14,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "serviceIcon",
+                    "defaultValue": "'🛒'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 13,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "serviceTitle",
+                    "defaultValue": "'Home Needs & Special Services'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "whyChooseUsText",
+                    "defaultValue": "'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground — handling every detail with care, transparency, and efficiency.'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 23,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "closeClicked",
+                    "defaultValue": "new EventEmitter<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 25,
+                    "type": "EventEmitter"
+                }
+            ],
             "propertiesClass": [
                 {
-                    "name": "showService",
+                    "name": "showInfoModal",
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -3438,27 +3828,37 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 10
+                    "line": 28
                 }
             ],
             "methodsClass": [
+                {
+                    "name": "closeInfoForm",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 50,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
                 {
                     "name": "closeService",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 14,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
                 {
-                    "name": "openService",
+                    "name": "openInfoForm",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 11,
+                    "line": 35,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -3467,22 +3867,27 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
-            "imports": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "InfoFormComponent",
+                    "type": "component"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-types-component',\r\n  imports: [],\r\n  templateUrl: './types-component.html',\r\n  styleUrl: './types-component.scss',\r\n})\r\nexport class TypesComponent {\r\n  showService = false;\r\n  openService(){\r\n    this.showService = true;\r\n  }\r\n  closeService(){\r\n    this.showService = false;\r\n  }\r\n  \r\n}\r\n",
+            "sourceCode": "import { Component, Input, EventEmitter, Output } from '@angular/core';\r\nimport { InfoFormComponent } from \"../info-form-component/info-form-component\";\r\n\r\n@Component({\r\n  selector: 'app-types-component',\r\n  standalone: true,\r\n  imports: [InfoFormComponent], \r\n  templateUrl: './types-component.html',\r\n  styleUrl: './types-component.scss',\r\n})\r\nexport class TypesComponent {\r\n  @Input() serviceTitle: string = 'Home Needs & Special Services';\r\n  @Input() serviceIcon: string = '🛒';\r\n  @Input() overviewText: string = 'We are here to support you and your family with all your essential home needs, ensuring comfort, convenience, and peace of mind. From everyday necessities to special purchases, we take care of everything with attention and reliability.';\r\n  @Input() assistItems: string[] = [\r\n    'Grocery shopping and doorstep delivery',\r\n    'Live clothing purchases and personal shopping assistance',\r\n    'Home furnishings and décor selection',\r\n    'Appliances sourcing and coordination',\r\n    'Packaging and delivery anywhere in India',\r\n    'International shipping arrangements'\r\n  ];\r\n  @Input() whyChooseUsText: string = 'Whether you are living abroad or managing things from a distance, we act as your trusted support system on the ground — handling every detail with care, transparency, and efficiency.';\r\n  @Input() buttonText: string = 'Request this service';\r\n  @Output() closeClicked = new EventEmitter<void>();\r\n  \r\n  // Modal properties\r\n  showInfoModal = false;\r\n\r\n  closeService() {\r\n    this.closeClicked.emit();\r\n  }\r\n\r\n  // Method to open info form modal\r\n  openInfoForm() {\r\n    this.showInfoModal = true;\r\n    document.body.style.overflow = 'hidden';\r\n  }\r\n\r\n  // Method to close info form modal\r\n// In your VariousServicesComponent\r\n// closeAndScroll() {\r\n//   this.closeInfoForm();\r\n//   // Use setTimeout to ensure the modal closes before scrolling\r\n//   setTimeout(() => {\r\n//     this.closing();\r\n//   }, 100);\r\n// }\r\n\r\ncloseInfoForm() {\r\n  this.showInfoModal = false;\r\n  document.body.style.overflow = 'auto';\r\n}\r\n\r\n}",
             "styleUrl": "./types-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "@if(showService){\r\n\r\n<div class=\"header\">\r\n    <div class=\"icon-cart\">🛒</div>\r\n    <h1 class=\"text-1\">Home Needs & Special Services</h1>\r\n    <button class=\"close-btn\" (click)=\"closeService()\">✕</button>\r\n</div>\r\n\r\n<div class=\"container\">\r\n\r\n    <div class=\"content-2\">\r\n\r\n        <h1 class=\"overview\">Overview</h1>\r\n\r\n        <p class=\"text\">\r\n            We are here to support you and your family with all your essential home needs,\r\n            ensuring comfort, convenience, and peace of mind....from everyday necessities\r\n            to special purchases, we take care of everything with attention and reliability.\r\n        </p>\r\n\r\n        <h1 class=\"overview\">What We Assist With</h1>\r\n\r\n        <div class=\"grid\">\r\n\r\n            <div class=\"card\">\r\n                ✔ Grocery shopping and doorstep delivery\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Live clothing purchases and personal shopping assistance\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Home furnishings and décor selection\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Appliances sourcing and coordination\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ Packaging and delivery anywhere in India\r\n            </div>\r\n\r\n            <div class=\"card\">\r\n                ✔ International shipping arrangements\r\n            </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"highlighted-box\">\r\n\r\n            <h1>Why Choose Us</h1>\r\n\r\n            <p>\r\n                Whether you are living abroad or managing things from a distance,\r\n                we act as your trusted support system on the ground — handling every\r\n                detail with care, transparency, and efficiency.\r\n            </p>\r\n\r\n        </div>\r\n\r\n        <div class=\"button-group\">\r\n\r\n            <button class=\"button-primary\">\r\n                Request This Service\r\n            </button>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n\r\n}"
+            "templateData": "<div class=\"service-details\">\r\n  <div class=\"header\">\r\n    <div class=\"icon-cart\">{{ serviceIcon }}</div>\r\n    <h1 class=\"text-1\">{{ serviceTitle }}</h1>\r\n    <button class=\"close-btn\" (click)=\"closeService()\">✕</button>\r\n  </div>\r\n\r\n  <div class=\"container\">\r\n    <div class=\"content-2\">\r\n      <h1 class=\"overview\">Overview</h1>\r\n      <p class=\"text\">{{ overviewText }}</p>\r\n\r\n      <h1 class=\"overview\">What We Assist With</h1>\r\n\r\n      <div class=\"grid\">\r\n        @for (item of assistItems; track $index) {\r\n          <div class=\"card\">✔ {{ item }}</div>\r\n        }\r\n      </div>\r\n\r\n      <div class=\"highlighted-box\">\r\n        <h2>Why Choose Us</h2>\r\n        <p>{{ whyChooseUsText }}</p>\r\n      </div>\r\n\r\n      <div class=\"button-group\">\r\n        <button class=\"button-primary\" (click)=\"openInfoForm()\">{{ buttonText }}</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n@if(showInfoModal) {\r\n<div class=\"modal-overlay\" (click)=\"closeInfoForm()\">\r\n  <div class=\"modal-container\" (click)=\"$event.stopPropagation()\">\r\n   <button class=\"close-btn\" (click)=\"closeService();\">✕</button>\r\n\r\n    <app-info-form-component [service]=\"serviceTitle\"></app-info-form-component>\r\n  </div>\r\n</div>\r\n}"
         },
         {
             "name": "VariousServicesComponent",
-            "id": "component-VariousServicesComponent-c472eec6b886e75acb64683e80ceace673f12798643019d1ea6d863c6cad258f818987564e60b7d5914d9567163ae0078df2506470532a79be3c001138a2b05f",
+            "id": "component-VariousServicesComponent-2444e5259fff7c91d15d433d915ce57d9f8041aeea0351913246040be6da5e5301fbe1fe00993c7e39d816aa0d922a198dc664a97573dcf78e08eeb1d5971dde",
             "file": "src/app/controls/various-services-component/various-services-component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3498,40 +3903,49 @@
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [
+            "outputsClass": [
                 {
-                    "name": "showDetailView",
-                    "defaultValue": "false",
+                    "name": "serviceSelected",
+                    "defaultValue": "new EventEmitter<string>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "unknown",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 11
+                    "line": 9,
+                    "type": "EventEmitter"
                 }
             ],
+            "propertiesClass": [],
             "methodsClass": [
                 {
-                    "name": "closeService",
-                    "args": [],
+                    "name": "selectService",
+                    "args": [
+                        {
+                            "name": "serviceType",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 11,
                     "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "openService",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 13,
-                    "deprecated": false,
-                    "deprecationMessage": ""
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "serviceType",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
                 }
             ],
             "deprecated": false,
@@ -3543,13 +3957,51 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { IconComponent } from \"../icon/icon.component/icon.component\";\r\n\r\n@Component({\r\n  selector: 'app-various-services-component',\r\n  imports: [],\r\n  templateUrl: './various-services-component.html',\r\n  styleUrl: './various-services-component.scss',\r\n})\r\nexport class VariousServicesComponent {\r\nshowDetailView = false;\r\n\r\n  openService() {\r\n    this.showDetailView = true;\r\n  }\r\n\r\n  closeService() {\r\n    this.showDetailView = false;\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, EventEmitter, Output } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-various-services-component',\r\n  templateUrl: './various-services-component.html',\r\n  styleUrl: './various-services-component.scss',\r\n})\r\nexport class VariousServicesComponent {\r\n  @Output() serviceSelected = new EventEmitter<string>();\r\n\r\n  selectService(serviceType: string) {\r\n    this.serviceSelected.emit(serviceType);\r\n  }\r\n}",
             "styleUrl": "./various-services-component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<section class=\"services-section\">\r\n\r\n<div class=\"container\">\r\n    <div class=\"header\">\r\n        <h1>Our Services</h1>\r\n        <span>Comprehensive solutions delivered right to your doorstep with authenticity and quality</span>\r\n    </div>\r\n    <div class=\"service-grid\">\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🛒</div>\r\n            <h2>Home Needs & Special Services</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🎁</div>\r\n            <h2>Event Planning & Management</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">💰</div>\r\n            <h2>Financial and Investment Management Services</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🏥</div>\r\n            <h2>Health Care Support</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">🏠</div>\r\n            <h2>Property Management Services</h2>\r\n        </div>\r\n        <div class=\"service-card\">\r\n            <div class=\"icon-cart\">✈️</div>\r\n            <h2>Tours and Travels Support</h2>\r\n        </div>\r\n    </div>\r\n</div>\r\n</section>"
+            "templateData": "<section class=\"services-section\" id=\"services\">\r\n  <div class=\"container\">\r\n    <div class=\"header\">\r\n      <h1>Our Services</h1>\r\n      <span>Comprehensive solutions delivered right to your doorstep with authenticity and quality</span>\r\n    </div>\r\n    <div class=\"service-grid\">\r\n      <div class=\"service-card\" (click)=\"selectService('homeNeeds')\">\r\n        <div class=\"icon-cart\">🛒</div>\r\n        <h2>Home Needs & Special Services</h2>\r\n      </div>\r\n      <div class=\"service-card\" (click)=\"selectService('eventPlanning')\">\r\n        <div class=\"icon-cart\">🎁</div>\r\n        <h2>Event Planning & Management</h2>\r\n      </div>\r\n      <div class=\"service-card\" (click)=\"selectService('financialServices')\">\r\n        <div class=\"icon-cart\">💰</div>\r\n        <h2>Financial and Investment Management Services</h2>\r\n      </div>\r\n      <div class=\"service-card\" (click)=\"selectService('healthCare')\">\r\n        <div class=\"icon-cart\">🏥</div>\r\n        <h2>Health Care Support</h2>\r\n      </div>\r\n      <div class=\"service-card\" (click)=\"selectService('propertyManagement')\">\r\n        <div class=\"icon-cart\">🏠</div>\r\n        <h2>Property Management Services</h2>\r\n      </div>\r\n      <div class=\"service-card\" (click)=\"selectService('toursTravels')\">\r\n        <div class=\"icon-cart\">✈️</div>\r\n        <h2>Travel - Professional & Trustworthy</h2>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>"
+        },
+        {
+            "name": "WhatWeDoComponent",
+            "id": "component-WhatWeDoComponent-46ce48b73adddbbfa2d75ee31187d3469ff60732210aa8430b75cd5f7d68761ccce2c36c6e01f32313f6fee479caf74447256b8010fa167045e3964854b79057",
+            "file": "src/app/controls/what-we-do-component/what-we-do-component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-what-we-do-component",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./what-we-do-component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-what-we-do-component',\r\n  imports: [],\r\n  templateUrl: './what-we-do-component.html',\r\n  styleUrl: './what-we-do-component.scss',\r\n})\r\nexport class WhatWeDoComponent {\r\n\r\n}\r\n",
+            "styleUrl": "./what-we-do-component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"chart-wrapper\">\r\n  <div class=\"pie-chart\"></div>\r\n\r\n  <div class=\"legend\">\r\n    <div><span class=\"color c1\"></span> Carbon Emissions</div>\r\n    <div><span class=\"color c2\"></span> Deforestation</div>\r\n    <div><span class=\"color c3\"></span> Rising Sea Levels</div>\r\n    <div><span class=\"color c4\"></span> Ice Cap Melting</div>\r\n    <div><span class=\"color c5\"></span> Renewable Energy</div>\r\n    <div><span class=\"color c6\"></span> Transportation</div>\r\n  </div>\r\n</div>\r\n"
         }
     ],
     "modules": [
@@ -3590,40 +4042,7 @@
             ]
         }
     ],
-    "miscellaneous": {
-        "variables": [
-            {
-                "name": "iconRegistry",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/app/icons/icons-registry.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Record<string, IconifyIcon>",
-                "defaultValue": "{\r\n  'shopping_cart': shopping_cart\r\n}"
-            }
-        ],
-        "functions": [],
-        "typealiases": [],
-        "enumerations": [],
-        "groupedVariables": {
-            "src/app/icons/icons-registry.ts": [
-                {
-                    "name": "iconRegistry",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/icons/icons-registry.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Record<string, IconifyIcon>",
-                    "defaultValue": "{\r\n  'shopping_cart': shopping_cart\r\n}"
-                }
-            ]
-        },
-        "groupedFunctions": {},
-        "groupedEnumerations": {},
-        "groupedTypeAliases": {}
-    },
+    "miscellaneous": [],
     "routes": {
         "name": "<root>",
         "kind": "module",
@@ -3645,6 +4064,15 @@
         "count": 0,
         "status": "low",
         "files": [
+            {
+                "filePath": "src/app/charts/doughnut-chart-component/doughnut-chart-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DoughnutChartComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/10",
+                "status": "low"
+            },
             {
                 "filePath": "src/app/controls/about-us-component/about-us-component.ts",
                 "type": "component",
@@ -3700,21 +4128,21 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/controls/footer-component/footer-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FooterComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/controls/header-component/header-component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "HeaderComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/15",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/controls/icon/icon.component/icon.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "IconComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -3745,6 +4173,33 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/controls/parent-component/parent-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ParentComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/parent-component/parent-component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ServiceData",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/controls/parent-component/parent-component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ServicesMap",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/controls/text-area-component/text-area-component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -3768,7 +4223,7 @@
                 "linktype": "component",
                 "name": "TypesComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
@@ -3777,15 +4232,14 @@
                 "linktype": "component",
                 "name": "VariousServicesComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
-                "filePath": "src/app/icons/icons-registry.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "iconRegistry",
+                "filePath": "src/app/controls/what-we-do-component/what-we-do-component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "WhatWeDoComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
