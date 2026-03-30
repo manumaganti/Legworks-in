@@ -93,7 +93,6 @@
   color: #1d4ed8;
 }
 
-/* Contact dropdown styles - preserved original design */
 .dropdown-1 {
   position: relative;
   cursor: pointer;
@@ -128,14 +127,12 @@
   word-wrap: break-word;
 }
 
-/* Show on hover */
 .dropdown-1:hover .dropdown-content-1 {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
 
-/* Invisible bridge for smooth hover */
 .dropdown-1::after {
   content: '';
   position: absolute;
@@ -165,7 +162,6 @@
   scroll-margin-top: 100px;
 }
 
-/* Original drop-item-1 styles preserved */
 .drop-item-1 {
   font-family: 'Segoe UI', sans-serif;
   padding: 12px 20px;
@@ -186,7 +182,6 @@
   color: #1d4ed8;
 }
 
-/* Remove any special styling for phone */
 .drop-item-1:last-child {
   font-weight: 600;
   color: #444;
@@ -197,7 +192,6 @@
   color: #1d4ed8;
 }
 
-/* Mobile-specific styles */
 @media (hover: none) and (pointer: coarse) {
   .dropdown-content-1 {
     position: fixed;
@@ -233,7 +227,6 @@
   }
 }
 
-/* Modal styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -285,7 +278,6 @@
   }
 }
 
-/* Tablet */
 @media screen and (max-width: 1024px) {
   .body {
     padding: 0 25px;
@@ -296,7 +288,6 @@
   }
 }
 
-/* Tablet small */
 @media screen and (max-width: 768px) {
   .body {
     padding: 0 20px;
@@ -320,7 +311,6 @@
   }
 }
 
-/* Mobile */
 @media screen and (max-width: 480px) {
   .body {
     padding: 0 15px;

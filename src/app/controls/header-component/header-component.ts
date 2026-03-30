@@ -11,6 +11,12 @@ import { InfoFormComponent } from "../info-form-component/info-form-component";
   styleUrl: './header-component.scss',
 })
 export class HeaderComponent {
+scrollToWhat() {
+  const element = document.getElementById('what');
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
 
   isServicesOpen = false;
   isContactOpen = false;
