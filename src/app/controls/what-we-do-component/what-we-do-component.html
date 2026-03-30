@@ -1,0 +1,96 @@
+<section class="services-section" id="what">
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <h1>What We Do</h1>
+      <span>
+        Comprehensive solutions delivered right to your doorstep with authenticity and quality
+      </span>
+    </div>
+
+    <!-- QUESTION BLOCK -->
+    <div class="space">
+      <div class="space-text">Question:</div>
+
+      <div class="space-paragraph">
+        Are you concerned about missing important family moments, celebrations, or responsibilities due to distance?
+      </div>
+
+      <div class="space-paragraph">
+        Do you feel the emotional and practical burden of not being physically present for your loved ones?
+      </div>
+
+      <div class="space-paragraph">
+        Are you struggling to manage personal tasks, property matters, or family needs in India while living elsewhere?
+      </div>
+
+      <div class="space-answer">
+        LegWorks is here to bridge that gap.
+      </div>
+
+      <div class="space-paragraph">
+        We act as your trusted extended support system—ensuring you stay connected, involved, and in control, no matter where you are.
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+  <div class="grid">
+
+  <!-- LEFT -->
+  <div class="empty">
+    <div class="empty-text">Family & Personal Support</div>
+    <div class="empty-sub">We stand in for you when it matters most</div>
+
+    <div class="empty-paragraph">1. Hospital Visits & Medical Coordination</div>
+    <div class="empty-sub-paragraph">
+      End-to-end support for hospital visits, consultations, and medical assistance.
+    </div>
+
+    <div class="empty-paragraph">2. Elder Care & Companionship</div>
+    <div class="empty-sub-paragraph">
+      Regular check-ins and emotional support for seniors.
+    </div>
+
+    <div class="empty-paragraph">3. School & College Assistance</div>
+    <div class="empty-sub-paragraph">
+      Coordination, tutoring, and admin support.
+    </div>
+  </div>
+
+  <!-- ✅ MIDDLE (YOUR CONTENT HERE) -->
+  <div class="middle-card">
+    <div class="empty-text-1">Live Video Shopping</div>
+    <div class="empty-sub-1">Experience India in real-time, from anywhere</div>
+
+    <div class="empty-paragraph-1">
+      We assist you in selecting and purchasing items through live video interaction:
+    </div>
+
+    <div class="empty-sub-paragraph-1">Home essentials</div>
+    <div class="empty-sub-paragraph-1">Festival and return gifts</div>
+    <div class="empty-sub-paragraph-1">Fashion and imitation jewellery</div>
+    <div class="empty-sub-paragraph-1">Clothing, furnishings, and home décor</div>
+  </div>
+
+  <!-- RIGHT (ONLY IMAGE NOW) -->
+  <div class="image-card">
+    <div class="carousel">
+      <div
+        class="carousel-track"
+        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+      >
+        @for (img of images; track $index) {
+          <img [src]="img" />
+        }
+      </div>
+
+      <button class="carousel-btn prev" (click)="prevSlide()">‹</button>
+      <button class="carousel-btn next" (click)="nextSlide()">›</button>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+</section>
