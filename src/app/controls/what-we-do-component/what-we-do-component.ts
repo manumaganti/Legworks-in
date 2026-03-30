@@ -9,11 +9,11 @@ import { Component } from '@angular/core';
 export class WhatWeDoComponent {
 
   images: string[] = [
-    'photo-1.jpg',
-    'photo-2.jpg',
+    'photo.jpg',
+    'photo-17.jpg',
     'photo-3.jpg',
-    'photo-4.jpg',
-    'photo-5.jpg',
+    'photo-18.jpg',
+    'photo-19.jpeg',
     'photo-6.jpg',
     'photo-7.jpg',
     'photo-8.jpg',
