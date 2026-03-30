@@ -1,0 +1,93 @@
+.body{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  padding: 0 40px;           
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;  
+  z-index: 1000;
+  flex-wrap: nowrap;
+  overflow: visible !important;
+  background:linear-gradient(to bottom right,#ecfdf5,#eff6ff);
+}
+:host {
+  display: block;
+  padding-top: 80px;  
+}
+.contact-phone,
+.contact-address,
+.contact-email{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Segoe UI', sans-serif;
+}
+
+.contact-phone a,
+.contact-email a{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  text-decoration:none;
+  color:#555;
+  font-size:14px;
+  transition:0.3s ease;
+}
+
+.contact-phone a:hover,
+.contact-email a:hover{
+  color:#1d4ed8;
+}
+
+.phone{
+  font-weight:600;
+}
+
+.contact-address{
+  font-size:14px;
+  color:#555;
+  max-width:500px;
+}
+
+.contact-address span:last-child{
+  line-height:1.5;
+}
+
+.divider{
+  color:rgba(0,0,0,0.4);
+  margin:0 8px;
+}
+
+.icon{
+  font-size:16px;
+    color:#1d4ed8;
+}
+@media screen and (max-width:900px){
+
+.body{
+  flex-direction:column;
+  height:auto;
+  padding:10px 20px;
+  gap:6px;
+  text-align:center;
+}
+
+.contact-phone,
+.contact-address,
+.contact-email{
+  justify-content:center;
+}
+
+.contact-address{
+  max-width:100%;
+  font-size:13px;
+}
+
+}
