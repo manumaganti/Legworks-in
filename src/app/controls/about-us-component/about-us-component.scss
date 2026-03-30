@@ -3,7 +3,7 @@ padding:50px 20px;
 }
 
 #about{
-scroll-margin-top:80px;
+scroll-margin-top:60px;
 }
 
 .container{
@@ -108,10 +108,11 @@ line-height:1.7;
 .mission{
 background:linear-gradient(to right,#0d9488,#1d4ed8);
 color:white;
-padding:45px;
+padding:30px;
 border-radius:18px;
 text-align:center;
 margin-bottom:70px;
+margin-top: -20px;
 }
 
 .mission p{
@@ -119,7 +120,6 @@ font-size:22px;
 line-height:1.7;
 }
 
-/* Tablet */
 @media(max-width:1024px){
 
 .about-header h2{
