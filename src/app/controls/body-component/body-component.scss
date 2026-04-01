@@ -70,6 +70,44 @@
 .explore:active {
   transform: scale(0.95);
 }
+.Whatwedo {
+  padding: 14px 35px;
+  border-radius: 40px;
+  border: none;
+  background: #9b79ea;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.Whatwedo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(230, 71, 255, 0.3);
+}
+
+.Whatwedo:active {
+  transform: scale(0.95);
+}
+.large-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; /* 🔥 allows buttons to stack on small screens */
+}
+.explore,
+.Whatwedo {
+  padding: 14px 35px;
+  border-radius: 40px;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+  min-width: 160px; /* 🔥 keeps buttons equal size */
+}
 
 @media (max-width: 1024px) {
 
@@ -180,5 +218,16 @@
     padding: 10px 20px;
     min-height: auto; /* prevents overflow on landscape phones */
   }
+@media (max-width: 480px) {
+  .large-2 {
+    flex-direction: column; /* 🔥 stack vertically */
+    width: 100%;
+  }
 
+  .explore,
+  .Whatwedo {
+    width: 100%; /* 🔥 full width buttons */
+    max-width: 300px;
+  }
+}
 }

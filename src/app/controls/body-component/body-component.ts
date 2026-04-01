@@ -15,5 +15,12 @@ constructor(private dropdownService: DropdownService) {}
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' });
   }
+  
+}
+scrollToWhat() {
+  const element = document.getElementById('what');
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 }
